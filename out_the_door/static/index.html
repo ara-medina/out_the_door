@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Out The Door</title>
+
+        <!-- CSS -->
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <!-- Out The Door -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+        <!-- JS -->
+        <!-- jQuery -->
+        <script src="//code.jquery.com/jquery-2.1.0.js"></script>
+        <!-- Bootstrap -->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <!-- Out The Door -->
+        <script src="static/js/main.js"></script>
+    </head>
+
+    <body>
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ url_for('profiles') }}">Out The Door</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                </div>
+            </div>
+        </div>
+
+
+    <!-- Handlebars templates -->
+    <script id="profile-list-template" type="text/x-handlebars-template">
+        <ul>
+            {{#each profiles}}
+            <li>
+            // still need to set up the profile path ? 
+                <a href="#" class="profile" data-id="{{ id }}"
+                   data-path="{{ profile.path }}">
+                    {{ profile.caption }}
+                </a>
+            </li>
+            {{/each}}
+            <li>
+                <a href="#" id="add-button">
+                    <i class="add"></i>
+                    Add Profile
+                </a>
+            </li>
+        </ul>
+    </script>
+
+    </body>
+</html>
