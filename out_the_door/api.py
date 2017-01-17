@@ -4,11 +4,11 @@ from flask import request, Response, url_for, render_template
 from jsonschema import validate, ValidationError
 
 from . import models
-# from . import decorators
+from . import decorators
 from out_the_door import app
 from .database import session
-from .models import Account, Profile
-from .utils import upload_path
+from .models import Account, Profile, Photo, File
+# from .utils import upload_path
 
 profile_schema = {
     "properties": {
@@ -19,7 +19,7 @@ profile_schema = {
         "occupation": {"type": "string"},
         "income": {"type": "string"},
         "ethnicity": {"type": "string"},
-        "accounts": {
+        "account": {
             "type": "object",
             "properties": {
                 "username": {"type": "string"},

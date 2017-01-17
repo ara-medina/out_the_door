@@ -33,9 +33,8 @@ class Profile(Base):
     __tablename__ = "profiles"
     
     id = Column(Integer, primary_key=True)
-    title = Column(String(128))
-    datetime = Column(DateTime, default=datetime.datetime.now)
     caption = Column(String(1024))
+    datetime = Column(DateTime, default=datetime.datetime.now)
     age = Column(Integer)
     gender = Column(String(128))
     city = Column(String(128))
@@ -51,7 +50,6 @@ class Profile(Base):
     def as_dictionary(self):
         return {
             "id": self.id,
-            "title": self.title,
             "caption": self.caption,
             "age": self.age,
             "gender": self.gender,
@@ -60,7 +58,11 @@ class Profile(Base):
             "income": self.income,
             "ethnicity": self.ethnicity,
             "account": {
-                "id": self.account.id
+                "id": self.account.id,
+                "username": self.account.username,
+                "name": self.account.name,
+                "email": self.account.email,
+                "password": self.account.password
             }
         }
         
@@ -80,7 +82,6 @@ class Photo(Base):
             "id": self.id,
             "profile": {
                 "id": self.profile.id,
-                "title": self.profile.title,
                 "caption": self.profile.caption,
                 "age": self.profile.age,
                 "gender": self.profile.gender,
@@ -89,7 +90,11 @@ class Photo(Base):
                 "income": self.profile.income,
                 "ethnicity": self.profile.ethnicity,
                 "account": {
-                    "id": self.account.id
+                    "id": self.profile.account.id,
+                    "username": self.profile.account.username,
+                    "name": self.profile.account.name,
+                    "email": self.profile.account.email,
+                    "password": self.profile.account.password
                 }
             }
         }
@@ -112,16 +117,19 @@ class File(Base):
                 "id": self.photo.id,
                 "profile": {
                     "id": self.photo.profile.id,
-                    "title": self.profile.title,
-                    "caption": self.profile.caption,
-                    "age": self.profile.age,
-                    "gender": self.profile.gender,
-                    "city": self.profile.city,
-                    "occupation": self.profile.occupation,
-                    "income": self.profile.income,
-                    "ethnicity": self.profile.ethnicity,
+                    "caption": self.photo.profile.caption,
+                    "age": self.photo.profile.age,
+                    "gender": self.photo.profile.gender,
+                    "city": self.photo.profile.city,
+                    "occupation": self.photo.profile.occupation,
+                    "income": self.photo.profile.income,
+                    "ethnicity": self.photo.profile.ethnicity,
                     "account": {
-                        "id": self.account.id
+                        "id": self.photo.profile.account.id,
+                        "username": self.photo.profile.account.username,
+                        "name": self.photo.profile.account.name,
+                        "email": self.photo.profile.account.email,
+                        "password": self.photo.profile.account.password
                     }
                 }
             }
