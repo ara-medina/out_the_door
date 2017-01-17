@@ -47,6 +47,7 @@ class Profile(Base):
     
     photos = relationship("Photo", backref="profile")
     
+    # add the path property here ?
     def as_dictionary(self):
         return {
             "id": self.id,
@@ -73,11 +74,23 @@ class Photo(Base):
     
     files = relationship("File", backref="photo")
     
+    # add the path property here?
     def as_dictionary(self):
         return {
             "id": self.id,
             "profile": {
-                "id": self.profile.id
+                "id": self.profile.id,
+                "title": self.profile.title,
+                "caption": self.profile.caption,
+                "age": self.profile.age,
+                "gender": self.profile.gender,
+                "city": self.profile.city,
+                "occupation": self.profile.occupation,
+                "income": self.profile.income,
+                "ethnicity": self.profile.ethnicity,
+                "account": {
+                    "id": self.account.id
+                }
             }
         }
         
@@ -90,7 +103,7 @@ class File(Base):
     
     photo_id = Column(Integer, ForeignKey("photo.id"), nullable=False)
     
-    # does this need a path property?
+    # add the path property here? 
     def as_dictionary(self):
         return {
             "id": self.id,
@@ -98,7 +111,18 @@ class File(Base):
             "photo": {
                 "id": self.photo.id,
                 "profile": {
-                    "id": self.photo.profile.id
+                    "id": self.photo.profile.id,
+                    "title": self.profile.title,
+                    "caption": self.profile.caption,
+                    "age": self.profile.age,
+                    "gender": self.profile.gender,
+                    "city": self.profile.city,
+                    "occupation": self.profile.occupation,
+                    "income": self.profile.income,
+                    "ethnicity": self.profile.ethnicity,
+                    "account": {
+                        "id": self.account.id
+                    }
                 }
             }
         }
