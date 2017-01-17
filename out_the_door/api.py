@@ -32,8 +32,8 @@ profile_schema = {
 }
 
 @app.route("/api/profiles", methods=["GET"])
-# @decorators.accept("application/json")
-def profiles_get():
+@decorators.accept("application/json")
+def profile_get():
     """Get a set of profiles"""
     
     profiles = session.query(Profile)
@@ -44,23 +44,30 @@ def profiles_get():
     
 
 # this needs to check to see if the person has made a profile yet and gives them an error if they have
-# @app.route("/api/profiles", methods=["GET"])
-# # @login_required
-# def add_profile_get():
-#     return render_template("add_profile.html")
-    
 @app.route("/api/profiles", methods=["POST"])
-# @login_required
-def add_profile_post():
-    profile = Profile(
-        caption = request.form["caption"],
-        age = request.form["age"],
-        gender = request.form["gender"],
-        city = request.form["city"],
-        occupation = request.form["occupation"],
-        income = request.form["income"],
-        ethnicity = request.form["ethnicity"]
-    )
+@decorators.accept("application/json")
+def profile_post():
+    """Adds a new profile"""
+    data = request.json
+    
+    try: 
+        validate(data, profile_schema)
+    except ValidationError as error:
+        data = {"message": error.message}
+        return Response(json.dumps(data), 422, mimetype="application/json")
+    
+    id = data["account"]["id"]
+    account = session.query(Account).get(id)
+    
+    # does this need more properties?
+    profile = Profile(account=account)
     session.add(profile)
     session.commit()
-    # return redirect(url_for("entries"))
+    
+    data = json.dumps(profile.as_dictionary())
+    return Response(data, 201, mimetype="application/json")
+    
+# an uploads endpoint here?
+# @app.route("/uploads/<name>", methods=["GET"])
+    
+# a POST request here to handle the uploads?
