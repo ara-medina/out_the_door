@@ -17,14 +17,25 @@ class Account(Base):
     email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     
-    profiles = relationship("Profile", backref="user")
+    profiles = relationship("Profile", uselist=False, backref="user")
+    
+    def as_dictionary(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "name": self.name,
+            "email": self.email,
+            "password": self.password
+        }
 
+# Profile model has a 1-to-1 relationship with Account, and a 1-to-many relationship with Photo
 class Profile(Base):
     __tablename__ = "profiles"
     
     id = Column(Integer, primary_key=True)
+    title = Column(String(128))
     datetime = Column(DateTime, default=datetime.datetime.now)
-    caption = Column(Text(1024))
+    caption = Column(String(1024))
     age = Column(Integer)
     gender = Column(String(128))
     city = Column(String(128))
@@ -33,3 +44,64 @@ class Profile(Base):
     ethnicity = Column(String(128))
     
     account_id = Column(Integer, ForeignKey('accounts.id'))
+    
+    photos = relationship("Photo", backref="profile")
+    
+    def as_dictionary(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "caption": self.caption,
+            "age": self.age,
+            "gender": self.gender,
+            "city": self.city,
+            "occupation": self.occupation,
+            "income": self.income,
+            "ethnicity": self.ethnicity,
+            "account": {
+                "id": self.account.id
+            }
+        }
+        
+# Photo model has a many-to-1 relationship with Profile, and a 1-to-many relationship with File
+class Photo(Base):
+    __tablename__ = "photos"
+    
+    id = Column(Integer, primary_key=True)
+    
+    profile_id = Column(Integer, ForeignKey("profile.id"), nullable=False)
+    
+    files = relationship("File", backref="photo")
+    
+    def as_dictionary(self):
+        return {
+            "id": self.id,
+            "profile": {
+                "id": self.profile.id
+            }
+        }
+        
+# File model has a many-to-1 relationship with Photo
+class File(Base):
+    __tablename__ = "files"
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    
+    photo_id = Column(Integer, ForeignKey("photo.id"), nullable=False)
+    
+    # does this need a path property?
+    def as_dictionary(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "photo": {
+                "id": self.photo.id,
+                "profile": {
+                    "id": self.photo.profile.id
+                }
+            }
+        }
+        
+
+        
