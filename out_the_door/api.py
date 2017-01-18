@@ -43,7 +43,6 @@ def profile_get():
     return Response(data, 200, mimetype="application/json")
     
 
-# this needs to check to see if the person has made a profile yet and gives them an error if they have
 @app.route("/api/profiles", methods=["POST"])
 @decorators.accept("application/json")
 def profile_post():

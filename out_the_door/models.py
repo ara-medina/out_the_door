@@ -16,7 +16,7 @@ class Account(Base):
     name = Column(String(128), nullable=False)
     email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
-    
+
     profiles = relationship("Profile", uselist=False, backref="user")
     
     def as_dictionary(self):
@@ -46,7 +46,6 @@ class Profile(Base):
     
     photos = relationship("Photo", backref="profile")
     
-    # add the path property here ?
     def as_dictionary(self):
         return {
             "id": self.id,
@@ -57,13 +56,7 @@ class Profile(Base):
             "occupation": self.occupation,
             "income": self.income,
             "ethnicity": self.ethnicity,
-            "account": {
-                "id": self.account.id,
-                "username": self.account.username,
-                "name": self.account.name,
-                "email": self.account.email,
-                "password": self.account.password
-            }
+            "account": self.account.as_dictionary()
         }
         
 # Photo model has a many-to-1 relationship with Profile, and a 1-to-many relationship with File
@@ -76,27 +69,10 @@ class Photo(Base):
     
     files = relationship("File", backref="photo")
     
-    # add the path property here?
     def as_dictionary(self):
         return {
             "id": self.id,
-            "profile": {
-                "id": self.profile.id,
-                "caption": self.profile.caption,
-                "age": self.profile.age,
-                "gender": self.profile.gender,
-                "city": self.profile.city,
-                "occupation": self.profile.occupation,
-                "income": self.profile.income,
-                "ethnicity": self.profile.ethnicity,
-                "account": {
-                    "id": self.profile.account.id,
-                    "username": self.profile.account.username,
-                    "name": self.profile.account.name,
-                    "email": self.profile.account.email,
-                    "password": self.profile.account.password
-                }
-            }
+            "profile": self.profile.as_dictionary()
         }
         
 # File model has a many-to-1 relationship with Photo
@@ -108,32 +84,9 @@ class File(Base):
     
     photo_id = Column(Integer, ForeignKey("photo.id"), nullable=False)
     
-    # add the path property here? 
     def as_dictionary(self):
         return {
             "id": self.id,
             "name": self.name,
-            "photo": {
-                "id": self.photo.id,
-                "profile": {
-                    "id": self.photo.profile.id,
-                    "caption": self.photo.profile.caption,
-                    "age": self.photo.profile.age,
-                    "gender": self.photo.profile.gender,
-                    "city": self.photo.profile.city,
-                    "occupation": self.photo.profile.occupation,
-                    "income": self.photo.profile.income,
-                    "ethnicity": self.photo.profile.ethnicity,
-                    "account": {
-                        "id": self.photo.profile.account.id,
-                        "username": self.photo.profile.account.username,
-                        "name": self.photo.profile.account.name,
-                        "email": self.photo.profile.account.email,
-                        "password": self.photo.profile.account.password
-                    }
-                }
-            }
+            "photo": self.photo.as_dictionary()
         }
-        
-
-        
