@@ -1,0 +1,24 @@
+GET  /api/accounts
+POST /api/accounts
+PUT  /api/accounts/<id>
+DEL  /api/accounts/<id>
+GET  /api/accounts/<id>
+
+GET  /api/profiles - DONE
+POST /api/profiles - DONE
+PUT  /api/profiles/<id>
+DEL  /api/profiles/<id> (?)
+GET  /api/profiles/<id>
+
+GET  /api/photos
+POST /api/photos
+DEL  /api/photos/<id>
+GET  /api/photos/<id>
+
+GET  /api/files
+POST /api/files - DONE
+PUT  /api/files/<id>
+DEL  /api/files/<id>
+GET  /api/files/<id>
+
+GET /uploads/<name> - DONE
