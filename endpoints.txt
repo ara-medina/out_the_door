@@ -1,17 +1,17 @@
-GET  /api/accounts
-POST /api/accounts
+GET  /api/accounts - DONE
+POST /api/accounts - DONE
 PUT  /api/accounts/<id>
 DEL  /api/accounts/<id>
-GET  /api/accounts/<id>
+GET  /api/accounts/<id> - DONE
 
 GET  /api/profiles - DONE
 POST /api/profiles - DONE
 PUT  /api/profiles/<id>
 DEL  /api/profiles/<id> (?)
-GET  /api/profiles/<id>
+GET  /api/profiles/<id> - DONE 
 
-GET  /api/photos
-POST /api/photos
+GET  /api/photos - DONE
+POST /api/photos - DONE
 DEL  /api/photos/<id>
 GET  /api/photos/<id>
 
