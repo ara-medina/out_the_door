@@ -53,6 +53,22 @@ class TestAPI(unittest.TestCase):
         with self.client.session_transaction() as http_session:
             http_session["account_id"] = str(self.account.id)
             http_session["_fresh"] = True
+            
+    def create_profile(self):
+        profileA = Profile(caption="What I bring with me everyday",
+            age=25,
+            gender="Female",
+            city="Philadelphia",
+            income="1000000",
+            ethnicity="White"
+        )
+        
+        profileA.account = self.account
+        
+        session.add(profileA)
+        session.commit()
+        
+        return profileA
         
     # ACCOUNT TESTS 
 
@@ -79,16 +95,7 @@ class TestAPI(unittest.TestCase):
     def test_profile_get(self):
         """Get profiles from a populated database"""
         
-        profileA = Profile(caption="What I bring with me everyday",
-            age=25,
-            gender="Female",
-            city="Philadelphia",
-            income="1000000",
-            ethnicity="White"
-        )
-        
-        session.add(profileA)
-        session.commit()
+        self.create_profile()
         
         response = self.client.get("/api/profiles", headers=[("Accept", "application/json")])
         
@@ -103,15 +110,46 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(profileA["age"], 25)
         self.assertEqual(profileA["gender"], "Female")
         self.assertEqual(profileA["city"], "Philadelphia")
-        self.assertEqual(profileA["income"], "1000000")
+        self.assertEqual(profileA["income"], 1000000)
         self.assertEqual(profileA["ethnicity"], "White")
-        self.assertEqual(profileA.account, self.account)
+        self.assertEqual(profileA["account"]["username"], self.account.username)
         
         
     def test_profile_post(self):
+        # self.simulate_login()
         pass
     
-    
     # PHOTO TESTS 
+    def test_photo_post(self):
+        self.simulate_login()
+        
+        new_profile = self.create_profile()
+        
+        data = {
+            "profile": {
+                "id": new_profile.id
+            }
+        }
+
+        response = self.client.post("/api/photos",
+            data=data,
+            content_type="application/json",
+            headers=[("Accept", "application/json")]
+        )
+        
+        photos = session.query(Photo)
+        
+        self.assertEqual(len(photos), 1)
+        
+        
+        
+     
+        
+       
+        
+        
+        
+        
+        
     
     # FILE TESTS 

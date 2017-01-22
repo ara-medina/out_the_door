@@ -17,7 +17,7 @@ class Account(Base):
     email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
 
-    profiles = relationship("Profile", uselist=False, backref="user")
+    profile = relationship("Profile", uselist=False, backref="account")
     
     def as_dictionary(self):
         return {
