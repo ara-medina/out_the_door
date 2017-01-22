@@ -65,7 +65,7 @@ class Photo(Base):
     
     id = Column(Integer, primary_key=True)
     
-    profile_id = Column(Integer, ForeignKey("profile.id"), nullable=False)
+    profile_id = Column(Integer, ForeignKey("profiles.id"), nullable=False)
     
     files = relationship("File", backref="photo")
     
@@ -82,7 +82,7 @@ class File(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     
-    photo_id = Column(Integer, ForeignKey("photo.id"), nullable=False)
+    photo_id = Column(Integer, ForeignKey("photos.id"), nullable=False)
     
     def as_dictionary(self):
         return {

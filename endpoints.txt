@@ -1,3 +1,5 @@
+a temp file to track endpoints 
+
 GET  /api/accounts - DONE
 POST /api/accounts - DONE
 PUT  /api/accounts/<id>
