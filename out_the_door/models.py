@@ -2,13 +2,14 @@ import os.path
 import datetime
 
 from flask import url_for
+from flask.ext.login import UserMixin
 from sqlalchemy import Column, Integer, String, Sequence, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship
 
 from out_the_door import app
 from .database import Base, engine
 
-class Account(Base):
+class Account(Base, UserMixin):
     __tablename__ = "accounts"
     
     id = Column(Integer, primary_key=True)
