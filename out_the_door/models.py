@@ -60,6 +60,22 @@ class Profile(Base):
             "account": self.account.as_dictionary()
         }
         
+# File model has a many-to-1 relationship with Photo
+class File(Base):
+    __tablename__ = "files"
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    
+    photo_id = Column(Integer, ForeignKey("photos.id"), nullable=False)
+    
+    def as_dictionary(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "photo": self.photo.as_dictionary()
+        }
+        
 # Photo model has a many-to-1 relationship with Profile, and a 1-to-many relationship with File
 class Photo(Base):
     __tablename__ = "photos"
@@ -76,18 +92,3 @@ class Photo(Base):
             "profile": self.profile.as_dictionary()
         }
         
-# File model has a many-to-1 relationship with Photo
-class File(Base):
-    __tablename__ = "files"
-    
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    
-    photo_id = Column(Integer, ForeignKey("photos.id"), nullable=False)
-    
-    def as_dictionary(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "photo": self.photo.as_dictionary()
-        }

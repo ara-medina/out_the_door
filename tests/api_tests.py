@@ -24,7 +24,9 @@ class TestAPI(unittest.TestCase):
         """Test setup"""
         
         self.client = app.test_client()
-
+        
+        app.config['SECRET_KEY'] = 'secret?'
+        
         # Set up the tables in the database
         Base.metadata.create_all(engine)
         
@@ -35,6 +37,10 @@ class TestAPI(unittest.TestCase):
         )
         session.add(self.account)
         session.commit()
+        
+        with self.client.session_transaction() as http_session:
+            http_session["account_id"] = str(Account.id)
+            http_session["_fresh"] = True
 
         # Create folder for test uploads
         os.mkdir(upload_path())
@@ -53,7 +59,8 @@ class TestAPI(unittest.TestCase):
         with self.client.session_transaction() as http_session:
             http_session["account_id"] = str(self.account.id)
             http_session["_fresh"] = True
-            
+    
+    # this test isn't even running   
     def create_profile(self):
         profileA = Profile(caption="What I bring with me everyday",
             age=25,
@@ -79,7 +86,7 @@ class TestAPI(unittest.TestCase):
     def test_account_post(self):
         pass
 
-    # PROFILE TESTS 
+    # # PROFILE TESTS 
     
     def test_profile_get_empty(self):
         """Get profiles from an empty profile database"""
@@ -131,7 +138,7 @@ class TestAPI(unittest.TestCase):
             }
         }
 
-        response = self.client.post("/api/photos",
+        response = self.client.post("/api/photos/",
             data=data,
             content_type="application/json",
             headers=[("Accept", "application/json")]

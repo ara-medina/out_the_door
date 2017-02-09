@@ -136,7 +136,7 @@ def single_profile_get(id):
     
 # PHOTO ENDPOINTS
     
-@app.route("/api/photos/", methods=["GET"])
+@app.route("/api/photos", methods=["GET"])
 @decorators.accept("application/json")
 def photo_get():
     """Get a set of photos"""
@@ -147,7 +147,7 @@ def photo_get():
     data = json.dumps([photo.as_dictionary() for photo in photos])
     return Response(data, 200, mimetype="application/json")
     
-@app.route("/api/photos/", methods=["POST"])
+@app.route("/api/photos", methods=["POST"])
 @decorators.accept("application/json")
 def photo_post():
     """Post a new photo"""
