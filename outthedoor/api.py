@@ -111,6 +111,20 @@ def posts_get():
     data = json.dumps([post.as_dictionary() for post in post])
     return Response(data, 200, mimetype="application/json")
     
+@app.route("/api/posts/<int:id>", methods=["GET"])
+def post_get(id):
+    """ Single post endpoint """
+    
+    post = session.query(Post).get(id)
+
+    if not post:
+        message = "Could not find post with id {}".format(id)
+        data = json.dumps({"message": message})
+        return Response(data, 404, mimetype="application/json")
+
+    data = json.dumps(post.as_dictionary())
+    return Response(data, 200, mimetype="application/json")
+    
 
 # @app.route("/api/profiles", methods=["POST"])
 # @decorators.accept("application/json")

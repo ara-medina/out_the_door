@@ -61,14 +61,14 @@ class TestAPI(unittest.TestCase):
             http_session["_fresh"] = True
     
     def create_post(self):
-        postA = Post(caption="What I bring with me everyday")
+        post = Post(caption="What I bring with me everyday")
         
-        postA.account = self.account
+        post.account = self.account
         
-        session.add(postA)
+        session.add(post)
         session.commit()
         
-        return postA
+        return post
         
     # # ACCOUNT TESTS 
 
@@ -108,6 +108,21 @@ class TestAPI(unittest.TestCase):
         postA = data[0]
         self.assertEqual(postA["caption"], "What I bring with me everyday")
         self.assertEqual(postA["account"]["username"], self.account.username)
+        
+    def test_get_single_post(self):
+        """ Getting a single post from a populated database """
+
+        postA = self.create_post()
+        
+        response = self.client.get("/api/posts/{}".format(postA.id))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.mimetype, "application/json")
+
+        data = json.loads(response.data.decode("ascii"))
+        
+        postA = data
+        self.assertEqual(postA["caption"], "What I bring with me everyday")
         
         
     # def test_profile_post(self):
