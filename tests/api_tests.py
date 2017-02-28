@@ -61,6 +61,8 @@ class TestAPI(unittest.TestCase):
             http_session["_fresh"] = True
     
     def create_post(self):
+        self.simulate_login()
+        
         post = Post(caption="What I bring with me everyday")
         
         post.account = self.account
@@ -151,8 +153,26 @@ class TestAPI(unittest.TestCase):
         data = json.loads(response.data.decode("ascii"))
         self.assertEqual(data["message"],
                          "Request must accept application/json data")
+                         
+    def test_delete_entry(self):
+        """ Delete a single post """
+        postA = self.create_post()
         
+        response = self.client.delete("/api/posts/{}".format(postA.id), 
+            content_type="application/json",
+            headers=[("Accept", "application/json")])
         
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.mimetype, "application/json")
+        # self.assertEqual(urlparse(response.location).path, "/api/posts")
+        
+        post = json.loads(response.data.decode("ascii"))
+        
+        posts = session.query(Post).all()
+        
+        self.assertEqual(len(posts), 0)
+        self.assertEqual(post, [])
+
         
     # def test_profile_post(self):
     #     # self.simulate_login()

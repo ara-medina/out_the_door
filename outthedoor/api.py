@@ -2,7 +2,7 @@ import json
 
 from flask import Flask
 
-from flask import request, Response, url_for, render_template, send_from_directory
+from flask import request, Response, url_for, redirect, render_template, send_from_directory
 from werkzeug.utils import secure_filename
 from jsonschema import validate, ValidationError
 from werkzeug.security import check_password_hash
@@ -108,10 +108,11 @@ def posts_get():
     posts = session.query(Post)
     post = posts.order_by(Post.id)
     
-    data = json.dumps([post.as_dictionary() for post in post])
+    data = json.dumps([post.as_dictionary() for post in posts])
     return Response(data, 200, mimetype="application/json")
     
 @app.route("/api/posts/<int:id>", methods=["GET"])
+@decorators.accept("application/json")
 def post_get(id):
     """ Single post endpoint """
     
@@ -123,6 +124,22 @@ def post_get(id):
         return Response(data, 404, mimetype="application/json")
 
     data = json.dumps(post.as_dictionary())
+    return Response(data, 200, mimetype="application/json")
+    
+@app.route("/api/posts/<int:id>", methods=["DELETE"])
+@decorators.accept("application/json")
+def delete_post(id):
+    post = session.query(Post).get(id)
+    
+    if not post:
+        message = "Could not find post with id {}".format(id)
+        data = json.dumps({"message": message})
+        return Response(data, 404, mimetype="application/json")
+
+    session.delete(post)
+    session.commit()
+    
+    data = json.dumps([])
     return Response(data, 200, mimetype="application/json")
     
 
