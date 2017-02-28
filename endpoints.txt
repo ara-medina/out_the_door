@@ -1,26 +1,26 @@
 a temp file to track endpoints 
 
-GET  /api/accounts - DONE
-POST /api/accounts - DONE
+GET  /api/accounts 
+POST /api/accounts 
 PUT  /api/accounts/<id>
 DEL  /api/accounts/<id>
-GET  /api/accounts/<id> - DONE
+GET  /api/accounts/<id> 
 
-GET  /api/profiles - DONE
-POST /api/profiles - DONE
+GET  /api/profiles 
+POST /api/profiles 
 PUT  /api/profiles/<id>
 DEL  /api/profiles/<id> (?)
-GET  /api/profiles/<id> - DONE 
+GET  /api/profiles/<id> 
 
-GET  /api/photos - DONE
-POST /api/photos - DONE
+GET  /api/photos 
+POST /api/photos 
 DEL  /api/photos/<id>
 GET  /api/photos/<id>
 
 GET  /api/files
-POST /api/files - DONE
+POST /api/files 
 PUT  /api/files/<id>
 DEL  /api/files/<id>
 GET  /api/files/<id>
 
-GET /uploads/<name> - DONE
+GET /uploads/<name> 
