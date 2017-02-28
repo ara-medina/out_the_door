@@ -84,7 +84,8 @@ class TestAPI(unittest.TestCase):
     def test_post_get_empty(self):
         """Get posts from an empty post database"""
         
-        response = self.client.get("/api/posts", headers=[("Accept", "application/json")])
+        response = self.client.get("/api/posts", 
+            headers=[("Accept", "application/json")])
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.mimetype, "application/json")
@@ -97,7 +98,8 @@ class TestAPI(unittest.TestCase):
         
         self.create_post()
         
-        response = self.client.get("/api/posts", headers=[("Accept", "application/json")])
+        response = self.client.get("/api/posts", 
+            headers=[("Accept", "application/json")])
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.mimetype, "application/json")
@@ -114,7 +116,8 @@ class TestAPI(unittest.TestCase):
 
         postA = self.create_post()
         
-        response = self.client.get("/api/posts/{}".format(postA.id))
+        response = self.client.get("/api/posts/{}".format(postA.id), 
+            headers=[("Accept", "application/json")])
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.mimetype, "application/json")
@@ -127,13 +130,28 @@ class TestAPI(unittest.TestCase):
     def test_get_non_existent_post(self):
         """ Getting a single post which doesn't exist """
         
-        response = self.client.get("/api/posts/1")
+        response = self.client.get("/api/posts/1", 
+            headers=[("Accept", "application/json")])
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.mimetype, "application/json")
 
         data = json.loads(response.data.decode("ascii"))
         self.assertEqual(data["message"], "Could not find post with id 1")
+        
+    def test_unsupported_accept_header(self):
+        """ Recieving an unsupported accept header """ 
+        response = self.client.get("/api/posts",
+            headers=[("Accept", "application/xml")]
+        )
+
+        self.assertEqual(response.status_code, 406)
+        self.assertEqual(response.mimetype, "application/json")
+
+        data = json.loads(response.data.decode("ascii"))
+        self.assertEqual(data["message"],
+                         "Request must accept application/json data")
+        
         
         
     # def test_profile_post(self):
