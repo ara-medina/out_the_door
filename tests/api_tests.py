@@ -124,6 +124,17 @@ class TestAPI(unittest.TestCase):
         postA = data
         self.assertEqual(postA["caption"], "What I bring with me everyday")
         
+    def test_get_non_existent_post(self):
+        """ Getting a single post which doesn't exist """
+        
+        response = self.client.get("/api/posts/1")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.mimetype, "application/json")
+
+        data = json.loads(response.data.decode("ascii"))
+        self.assertEqual(data["message"], "Could not find post with id 1")
+        
         
     # def test_profile_post(self):
     #     # self.simulate_login()
