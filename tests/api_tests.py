@@ -74,9 +74,27 @@ class TestAPI(unittest.TestCase):
         
     # # ACCOUNT TESTS 
 
-    # def test_account_get(self):
-    #     pass
+    def test_account_get(self):
+        account = Account(username="fernandomedina",
+            name="Fernando",
+            email="fernando@example.com",
+            password=generate_password_hash("test"))
+            
+        session.add(account)
+        session.commit()
         
+        response = self.client.get("/api/accounts/{}".format(account.id), 
+            headers=[("Accept", "application/json")])
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.mimetype, "application/json")
+
+        data = json.loads(response.data.decode("ascii"))
+        
+        account = data[0]
+        self.assertEqual(account["username"], "fernandomedina")
+        self.assertEqual(account["name"], "Fernando")
+        self.assertEqual(account["email"], "fernando@example.com")
         
     def test_account_post(self):
         """ Creating a new account """
@@ -96,8 +114,8 @@ class TestAPI(unittest.TestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.mimetype, "application/json")
-        # self.assertEqual(urlparse(response.headers.get("Location")).path,
-        #                  "/api/posts/1")
+        self.assertEqual(urlparse(response.headers.get("Location")).path,
+                         "/api/accounts/2")
 
         self.assertEqual(data["username"], "fernandomedina")
         self.assertEqual(data["name"], "Fernando")

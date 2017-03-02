@@ -47,15 +47,20 @@ post_schema = {
 #     data = json.dumps([account.as_dictionary() for account in accounts])
 #     return Response(data, 200, mimetype="application/json")
 
-# @app.route("/api/accounts/<int:id>", methods=["GET"])
-# @decorators.accept("application/json")
-# def account_get(id):
-#     """Get a single account"""
+@app.route("/api/accounts/<int:id>", methods=["GET"])
+@decorators.accept("application/json")
+def account_get(id):
+    """Get a single account"""
     
-#     account = session.query(Account).get(id)
+    account = session.query(Account).get(id)
     
-#     data = json.dumps([account.as_dictionary()])
-#     return Response(data, 200, mimetype="application/json")
+    if not account:
+        message = "Could not find account with id {}".format(id)
+        data = json.dumps({"message": message})
+        return Response(data, 404, mimetype="application/json")
+    
+    data = json.dumps([account.as_dictionary()])
+    return Response(data, 200, mimetype="application/json")
 
 @app.route("/api/accounts", methods=["POST"])
 @decorators.accept("application/json")
@@ -76,13 +81,10 @@ def account_post():
     session.add(account)
     session.commit()
     
-    # data = json.dumps(account.as_dictionary())
-    # headers = {"Location": url_for("account_get", id=account.id)}
-    # return Response(data, 201, headers=headers,
-    #                 mimetype="application/json")
-    
-    data = json.dumps([account.as_dictionary()])
-    return Response(data, 201, mimetype="application/json")
+    data = json.dumps(account.as_dictionary())
+    headers = {"Location": url_for("account_get", id=account.id)}
+    return Response(data, 201, headers=headers,
+                    mimetype="application/json")
 
 # @app.route("/login", methods=["GET"])
 # def login_get():
