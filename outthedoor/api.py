@@ -47,14 +47,12 @@ post_schema = {
 #     data = json.dumps([account.as_dictionary() for account in accounts])
 #     return Response(data, 200, mimetype="application/json")
 
-# does this require a require decorator? 
 @app.route("/api/accounts", methods=["POST"])
 @decorators.accept("application/json")
 def account_post():
     """Create a new account"""
     data = request.json
     
-    # is checking data against profile_schema going to work to make sure account info was entered correctly?
     try:
         validate(data, post_schema)
     except ValidationError as error:
@@ -96,10 +94,7 @@ def get_account(id):
     data = json.dumps(account.as_dictionary())
     return Response(data, 200, mimetype="application/json")
     
-
-
 # # POST ENDPOINTS 
-
 @app.route("/api/posts", methods=["GET"])
 @decorators.accept("application/json")
 def posts_get():
@@ -138,48 +133,62 @@ def delete_post(id):
 
     session.delete(post)
     session.commit()
-    
-    data = json.dumps([])
-    return Response(data, 200, mimetype="application/json")
-    
 
-# @app.route("/api/profiles", methods=["POST"])
-# @decorators.accept("application/json")
-# @login_required
-# def profile_post():
-#     """Adds a new profile"""
-#     data = request.json
+    data = json.dumps([])
+    headers = {"Location": url_for("posts_get")}
+    return Response(data, 200, headers=headers,
+                    mimetype="application/json")
     
-#     try: 
-#         validate(data, profile_schema)
-#     except ValidationError as error:
-#         data = {"message": error.message}
-#         return Response(json.dumps(data), 422, mimetype="application/json")
+@app.route("/api/posts", methods=["POST"])
+@decorators.accept("application/json")
+@decorators.require("application/json")
+def posts_post():
+    """ Add a new post """
+    data = request.json
     
-#     # is this being accessed correctly?
-#     id = data["account"]["id"]
-#     account = session.query(Account).get(id)
+    try: 
+        validate(data, post_schema)
+    except ValidationError as error:
+        data = {"message": error.message}
+        return Response(json.dumps(data), 422, mimetype="application/json")
     
-#     # double check this
-#     profile = Profile(caption=data["profile"]["caption"],
-#         account=account)
-#     session.add(profile)
-#     session.commit()
+    id = data["account"]["id"]
+    account = session.query(Account).get(id)
+
+    post = Post(caption=data["caption"], account=account)
+    session.add(post)
+    session.commit()
+
+    data = json.dumps(post.as_dictionary())
+    headers = {"Location": url_for("post_get", id=post.id)}
+    return Response(data, 201, headers=headers,
+                    mimetype="application/json")
+
+@app.route("/api/post/<id>", methods=["POST"])
+@decorators.accept("application/json")
+@decorators.require("application/json")
+def posts_edit(id):
+    """Edit a post"""
+    data = request.json
     
-#     data = json.dumps(profile.as_dictionary())
-#     return Response(data, 201, mimetype="application/json")
+    try: 
+        validate(data, post_schema)
+    except ValidationError as error:
+        data = {"message": error.message}
+        return Response(json.dumps(data), 422, mimetype="application/json")
+        
+    post = session.query(Post).get(id)
+    post.caption = data["caption"]
     
-# @app.route("/api/profiles/<id>", methods=["GET"])
-# def single_profile_get(id):
-#     """Get a single user's profile"""
+    session.commit()
     
-#     profile = session.query(Profile).get(id)
+    data = json.dumps(post.as_dictionary())
+    headers = {"Location": url_for("post_get", id=post.id)}
+    return Response(data, 201, headers=headers, 
+        mimetype="application/json")
     
-#     data = json.dumps(profile.as_dictionary())
-#     return Response(data, 200, mimetype="application/json")
     
 # # PHOTO ENDPOINTS
-    
 # @app.route("/api/photos", methods=["GET"])
 # @decorators.accept("application/json")
 # def photo_get():
@@ -212,7 +221,6 @@ def delete_post(id):
 #     return Response(data, 201, mimetype="application/json")
     
 # # FILE ENDPOINTS
-
 # @app.route("/api/files", methods=["GET"])
 # @decorators.accept("application/json")
 # def file_get():
@@ -249,7 +257,6 @@ def delete_post(id):
 #     return Response(json.dumps(data), 201, mimetype="application/json")
     
 # # UPLOAD ENDPOINTS
-    
 # # does this need a decorator?
 # @app.route("/uploads/<name>", methods=["GET"])
 # def uploaded_file(name):

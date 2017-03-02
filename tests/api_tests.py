@@ -156,6 +156,9 @@ class TestAPI(unittest.TestCase):
                          
     def test_delete_entry(self):
         """ Delete a single post """
+        
+        self.simulate_login()
+        
         postA = self.create_post()
         
         response = self.client.delete("/api/posts/{}".format(postA.id), 
@@ -174,9 +177,63 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(post, [])
 
         
-    # def test_profile_post(self):
-    #     # self.simulate_login()
-    #     pass
+    def test_post_post(self):
+        """ Posting a new post """
+        
+        self.simulate_login()
+        
+        data = {
+            "caption": "What I bring",
+            "account": self.account.as_dictionary()
+        }
+        
+        response = self.client.post("/api/posts",
+            data=json.dumps(data),
+            content_type="application/json",
+            headers=[("Accept", "application/json")]
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.mimetype, "application/json")
+        self.assertEqual(urlparse(response.headers.get("Location")).path,
+                         "/api/posts/1")
+
+        data = json.loads(response.data.decode("ascii"))
+        self.assertEqual(data["id"], 1)
+        self.assertEqual(data["caption"], "What I bring")
+
+        posts = session.query(models.Post).all()
+        self.assertEqual(len(posts), 1)
+
+        post = posts[0]
+        self.assertEqual(post.caption, "What I bring")
+        self.assertEqual(post.account, self.account)
+        
+    def test_edit_post(self):
+        self.simulate_login()
+        
+        post = Post(caption="What I bring", account=self.account)
+        
+        session.add(post)
+        session.commit()
+        
+        data = {
+            "caption": "New // What I bring",
+            "account": self.account.as_dictionary()
+        }
+        
+        response = self.client.post("/api/post/{}".format(post.id), 
+            data=json.dumps(data), 
+            content_type="application/json", 
+            headers=[("Accept", "application/json")])
+        
+        edited_post = session.query(Post).get(post.id)
+        
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(edited_post.caption, "New // What I bring")
+        self.assertEqual(post.account, self.account)
+        
+        self.assertEqual(session.query(Post).count(), 1)
     
     # # FILE TESTS 
     
