@@ -238,8 +238,6 @@ class TestAPI(unittest.TestCase):
     # # FILE TESTS 
     
     # # PHOTO TESTS 
-    # def test_photo_post(self):
-    #     pass
       
         
         
