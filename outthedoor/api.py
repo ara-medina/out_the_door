@@ -38,13 +38,23 @@ post_schema = {
 
 # @app.route("/api/accounts", methods=["GET"])
 # @decorators.accept("application/json")
-# def account_get():
+# def accounts_get():
 #     """Get a set of accounts"""
     
 #     accounts = session.query(Account)
 #     accounts = accounts.order_by(Account.id)
     
 #     data = json.dumps([account.as_dictionary() for account in accounts])
+#     return Response(data, 200, mimetype="application/json")
+
+# @app.route("/api/accounts/<int:id>", methods=["GET"])
+# @decorators.accept("application/json")
+# def account_get(id):
+#     """Get a single account"""
+    
+#     account = session.query(Account).get(id)
+    
+#     data = json.dumps([account.as_dictionary()])
 #     return Response(data, 200, mimetype="application/json")
 
 @app.route("/api/accounts", methods=["POST"])
@@ -59,41 +69,47 @@ def account_post():
         data = {"message": error.message}
         return Response(json.dumps(data), 422, mimetype="application/json")
         
-    account = Account(username=data["account"]["username"],
-        name=data["account"]["name"],
-        email=data["account"]["email"],
-        password=data["account"]["password"])
+    account = Account(username=data["username"],
+        name=data["name"],
+        email=data["email"],
+        password=data["password"])
     session.add(account)
     session.commit()
     
-    data = json.dumps(account.as_dictionary())
+    # data = json.dumps(account.as_dictionary())
+    # headers = {"Location": url_for("account_get", id=account.id)}
+    # return Response(data, 201, headers=headers,
+    #                 mimetype="application/json")
+    
+    data = json.dumps([account.as_dictionary()])
     return Response(data, 201, mimetype="application/json")
+
+# @app.route("/login", methods=["GET"])
+# def login_get():
+#     return render_template("login.html")
     
-# @app.route('/api/users', methods = ['POST'])  should this replace the previous route ? 
-# def new_user():
-#     username = request.json.get('username')
-#     password = request.json.get('password')
-#     if username is None or password is None:
-#         abort(400) # missing arguments
-#     if User.query.filter_by(username = username).first() is not None:
-#         abort(400) # existing user
-#     user = User(username = username)
-#     user.hash_password(password)
-#     db.session.add(user)
-#     db.session.commit()
-#     return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
+# @app.route("/login", methods=["POST"])
+# def login_post():
+#     email = request.form["email"]
+#     password = request.form["password"]
+#     user = session.query(User).filter_by(email=email).first()
+#     if not user or not check_password_hash(user.password, password):
+#         flash("Incorrect username or password", "danger")
+#         return redirect(url_for("login_get"))
+
+#     login_user(user)
+#     return redirect(request.args.get('next') or url_for("entries"))
     
-    
-@app.route("/api/accounts/<int:id>", methods=["GET"])
-@decorators.accept("application/json")
-def get_account(id):
-    """Get a specific user account"""
-    
-    account = session.query(Account).get(id)
-    
-    data = json.dumps(account.as_dictionary())
-    return Response(data, 200, mimetype="application/json")
-    
+# @app.route("/logout")
+# def logout():
+#     logout_user()
+#     return redirect(request.args.get('next') or url_for("entries"))
+
+# @app.route("/logout")
+# def logout():
+#     logout_user()
+#     return redirect(request.args.get('next') or url_for("entries"))
+
 # # POST ENDPOINTS 
 @app.route("/api/posts", methods=["GET"])
 @decorators.accept("application/json")

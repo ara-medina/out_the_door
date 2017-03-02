@@ -30,8 +30,8 @@ class TestAPI(unittest.TestCase):
         # Set up the tables in the database
         Base.metadata.create_all(engine)
         
-        self.account = Account(name="Sandra", 
-            username="sandramedina", 
+        self.account = Account(username="sandramedina",
+            name="Sandra", 
             email="sandra@example.com",
             password=generate_password_hash("test")
         )
@@ -78,8 +78,38 @@ class TestAPI(unittest.TestCase):
     #     pass
         
         
-    # def test_account_post(self):
-    #     pass
+    def test_account_post(self):
+        """ Creating a new account """
+        
+        data = {
+            "username": "fernandomedina",
+            "name": "Fernando",
+            "email": "fernando@example.com",
+            "password": generate_password_hash("test")
+        }
+        
+        response = self.client.post("/api/accounts",
+            data=json.dumps(data),
+            content_type="application/json",
+            headers=[("Accept", "application/json")]
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.mimetype, "application/json")
+        # self.assertEqual(urlparse(response.headers.get("Location")).path,
+        #                  "/api/posts/1")
+
+        self.assertEqual(data["username"], "fernandomedina")
+        self.assertEqual(data["name"], "Fernando")
+        self.assertEqual(data["email"], "fernando@example.com")
+
+        accounts = session.query(models.Account).all()
+        self.assertEqual(len(accounts), 2)
+
+        account = accounts[1]
+        self.assertEqual(account.username, "fernandomedina")
+        self.assertEqual(account.name, "Fernando")
+        self.assertEqual(account.email, "fernando@example.com")
 
     # # # PROFILE TESTS 
     
@@ -167,7 +197,7 @@ class TestAPI(unittest.TestCase):
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.mimetype, "application/json")
-        # self.assertEqual(urlparse(response.location).path, "/api/posts")
+        self.assertEqual(urlparse(response.location).path, "/api/posts")
         
         post = json.loads(response.data.decode("ascii"))
         
