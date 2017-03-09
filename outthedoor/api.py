@@ -2,7 +2,7 @@ import json
 
 from flask import Flask
 
-from flask import request, Response, url_for, redirect, render_template, send_from_directory
+from flask import request, Response, url_for, redirect, render_template, send_from_directory, flash
 from werkzeug.utils import secure_filename
 from jsonschema import validate, ValidationError
 from werkzeug.security import check_password_hash
@@ -16,101 +16,97 @@ from outthedoor import app
 from . import models
 from . import decorators
 from .database import session
-from .models import Account, Post
+from .models import Post
 from .utils import upload_path
+
+# post_schema = {
+#     "properties": {
+#         "caption": {"type": "string"},
+#         "account": {
+#             "type": "object",
+#             "properties": {
+#                 "username": {"type": "string"},
+#                 "name": {"type": "string"},
+#                 "email": {"type": "string"},
+#                 "password": {"type": "string"}
+#             }
+#         }
+#     }
+# }
 
 post_schema = {
     "properties": {
-        "caption": {"type": "string"},
-        "account": {
-            "type": "object",
-            "properties": {
-                "username": {"type": "string"},
-                "name": {"type": "string"},
-                "email": {"type": "string"},
-                "password": {"type": "string"}
-            }
+        "caption": {"type": "string"}
         }
     }
-}
 
 # ACCOUNT ENDPOINTS 
 
-# @app.route("/api/accounts", methods=["GET"])
+# @app.route("/api/accounts/<int:id>", methods=["GET"])
 # @decorators.accept("application/json")
-# def accounts_get():
-#     """Get a set of accounts"""
+# def account_get(id):
+#     """Get a single account"""
+#     account = session.query(Account).get(id)
     
-#     accounts = session.query(Account)
-#     accounts = accounts.order_by(Account.id)
+#     if not account:
+#         message = "Could not find account with id {}".format(id)
+#         data = json.dumps({"message": message})
+#         return Response(data, 404, mimetype="application/json")
     
-#     data = json.dumps([account.as_dictionary() for account in accounts])
+#     data = json.dumps([account.as_dictionary()])
 #     return Response(data, 200, mimetype="application/json")
 
-@app.route("/api/accounts/<int:id>", methods=["GET"])
-@decorators.accept("application/json")
-def account_get(id):
-    """Get a single account"""
+# @app.route("/api/accounts", methods=["POST"])
+# @decorators.accept("application/json")
+# def account_post():
+#     """Create a new account"""
+#     data = request.json
     
-    account = session.query(Account).get(id)
-    
-    if not account:
-        message = "Could not find account with id {}".format(id)
-        data = json.dumps({"message": message})
-        return Response(data, 404, mimetype="application/json")
-    
-    data = json.dumps([account.as_dictionary()])
-    return Response(data, 200, mimetype="application/json")
-
-@app.route("/api/accounts", methods=["POST"])
-@decorators.accept("application/json")
-def account_post():
-    """Create a new account"""
-    data = request.json
-    
-    try:
-        validate(data, post_schema)
-    except ValidationError as error:
-        data = {"message": error.message}
-        return Response(json.dumps(data), 422, mimetype="application/json")
+#     try:
+#         validate(data, post_schema)
+#     except ValidationError as error:
+#         data = {"message": error.message}
+#         return Response(json.dumps(data), 422, mimetype="application/json")
         
-    account = Account(username=data["username"],
-        name=data["name"],
-        email=data["email"],
-        password=data["password"])
-    session.add(account)
-    session.commit()
+#     account = Account(username=data["username"],
+#         name=data["name"],
+#         email=data["email"],
+#         password=data["password"])
+#     session.add(account)
+#     session.commit()
     
-    data = json.dumps(account.as_dictionary())
-    headers = {"Location": url_for("account_get", id=account.id)}
-    return Response(data, 201, headers=headers,
-                    mimetype="application/json")
+#     data = json.dumps(account.as_dictionary())
+#     headers = {"Location": url_for("account_get", id=account.id)}
+#     return Response(data, 201, headers=headers,
+#                     mimetype="application/json")
 
-# @app.route("/login", methods=["GET"])
-# def login_get():
-#     return render_template("login.html")
-    
-# @app.route("/login", methods=["POST"])
+# @app.route("/api/login", methods=["POST"])
 # def login_post():
-#     email = request.form["email"]
-#     password = request.form["password"]
-#     user = session.query(User).filter_by(email=email).first()
-#     if not user or not check_password_hash(user.password, password):
+#     data = request.json
+    
+#     username = data["username"]
+#     password = data["password"]
+    
+#     account = session.query(Account).filter_by(username=username).first()
+#     if not account or not check_password_hash(account.password, password):
 #         flash("Incorrect username or password", "danger")
 #         return redirect(url_for("login_get"))
 
-#     login_user(user)
-#     return redirect(request.args.get('next') or url_for("entries"))
+#     login_user(account)
     
-# @app.route("/logout")
-# def logout():
-#     logout_user()
-#     return redirect(request.args.get('next') or url_for("entries"))
+#     data = json.dumps(account.as_dictionary())
+#     headers = {"Location": url_for("account_get", id=account.id)}
+#     return Response(data, 201, headers=headers,
+#                     mimetype="application/json")
 
-# @app.route("/logout")
+# @app.route("/api/logout")
 # def logout():
 #     logout_user()
-#     return redirect(request.args.get('next') or url_for("entries"))
+    
+#     data = json.dumps([])
+#     headers = {"Location": url_for("/api/posts")}
+#     return Response(data, 201, headers=headers,
+#                     mimetype="application/json")
 
 # # POST ENDPOINTS 
 @app.route("/api/posts", methods=["GET"])
@@ -141,6 +137,7 @@ def post_get(id):
     
 @app.route("/api/posts/<int:id>", methods=["DELETE"])
 @decorators.accept("application/json")
+
 def delete_post(id):
     post = session.query(Post).get(id)
     
@@ -170,10 +167,11 @@ def posts_post():
         data = {"message": error.message}
         return Response(json.dumps(data), 422, mimetype="application/json")
     
-    id = data["account"]["id"]
-    account = session.query(Account).get(id)
+    # id = data["account"]["id"]
+    # account = session.query(Account).get(id)
 
-    post = Post(caption=data["caption"], account=account)
+    # post = Post(caption=data["caption"], account=account)
+    post = Post(caption=data["caption"])
     session.add(post)
     session.commit()
 
