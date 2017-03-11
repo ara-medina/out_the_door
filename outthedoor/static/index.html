@@ -37,15 +37,15 @@
                 </div>
                 <div class="nav col-sm-4">
                     <i class="fa fa-pencil col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#postModal"></i>
-                    <i class="fa fa-user col-sm-2" aria-hidden="true"></i>
+                    <i class="fa fa-user col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#createAccountModal"></i>
                 </div>
             </div>
-            <div class="posts col-sm-12" id="posts">
+            <div class="posts col-sm-12 card-columns" id="posts">
                 <div id="post-list"></div>
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- Post Modal -->
         <div class="modal post-modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -59,16 +59,75 @@
                     <input type="text" class="form-control" id="caption">
                   </form>
               </div>
-              <div class="modal-footer">
-                <button type="button" id="post-button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
+              <div id="postFooter" class="modal-footer">
+                <button type="submit" id="post-button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Login Modal -->
+        <div class="modal login-modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="login-modal-title" id="myModalLabel">LOGIN</h4>
+              </div>
+              <div id="loginForm" class="modal-body">
+                <form class="form-group">
+                  <label for="username" class="control-label">Username</label>
+                  <input type="text" class="form-control" id="username">
+                </form>
+                <form class="form-group">
+                  <label for="password" class="control-label">Password</label>
+                  <input type="password" class="form-control" id="password">
+                </form>
+              </div>
+              <div id="loginFooter" class="modal-footer">
+                <button type="submit" id="login-button" class="btn btn-primary" data-dismiss="modal">LOGIN</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Account Modal -->
+        <div class="modal create-account-modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="account-modal-title" id="myModalLabel">CREATE ACCOUNT</h4>
+              </div>
+              <div id="signupForm" class="modal-body">
+                  <form class="form-group">
+                    <label for="username" class="control-label">Username</label>
+                    <input type="text" class="form-control" id="username">
+                  </form>
+                  <form class="form-group">
+                    <label for="name" class="control-label">Name</label>
+                    <input type="text" class="form-control" id="name">
+                  </form>
+                  <form class="form-group">
+                    <label for="email" class="control-label">Email</label>
+                    <input type="email" class="form-control" id="email">
+                  </form>
+                  <form class="form-group">
+                    <label for="password" class="control-label">Password</label>
+                    <input type="password" class="form-control" id="password">
+                  </form>
+              </div>
+              <div class="modal-footer" id="createAccountFooter">
+                <button type="submit" id="create-account-button" class="btn btn-primary">SIGN UP</button>
+                <div class="login-redirect">
+                  <p>Already have an account?</p> 
+                  <a aria-hidden="true" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Login</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <form style="display: none" id="upload-form">
-            <input type="file" id="file-input" name="file">
-        </form>
     
         <!-- Handlebars templates -->
         <script id="post-list-template" type="text/x-handlebars-template">

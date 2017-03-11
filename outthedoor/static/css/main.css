@@ -41,19 +41,42 @@ div.header a:hover {
 }
 
 div.posts {
-    background-color: #FFF7FA;
+    background-color: #FFFAF7;
     border-radius: 5px;
 }
 
+.card-columns {
+    column-count: 5;
+    column-gap: 1.25rem;
+}
+
 .card {
-    width: 20rem;
     position: relative;
-    display: flex;
+    display: inline-block;
+    width: 100%;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    border: 1px solid black;
-    border-radius: 0.25rem;
+    padding: 0;
+    margin-bottom: .75rem;
+    margin-top: .75rem;
+}
+
+.card:after {
+    content:'\A';
+    position:absolute;
+    width:100%; 
+    height:100%;
+    top:0; 
+    left:0;
+    background:rgba(0,0,0,0.6);
+    opacity:0;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    border-radius: 8px;
+}
+.card:hover:after {
+    opacity: 0.1;
 }
 
 .card-block {
@@ -61,6 +84,8 @@ div.posts {
     flex: 1 1 auto;
     padding: 1.25rem;
     background-color: white;
+    border-radius: 8px;
+    font-family: 'Raleway', sans-serif
 }
 
 h4.card-caption {
@@ -80,6 +105,49 @@ h4.card-caption {
     color: black;
     background-color: white;
     border-color: black;
+}
+
+#postFooter {
+    text-align: left;
+}
+
+#create-account-button.btn-primary {
+    font-family: 'Raleway', sans-serif;
+    color: black;
+    background-color: white;
+    border-color: black;
+    padding: 6px 40px;
+}
+
+#createAccountFooter {
+    text-align: left;
+}
+
+#login-button.btn-primary {
+    font-family: 'Raleway', sans-serif;
+    color: black;
+    background-color: white;
+    border-color: black
+}
+
+#loginFooter {
+    text-align: left;
+}
+
+div.login-redirect {
+    display: inline-block;
+    float: right;
+    font-family: 'Raleway', sans-serif;
+}
+
+div.login-redirect p {
+    display: inline-block;
+    padding-top: 6px;
+}
+
+div.login-redirect a {
+    display: inline-block;
+    padding-top: 6px;
 }
 
 h4.post-modal-title {

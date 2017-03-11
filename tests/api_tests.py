@@ -15,7 +15,7 @@ from outthedoor import app
 from outthedoor import models
 from outthedoor.utils import upload_path
 from outthedoor.database import Base, engine, session
-from outthedoor.models import Post
+from outthedoor.models import Post, Account
 
 class TestAPI(unittest.TestCase):
     """Tests for the Out the Door API"""
@@ -25,18 +25,18 @@ class TestAPI(unittest.TestCase):
         
         self.client = app.test_client()
         
-        # app.config['SECRET_KEY'] = 'your_secret_key_here'
+        app.config['SECRET_KEY'] = 'your_secret_key_here'
         
         # Set up the tables in the database
         Base.metadata.create_all(engine)
         
-        # self.account = Account(username="sandramedina",
-        #     name="Sandra", 
-        #     email="sandra@example.com",
-        #     password=generate_password_hash("test")
-        # )
-        # session.add(self.account)
-        # session.commit()
+        self.account = Account(username="sandramedina",
+            name="Sandra", 
+            email="sandra@example.com",
+            password=generate_password_hash("test")
+        )
+        session.add(self.account)
+        session.commit()
 
         # Create folder for test uploads
         # os.mkdir(upload_path())
@@ -51,17 +51,17 @@ class TestAPI(unittest.TestCase):
         # Delete test upload folder
         # shutil.rmtree(upload_path())
         
-    # def simulate_login(self):
-    #     with self.client.session_transaction() as http_session:
-    #         http_session["account_id"] = str(self.account.id)
-    #         http_session["_fresh"] = True
+    def simulate_login(self):
+        with self.client.session_transaction() as http_session:
+            http_session["account_id"] = str(self.account.id)
+            http_session["_fresh"] = True
     
     def create_post(self):
-        # self.simulate_login()
+        self.simulate_login()
         
         post = Post(caption="What I bring with me everyday")
         
-        # post.account = self.account
+        post.account = self.account
         
         session.add(post)
         session.commit()
@@ -97,40 +97,38 @@ class TestAPI(unittest.TestCase):
     #     self.assertEqual(account["name"], "Fernando")
     #     self.assertEqual(account["email"], "fernando@example.com")
         
-    # def test_account_post(self):
-    #     """ Creating a new account """
+    def test_account_post(self):
+        """ Creating a new account """
         
-    #     # self.simulate_login()
+        self.simulate_login()
         
-    #     data = {
-    #         "username": "fernandomedina",
-    #         "name": "Fernando",
-    #         "email": "fernando@example.com",
-    #         "password": generate_password_hash("test")
-    #     }
+        data = {
+            "username": "fernandomedina",
+            "name": "Fernando",
+            "email": "fernando@example.com",
+            "password": generate_password_hash("test")
+        }
         
-    #     response = self.client.post("/api/accounts",
-    #         data=json.dumps(data),
-    #         content_type="application/json",
-    #         headers=[("Accept", "application/json")]
-    #     )
+        response = self.client.post("/api/accounts",
+            data=json.dumps(data),
+            content_type="application/json",
+            headers=[("Accept", "application/json")]
+        )
 
-    #     self.assertEqual(response.status_code, 201)
-    #     self.assertEqual(response.mimetype, "application/json")
-    #     self.assertEqual(urlparse(response.headers.get("Location")).path,
-    #                      "/api/accounts/2")
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.mimetype, "application/json")
 
-    #     self.assertEqual(data["username"], "fernandomedina")
-    #     self.assertEqual(data["name"], "Fernando")
-    #     self.assertEqual(data["email"], "fernando@example.com")
+        self.assertEqual(data["username"], "fernandomedina")
+        self.assertEqual(data["name"], "Fernando")
+        self.assertEqual(data["email"], "fernando@example.com")
 
-    #     accounts = session.query(models.Account).all()
-    #     self.assertEqual(len(accounts), 2)
+        accounts = session.query(models.Account).all()
+        self.assertEqual(len(accounts), 2)
 
-    #     account = accounts[1]
-    #     self.assertEqual(account.username, "fernandomedina")
-    #     self.assertEqual(account.name, "Fernando")
-    #     self.assertEqual(account.email, "fernando@example.com")
+        account = accounts[1]
+        self.assertEqual(account.username, "fernandomedina")
+        self.assertEqual(account.name, "Fernando")
+        self.assertEqual(account.email, "fernando@example.com")
 
     # # # POST TESTS 
     
@@ -231,15 +229,11 @@ class TestAPI(unittest.TestCase):
     def test_post_post(self):
         """ Posting a new post """
         
-        # self.simulate_login()
-        
-        # data = {
-        #     "caption": "What I bring",
-        #     "account": self.account.as_dictionary()
-        # }
+        self.simulate_login()
         
         data = {
-            "caption": "What I bring"
+            "caption": "What I bring",
+            "account": self.account.as_dictionary()
         }
         
         response = self.client.post("/api/posts",
