@@ -150,6 +150,22 @@ div.login-redirect a {
     padding-top: 6px;
 }
 
+div.account-redirect {
+    display: inline-block;
+    float: right;
+    font-family: 'Raleway', sans-serif;
+}
+
+div.account-redirect p {
+    display: inline-block;
+    padding-top: 6px;
+}
+
+div.account-redirect a {
+    display: inline-block;
+    padding-top: 6px;
+}
+
 h4.post-modal-title {
     font-family: 'Fjalla One', sans-serif;
 }
