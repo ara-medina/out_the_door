@@ -46,8 +46,8 @@ class Post(Base):
     def as_dictionary(self):
         post = {
             "id": self.id,
-            "caption": self.caption
-            # "account": self.account.as_dictionary()
+            "caption": self.caption,
+            "account": self.account.as_dictionary()
         }
         return post
         

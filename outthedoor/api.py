@@ -11,6 +11,7 @@ from flask_login import login_required
 from flask_login import current_user
 from flask_login import login_user
 from flask_login import logout_user
+from getpass import getpass
 
 from outthedoor import app
 from . import models
@@ -65,10 +66,12 @@ def account_post():
     account = Account(username=data["username"],
         name=data["name"],
         email=data["email"],
-        password=data["password"])
+        password=generate_password_hash(data["password"]))
     session.add(account)
     session.commit()
     
+    print("account commited")
+    print(account.as_dictionary())
     data = json.dumps(account.as_dictionary())
     headers = {"Location": url_for("account_get", id=account.id)}
     return Response(data, 201, headers=headers,
@@ -85,12 +88,9 @@ def login_post():
     account = session.query(Account).filter_by(username=username).first()
     print(account.as_dictionary())
     
-    # if not account or not check_password_hash(account.password, password):
-    #     print(password)
-    #     print(account.password)
-    #     flash("Incorrect username or password", "danger")
-    #     print("oops")
-    #     return redirect(url_for("posts_get"))
+    if not account or not check_password_hash(account.password, password):
+        flash("Incorrect username or password", "danger")
+        return redirect(url_for("posts_get")) #change this location
 
     login_user(account)
     print("woop")
@@ -166,11 +166,13 @@ def posts_post():
     except ValidationError as error:
         data = {"message": error.message}
         return Response(json.dumps(data), 422, mimetype="application/json")
+        
+    # print(data)
     
-    id = data["account"]["id"]
-    account = session.query(Account).get(id)
+    # id = data["account"]["id"]
+    # account = session.query(Account).get(id)
 
-    post = Post(caption=data["caption"], account=account)
+    post = Post(caption=data["caption"], account=current_user)
     session.add(post)
     session.commit()
 

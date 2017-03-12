@@ -3,8 +3,8 @@ var outTheDoor = function() {
     this.postList = $("#post-list");
     
     // When the save post button is clicked call the onPostSaveButtonClicked function
-    // $("#postModal").on("click", "#post-button",
-    //               this.onPostSaveButtonClicked.bind(this));
+    $("#postModal").on("click", "#post-button",
+                  this.onPostSaveButtonClicked.bind(this));
     
     // When the save account button is clicked call the onAccountCreateButtonClicked function
     $("#createAccountModal").on("click", "#create-account-button",
@@ -94,11 +94,13 @@ outTheDoor.prototype.onAccountCreateButtonClicked = function(event) {
     
     // Create a FormData object from the upload form
     var data = {
-        username: $('#username').val(),
-        name: $('#name').val(),
-        email: $('#email').val(),
-        password: $('#password').val()
+        username: $('#accountUsername').val(),
+        name: $('#accountName').val(),
+        email: $('#accountEmail').val(),
+        password: $('#accountPassword').val()
     };
+    
+    console.log(data)
     
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/accounts', {
@@ -125,8 +127,8 @@ outTheDoor.prototype.onLoginButtonClicked = function(event) {
     
     // Create a FormData object from the upload form
     var data = {
-        username: $('#username').val(),
-        password: $('#password').val()
+        username: $('#loginUsername').val(),
+        password: $('#loginPassword').val()
     };
     
     console.log(data)

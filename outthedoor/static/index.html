@@ -76,12 +76,12 @@
               </div>
               <div id="loginForm" class="modal-body">
                 <form class="form-group">
-                  <label for="username" class="control-label">Username</label>
-                  <input type="text" class="form-control" id="username">
+                  <label for="loginUsername" class="control-label">Username</label>
+                  <input type="text" class="form-control" id="loginUsername">
                 </form>
                 <form class="form-group">
-                  <label for="password" class="control-label">Password</label>
-                  <input type="password" class="form-control" id="password">
+                  <label for="loginPassword" class="control-label">Password</label>
+                  <input type="password" class="form-control" id="loginPassword">
                 </form>
               </div>
               <div id="loginFooter" class="modal-footer">
@@ -105,20 +105,20 @@
               </div>
               <div id="signupForm" class="modal-body">
                   <form class="form-group">
-                    <label for="username" class="control-label">Username</label>
-                    <input type="text" class="form-control" id="username">
+                    <label for="accountUsername" class="control-label">Username</label>
+                    <input type="text" class="form-control" id="accountUsername">
                   </form>
                   <form class="form-group">
-                    <label for="name" class="control-label">Name</label>
-                    <input type="text" class="form-control" id="name">
+                    <label for="accountName" class="control-label">Name</label>
+                    <input type="text" class="form-control" id="accountName">
                   </form>
                   <form class="form-group">
-                    <label for="email" class="control-label">Email</label>
-                    <input type="email" class="form-control" id="email">
+                    <label for="accountEmail" class="control-label">Email</label>
+                    <input type="email" class="form-control" id="accountEmail">
                   </form>
                   <form class="form-group">
-                    <label for="password" class="control-label">Password</label>
-                    <input type="password" class="form-control" id="password">
+                    <label for="accountPassword" class="control-label">Password</label>
+                    <input type="password" class="form-control" id="accountPassword">
                   </form>
               </div>
               <div class="modal-footer" id="createAccountFooter">
@@ -140,6 +140,7 @@
                 <div class="card">
                     <div class="card-block">
                         <h4 class="card-caption">{{ caption }}</h4>
+                        <h4 class="card-caption">{{ account.username }}</h4>
                     </div>
                 </div>
     
