@@ -15,7 +15,8 @@ class Account(Base, UserMixin):
     
     id = Column(Integer, primary_key=True)
     username = Column(String(128), nullable=False, unique=True)
-    name = Column(String(128), nullable=False)
+    firstname = Column(String(128), nullable=False)
+    lastname = Column(String(128), nullable=False)
     email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
 
@@ -25,7 +26,8 @@ class Account(Base, UserMixin):
         account = {
             "id": self.id,
             "username": self.username,
-            "name": self.name,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
             "email": self.email,
             "password": self.password
         }
@@ -36,7 +38,13 @@ class Post(Base):
     __tablename__ = "posts"
     
     id = Column(Integer, primary_key=True)
-    caption = Column(String(1024))
+    caption = Column(String(1024), nullable=False)
+    age = Column(Integer, primary_key=False)
+    gender = Column(String(1024))
+    ethnicity = Column(String(1024))
+    city = Column(String(1024))
+    profession = Column(String(1024))
+    income = Column(Integer, primary_key=False)
     datetime = Column(DateTime, default=datetime.datetime.now)
     
     account_id = Column(Integer, ForeignKey('accounts.id'))
@@ -47,6 +55,12 @@ class Post(Base):
         post = {
             "id": self.id,
             "caption": self.caption,
+            "age": self.age,
+            "gender": self.gender,
+            "ethnicity": self.ethnicity,
+            "city": self.city,
+            "profession": self.profession,
+            "income": self.income,
             "account": self.account.as_dictionary()
         }
         return post

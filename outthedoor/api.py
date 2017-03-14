@@ -6,11 +6,8 @@ from flask import request, Response, url_for, redirect, render_template, send_fr
 from werkzeug.utils import secure_filename
 from jsonschema import validate, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager
+from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from flask_login import login_required
-from flask_login import current_user
-from flask_login import login_user
-from flask_login import logout_user
 from getpass import getpass
 
 from outthedoor import app
@@ -20,14 +17,23 @@ from .database import session
 from .models import Post, Account
 from .utils import upload_path
 
+# add ,"required": ["caption", "account"] ?? here 
+
 post_schema = {
     "properties": {
         "caption": {"type": "string"},
+        "age": {"type": "number"},
+        "gender": {"type": "string"},
+        "ethnicity": {"type": "string"},
+        "city": {"type": "string"},
+        "profession": {"type": "string"},
+        "income": {"type": "number"},
         "account": {
             "type": "object",
             "properties": {
                 "username": {"type": "string"},
-                "name": {"type": "string"},
+                "firstname": {"type": "string"},
+                "lastname": {"type": "string"},
                 "email": {"type": "string"},
                 "password": {"type": "string"}
             }
@@ -64,13 +70,14 @@ def account_post():
         return Response(json.dumps(data), 422, mimetype="application/json")
         
     account = Account(username=data["username"],
-        name=data["name"],
+        firstname=data["firstname"],
+        lastname=data["lastname"],
         email=data["email"],
         password=generate_password_hash(data["password"]))
     session.add(account)
     session.commit()
     
-    print("account commited")
+    print("account committed")
     print(account.as_dictionary())
     data = json.dumps(account.as_dictionary())
     headers = {"Location": url_for("account_get", id=account.id)}
@@ -160,6 +167,7 @@ def delete_post(id):
 def posts_post():
     """ Add a new post """
     data = request.json
+    print(current_user)
     
     try: 
         validate(data, post_schema)
@@ -167,12 +175,14 @@ def posts_post():
         data = {"message": error.message}
         return Response(json.dumps(data), 422, mimetype="application/json")
         
-    # print(data)
-    
-    # id = data["account"]["id"]
-    # account = session.query(Account).get(id)
-
-    post = Post(caption=data["caption"], account=current_user)
+    post = Post(caption=data["caption"], 
+        age=data["age"],
+        gender=data["gender"],
+        ethnicity=data["ethnicity"],
+        city=data["city"],
+        profession=data["profession"],
+        income=data["income"],
+        account=current_user)
     session.add(post)
     session.commit()
 
@@ -181,12 +191,13 @@ def posts_post():
     return Response(data, 201, headers=headers,
                     mimetype="application/json")
 
-@app.route("/api/post/<id>", methods=["POST"])
+@app.route("/api/post/<id>/edit", methods=["POST"])
 @decorators.accept("application/json")
 @decorators.require("application/json")
 def posts_edit(id):
     """Edit a post"""
     data = request.json
+    print(data)
     
     try: 
         validate(data, post_schema)
@@ -196,6 +207,12 @@ def posts_edit(id):
         
     post = session.query(Post).get(id)
     post.caption = data["caption"]
+    post.age = data["age"]
+    post.gender = data["gender"]
+    post.ethnicity = data["ethnicity"]
+    post.city = data["city"]
+    post.profession = data["profession"]
+    post.income = data["income"]
     
     session.commit()
     

@@ -50,9 +50,18 @@ outTheDoor.prototype.onGetPostsDone = function(data) {
 outTheDoor.prototype.onPostSaveButtonClicked = function(event) {
     console.log('called onPostSaveButtonClicked');
     
+    age = $('#age').val();
+    income = $('#income').val()
+    
     // Create a FormData object from the upload form
     var data = {
-        caption: $('#caption').val()
+        caption: $('#caption').val(),
+        age: parseInt(age),
+        gender: $('#gender').val(),
+        ethnicity: $('#ethnicity').val(),
+        city: $('#city').val(),
+        profession: $('#profession').val(),
+        income: parseInt(income)
     };
  
     
@@ -95,7 +104,8 @@ outTheDoor.prototype.onAccountCreateButtonClicked = function(event) {
     // Create a FormData object from the upload form
     var data = {
         username: $('#accountUsername').val(),
-        name: $('#accountName').val(),
+        firstname: $('#accountFirstName').val(),
+        lastname: $('#accountLastName').val(),
         email: $('#accountEmail').val(),
         password: $('#accountPassword').val()
     };

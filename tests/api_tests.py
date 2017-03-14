@@ -6,6 +6,7 @@ try: from urllib.parse import urlparse
 except ImportError: from urlparse import urlparse # Py2 compatibility
 from io import StringIO, BytesIO
 from werkzeug.security import generate_password_hash
+from flask_login import current_user
 
 import sys; print(list(sys.modules.keys()))
 # Configure the app to use the testing databse
@@ -31,7 +32,8 @@ class TestAPI(unittest.TestCase):
         Base.metadata.create_all(engine)
         
         self.account = Account(username="sandramedina",
-            name="Sandra", 
+            firstname="Sandra", 
+            lastname="Medina",
             email="sandra@example.com",
             password=generate_password_hash("test")
         )
@@ -53,7 +55,7 @@ class TestAPI(unittest.TestCase):
         
     def simulate_login(self):
         with self.client.session_transaction() as http_session:
-            http_session["account_id"] = str(self.account.id)
+            http_session["user_id"] = str(self.account.id)
             http_session["_fresh"] = True
     
     def create_post(self):
@@ -70,41 +72,42 @@ class TestAPI(unittest.TestCase):
         
     # # ACCOUNT TESTS 
 
-    # def test_account_get(self):
+    def test_account_get(self):
         
-    #     account = Account(username="fernandomedina",
-    #         name="Fernando",
-    #         email="fernando@example.com",
-    #         password=generate_password_hash("test"))
+        account = Account(username="fernandomedina",
+            firstname="Fernando",
+            lastname="Medina",
+            email="fernando@example.com",
+            password=generate_password_hash("test"))
             
-    #     session.add(account)
-    #     session.commit()
+        session.add(account)
+        session.commit()
         
-    #     with self.client.session_transaction() as http_session:
-    #         http_session["account_id"] = str(account.id)
-    #         http_session["_fresh"] = True
+        with self.client.session_transaction() as http_session:
+            http_session["user_id"] = str(account.id)
+            http_session["_fresh"] = True
         
-    #     response = self.client.get("/api/accounts/{}".format(account.id), 
-    #         headers=[("Accept", "application/json")])
+        response = self.client.get("/api/accounts/{}".format(account.id), 
+            headers=[("Accept", "application/json")])
 
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(response.mimetype, "application/json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.mimetype, "application/json")
 
-    #     data = json.loads(response.data.decode("ascii"))
+        data = json.loads(response.data.decode("ascii"))
         
-    #     account = data[0]
-    #     self.assertEqual(account["username"], "fernandomedina")
-    #     self.assertEqual(account["name"], "Fernando")
-    #     self.assertEqual(account["email"], "fernando@example.com")
+        account = data[0]
+        self.assertEqual(account["username"], "fernandomedina")
+        self.assertEqual(account["firstname"], "Fernando")
+        self.assertEqual(account["lastname"], "Medina")
+        self.assertEqual(account["email"], "fernando@example.com")
         
     def test_account_post(self):
         """ Creating a new account """
-        
-        self.simulate_login()
-        
+
         data = {
             "username": "fernandomedina",
-            "name": "Fernando",
+            "firstname": "Fernando",
+            "lastname": "Medina",
             "email": "fernando@example.com",
             "password": generate_password_hash("test")
         }
@@ -119,7 +122,8 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(response.mimetype, "application/json")
 
         self.assertEqual(data["username"], "fernandomedina")
-        self.assertEqual(data["name"], "Fernando")
+        self.assertEqual(data["firstname"], "Fernando")
+        self.assertEqual(data["lastname"], "Medina")
         self.assertEqual(data["email"], "fernando@example.com")
 
         accounts = session.query(models.Account).all()
@@ -127,7 +131,8 @@ class TestAPI(unittest.TestCase):
 
         account = accounts[1]
         self.assertEqual(account.username, "fernandomedina")
-        self.assertEqual(account.name, "Fernando")
+        self.assertEqual(account.firstname, "Fernando")
+        self.assertEqual(account.lastname, "Medina")
         self.assertEqual(account.email, "fernando@example.com")
 
     # # # POST TESTS 
@@ -160,7 +165,6 @@ class TestAPI(unittest.TestCase):
         
         postA = data[0]
         self.assertEqual(postA["caption"], "What I bring with me everyday")
-        # self.assertEqual(postA["account"]["username"], self.account.username)
         
     def test_get_single_post(self):
         """ Getting a single post from a populated database """
@@ -192,6 +196,7 @@ class TestAPI(unittest.TestCase):
         
     def test_unsupported_accept_header(self):
         """ Recieving an unsupported accept header """ 
+        
         response = self.client.get("/api/posts",
             headers=[("Accept", "application/xml")]
         )
@@ -206,7 +211,7 @@ class TestAPI(unittest.TestCase):
     def test_delete_entry(self):
         """ Delete a single post """
         
-        # self.simulate_login()
+        self.simulate_login()
         
         postA = self.create_post()
         
@@ -233,6 +238,12 @@ class TestAPI(unittest.TestCase):
         
         data = {
             "caption": "What I bring",
+            "age": 100,
+            "gender": "Male",
+            "ethnicity": "Hispanic",
+            "city": "Boston",
+            "profession": "Doctor",
+            "income": 3000000,
             "account": self.account.as_dictionary()
         }
         
@@ -250,34 +261,42 @@ class TestAPI(unittest.TestCase):
         data = json.loads(response.data.decode("ascii"))
         self.assertEqual(data["id"], 1)
         self.assertEqual(data["caption"], "What I bring")
+        self.assertEqual(data["age"], 100)
 
         posts = session.query(models.Post).all()
         self.assertEqual(len(posts), 1)
 
         post = posts[0]
         self.assertEqual(post.caption, "What I bring")
-        # self.assertEqual(post.account, self.account)
+        self.assertEqual(post.account, self.account)
         
     def test_edit_post(self):
-        # self.simulate_login()
+        self.simulate_login()
         
-        # post = Post(caption="What I bring", account=self.account)
-        
-        post = Post(caption="What I bring")
-        
+        post = Post(caption="What I bring",
+            age=25,
+            gender="Female",
+            ethnicity="White",
+            city="Seattle",
+            profession="Developer",
+            income=10000000,
+            account=self.account)
+ 
         session.add(post)
         session.commit()
         
-        # data = {
-        #     "caption": "New // What I bring",
-        #     "account": self.account.as_dictionary()
-        # }
-        
         data = {
-            "caption": "New // What I bring"
+            "caption": "New What I bring",
+            "age": 25,
+            "gender": "Female",
+            "ethnicity": "White",
+            "city": "Seattle",
+            "profession": "Developer",
+            "income": 10000000,
+            "account": self.account.as_dictionary()
         }
         
-        response = self.client.post("/api/post/{}".format(post.id), 
+        response = self.client.post("/api/post/{}/edit".format(post.id), 
             data=json.dumps(data), 
             content_type="application/json", 
             headers=[("Accept", "application/json")])
@@ -285,8 +304,8 @@ class TestAPI(unittest.TestCase):
         edited_post = session.query(Post).get(post.id)
         
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(edited_post.caption, "New // What I bring")
-        # self.assertEqual(post.account, self.account)
+        self.assertEqual(edited_post.caption, "New What I bring")
+        self.assertEqual(post.account, self.account)
         
         self.assertEqual(session.query(Post).count(), 1)
     
