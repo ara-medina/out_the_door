@@ -1,5 +1,7 @@
 var outTheDoor = function() {
-
+    
+    $('#logoutPopover').popover();
+    
     this.postList = $("#post-list");
     
     // When the save post button is clicked call the onPostSaveButtonClicked function
@@ -128,6 +130,11 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
     // Add the account to the accounts array, and display success message
     console.log("success!");
     this.accounts.push(data);
+    $(".alert").show();
+    $(".alert").on("click", "#login-alert", function() {
+        $(".alert").hide();
+        $('#loginModal').modal('show');
+    });
 };
 
 // LOGIN FUNCTIONS
@@ -158,6 +165,9 @@ outTheDoor.prototype.onLoginButtonClicked = function(event) {
 outTheDoor.prototype.onLoginDone = function(data) {
     console.log("success!");
     this.getPosts();
+    
+    $("#logoutPopover").css("display","block")
+    
 };
 
 // COMMON FUNCTIONS

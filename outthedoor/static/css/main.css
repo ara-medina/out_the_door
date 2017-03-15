@@ -3,6 +3,23 @@
     margin-bottom: 40px;
 }
 
+div.alert.alert-success {
+    background-color: white;
+    border-color: black;
+    color: black;
+    margin-bottom: 20px;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+}
+
+div.alert.alert-success a {
+    font-weight: bold;
+}
+
+div.alert.alert-success a:hover {
+    text-decoration: none;
+}
+
 div.header {
     font-size: 42px;
     font-family: 'Poiret One', sans-serif;
@@ -33,6 +50,10 @@ div.header .fa-user {
 }
 
 div.header .fa-pencil {
+    float: right;
+}
+
+div.header .fa-cog {
     float: right;
 }
 

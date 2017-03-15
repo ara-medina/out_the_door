@@ -32,11 +32,19 @@
     
     <body>
         <div class="wrapper col-sm-12">
+            <div class="alert alert-dismissible alert-success col-sm-8 col-sm-offset-2" role="alert" style="display: none">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <p>Account Successfully Created!<br></p>
+              <a id="login-alert" aria-hidden="true">LOGIN</a>
+            </div>
             <div class="header col-sm-12">
                 <div class="title-wrapper col-sm-8">
                     <a class="title col-sm-6">Out The Door</a>
                 </div>
                 <div class="nav col-sm-4">
+                    <i id="logoutPopover" class="fa fa-cog col-sm-2" style="display: none" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Logout"></i>
                     <i class="fa fa-pencil col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#postModal"></i>
                     <i class="fa fa-user col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#createAccountModal"></i>
                 </div>
