@@ -25,6 +25,7 @@
         <!-- Bootstrap -->
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
         <!-- OTD -->
         <script src="static/js/main.js"></script>
     </head>
@@ -120,6 +121,46 @@
         </div>
         
         <!-- Account Modal -->
+        <!--<div class="modal create-account-modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">-->
+        <!--  <div class="modal-dialog" role="document">-->
+        <!--    <div class="modal-content">-->
+        <!--      <div class="modal-header">-->
+        <!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+        <!--        <h4 class="account-modal-title" id="myModalLabel">CREATE ACCOUNT</h4>-->
+        <!--      </div>-->
+        <!--      <div id="signupForm" class="modal-body">-->
+        <!--          <form class="form-group">-->
+        <!--            <label for="accountUsername" class="control-label">Username</label>-->
+        <!--            <input type="text" class="form-control" id="accountUsername">-->
+        <!--          </form>-->
+        <!--          <form class="form-group">-->
+        <!--            <label for="accountFirstName" class="control-label">First Name</label>-->
+        <!--            <input type="text" class="form-control" id="accountFirstName">-->
+        <!--          </form>-->
+        <!--           <form class="form-group">-->
+        <!--            <label for="accountLastName" class="control-label">Last Name</label>-->
+        <!--            <input type="text" class="form-control" id="accountLastName">-->
+        <!--          </form>-->
+        <!--          <form class="form-group">-->
+        <!--            <label for="accountEmail" class="control-label">Email</label>-->
+        <!--            <input type="email" class="form-control" id="accountEmail">-->
+        <!--          </form>-->
+        <!--          <form class="form-group">-->
+        <!--            <label for="accountPassword" class="control-label">Password</label>-->
+        <!--            <input type="password" class="form-control" id="accountPassword">-->
+        <!--          </form>-->
+        <!--      </div>-->
+        <!--      <div class="modal-footer" id="createAccountFooter">-->
+        <!--        <button type="submit" id="create-account-button" class="btn btn-primary">SIGN UP</button>-->
+        <!--        <div class="login-redirect">-->
+        <!--          <p>Already have an account?</p> -->
+        <!--          <a aria-hidden="true" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Login</a>-->
+        <!--        </div>-->
+        <!--      </div>-->
+        <!--    </div>-->
+        <!--  </div>-->
+        <!--</div>-->
+        
         <div class="modal create-account-modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -127,30 +168,40 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="account-modal-title" id="myModalLabel">CREATE ACCOUNT</h4>
               </div>
-              <div id="signupForm" class="modal-body">
-                  <form class="form-group">
+              <form id="signupForm" class="modal-body" data-toggle="validator" role="form">
+                  <div class="form-group">
                     <label for="accountUsername" class="control-label">Username</label>
-                    <input type="text" class="form-control" id="accountUsername">
-                  </form>
-                  <form class="form-group">
+                    <input type="text" class="form-control" id="accountUsername" required>
+                  </div>
+                  <div class="form-group">
                     <label for="accountFirstName" class="control-label">First Name</label>
-                    <input type="text" class="form-control" id="accountFirstName">
-                  </form>
-                   <form class="form-group">
+                    <input type="text" class="form-control" id="accountFirstName" required>
+                  </div>
+                  <div class="form-group">
                     <label for="accountLastName" class="control-label">Last Name</label>
-                    <input type="text" class="form-control" id="accountLastName">
-                  </form>
-                  <form class="form-group">
+                    <input type="text" class="form-control" id="accountLastName" required>
+                  </div>
+                  <div class="form-group">
                     <label for="accountEmail" class="control-label">Email</label>
-                    <input type="email" class="form-control" id="accountEmail">
-                  </form>
-                  <form class="form-group">
+                    <input type="email" class="form-control" id="accountEmail" placeholder="Email" data-error="Email address is invalid" required>
+                    <div class="help-block with-errors"></div>
+                  </div>
+                  <div class="form-group">
                     <label for="accountPassword" class="control-label">Password</label>
-                    <input type="password" class="form-control" id="accountPassword">
-                  </form>
-              </div>
+                    <div class="form-inline row">
+                      <div class="form-group col-sm-6">
+                        <input type="password" data-minlength="6" class="form-control" id="accountPassword"required>
+                        <div class="help-block">Minimum of 6 characters</div>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <input type="password" class="form-control" id="accountPasswordConfirm" data-match="#accountPassword" data-match-error="Passwords don't match" placeholder="Confirm" required>
+                        <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                  </div>
+              </form>
               <div class="modal-footer" id="createAccountFooter">
-                <button type="submit" id="create-account-button" class="btn btn-primary">SIGN UP</button>
+                <button type="submit" id="create-account-button" class="btn btn-primary" data-dismiss="modal">SIGN UP</button>
                 <div class="login-redirect">
                   <p>Already have an account?</p> 
                   <a aria-hidden="true" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Login</a>
@@ -160,7 +211,6 @@
           </div>
         </div>
 
-    
         <!-- Handlebars templates -->
         
         <!--<h4 class="card-field">{{ caption }}</h4> put this under the image on slide 1-->
