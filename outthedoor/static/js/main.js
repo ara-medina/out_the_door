@@ -1,6 +1,9 @@
 var outTheDoor = function() {
     
-    $('#logoutPopover').popover();
+    $('#logoutPopover').popover({
+        html:true,
+        trigger: 'hover'
+    });
     
     this.postList = $("#post-list");
     
@@ -15,6 +18,9 @@ var outTheDoor = function() {
     // When the login button is clicked call the onLoginButtonClicked function
     $("#loginModal").on("click", "#login-button",
                   this.onLoginButtonClicked.bind(this));
+                  
+    // When the logout button is clicked call the onLogoutButtonClicked function
+    $("#logoutPopover").on("click", this.onLogoutButtonClicked.bind(this));
                    
     this.postForm = $("#post-modal");
     this.accountForm = $("#create-account-modal");
@@ -52,8 +58,10 @@ outTheDoor.prototype.onGetPostsDone = function(data) {
 outTheDoor.prototype.onPostSaveButtonClicked = function(event) {
     console.log('called onPostSaveButtonClicked');
     
-    age = $('#age').val();
-    income = $('#income').val()
+    var age = $('#age').val();
+    
+    // var income = document.getElementById("incomeSelect").value;
+    // console.log(income);
     
     // Create a FormData object from the upload form
     var data = {
@@ -63,9 +71,10 @@ outTheDoor.prototype.onPostSaveButtonClicked = function(event) {
         ethnicity: $('#ethnicity').val(),
         city: $('#city').val(),
         profession: $('#profession').val(),
-        income: parseInt(income)
+        income: $("#incomeSelect").val()
     };
- 
+    
+    console.log(data)
     
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/posts', {
@@ -150,7 +159,7 @@ outTheDoor.prototype.onLoginButtonClicked = function(event) {
     
     console.log(data)
     
-    // Make a POST request to the file upload endpoint
+    // Make a POST request to the login endpoint
     var ajax = $.ajax('/api/login', {
         type: 'POST',
         data: JSON.stringify(data),
@@ -170,6 +179,27 @@ outTheDoor.prototype.onLoginDone = function(data) {
     
 };
 
+// LOGOUT FUNCTIONS
+outTheDoor.prototype.onLogoutButtonClicked = function(event) {
+    console.log('called onLogoutButtonClicked');
+
+     
+    // Make a POST request to the logout endpoint
+    var ajax = $.ajax('/api/logout');
+
+
+    ajax.done(this.onLogoutDone.bind(this));
+    ajax.fail(this.onFail.bind(this, "File upload"));
+};
+
+outTheDoor.prototype.onLogoutDone = function(data) {
+    console.log("logged out");
+    this.getPosts();
+    
+    $("#logoutPopover").css("display","none")
+    
+};
+
 // COMMON FUNCTIONS
 
 outTheDoor.prototype.onFail = function(what, event) {
@@ -180,18 +210,3 @@ outTheDoor.prototype.onFail = function(what, event) {
 $(document).ready(function() {
     window.app = new outTheDoor();
 });
-
-
-
-
-// <form method="POST" role="form">
-//     <div class="form-group">
-//         <label for="title">Caption</label>
-//         <input type="text" class="form-control" id="caption" name="caption" placeholder="Caption" required>
-//     </div>
-//     <div class="form-group">
-//         <label for="content">Occupation</label>
-//         <input type="text" class="form-control" id="occupation" name="occupation" placeholder="Occupation">
-//     </div>
-//     <button type="submit" class="btn btn-default">Submit</button>
-// </form>

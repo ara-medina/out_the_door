@@ -27,7 +27,7 @@ post_schema = {
         "ethnicity": {"type": "string"},
         "city": {"type": "string"},
         "profession": {"type": "string"},
-        "income": {"type": "number"},
+        "income": {"type": "string"},
         "account": {
             "type": "object",
             "properties": {
@@ -107,14 +107,14 @@ def login_post():
     return Response(data, 201, headers=headers,
                     mimetype="application/json")
 
-# @app.route("/api/logout")
-# def logout():
-#     logout_user()
+@app.route("/api/logout")
+def logout():
+    logout_user()
     
-#     data = json.dumps([])
-#     headers = {"Location": url_for("/api/posts")}
-#     return Response(data, 201, headers=headers,
-#                     mimetype="application/json")
+    data = json.dumps([])
+    headers = {"Location": url_for("posts_get")}
+    return Response(data, 200, headers=headers,
+                    mimetype="application/json")
 
 # # POST ENDPOINTS 
 @app.route("/api/posts", methods=["GET"])

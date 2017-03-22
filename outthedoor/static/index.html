@@ -17,6 +17,7 @@
         <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 
         <!-- JS -->
@@ -44,7 +45,7 @@
                     <a class="title col-sm-6">Out The Door</a>
                 </div>
                 <div class="nav col-sm-4">
-                    <i id="logoutPopover" class="fa fa-cog col-sm-2" style="display: none" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Logout"></i>
+                    <button style="display: none" type="submit" class="btn popovers fa fa-cog col-sm-2" id="logoutPopover" data-toggle="popover" data-placement="bottom" data-content="Logout"></button>
                     <i class="fa fa-pencil col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#postModal"></i>
                     <i class="fa fa-user col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#createAccountModal"></i>
                 </div>
@@ -62,36 +63,42 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="post-modal-title" id="myModalLabel">YOUR POST</h4>
               </div>
-              <div id="postForm" class="modal-body">
-                  <form class="form-group">
+              <form id="postForm" class="modal-body" data-toggle="validator" role="form">
+                  <div class="form-group">
                     <label for="caption" class="control-label">Caption</label>
-                    <input type="text" class="form-control" id="caption">
-                  </form>
-                  <form class="form-group">
+                    <input type="text" class="form-control" id="caption" required>
+                  </div>
+                  <div class="form-group">
                     <label for="age" class="control-label">Age</label>
                     <input type="number" class="form-control" id="age">
-                  </form>
-                  <form class="form-group">
+                  </div>
+                  <div class="form-group">
                     <label for="gender" class="control-label">Gender</label>
                     <input type="text" class="form-control" id="gender">
-                  </form>
-                  <form class="form-group">
+                  </div>
+                  <div class="form-group">
                     <label for="ethnicity" class="control-label">Ethnicity</label>
                     <input type="text" class="form-control" id="ethnicity">
-                  </form>
-                  <form class="form-group">
+                  </div>
+                  <div class="form-group">
                     <label for="city" class="control-label">City</label>
                     <input type="text" class="form-control" id="city">
-                  </form>
-                  <form class="form-group">
+                  </div>
+                  <div class="form-group">
                     <label for="profession" class="control-label">Profession</label>
                     <input type="text" class="form-control" id="profession">
-                  </form>
-                  <form class="form-group">
-                    <label for="income" class="control-label">Income</label>
-                    <input type="number" class="form-control" id="income">
-                  </form>
-              </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="income">Income</label>
+                    <select class="form-control" id="incomeSelect">
+                      <option selected="selected" value="Less than $25,000">Less than $25,000</option>
+                      <option value="$25,000-$50,000">$25,000-$50,000</option>
+                      <option value="$50,000-$75,000">$50,000-$75,000</option>
+                      <option value="$75,000-$100,000">$75,000-$100,000</option>
+                      <option value="More than $100,000">More than $100,000</option>
+                    </select>
+                  </div>
+              </form>
               <div id="postFooter" class="modal-footer">
                 <button type="submit" id="post-button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
               </div>
@@ -128,47 +135,7 @@
           </div>
         </div>
         
-        <!-- Account Modal -->
-        <!--<div class="modal create-account-modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">-->
-        <!--  <div class="modal-dialog" role="document">-->
-        <!--    <div class="modal-content">-->
-        <!--      <div class="modal-header">-->
-        <!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-        <!--        <h4 class="account-modal-title" id="myModalLabel">CREATE ACCOUNT</h4>-->
-        <!--      </div>-->
-        <!--      <div id="signupForm" class="modal-body">-->
-        <!--          <form class="form-group">-->
-        <!--            <label for="accountUsername" class="control-label">Username</label>-->
-        <!--            <input type="text" class="form-control" id="accountUsername">-->
-        <!--          </form>-->
-        <!--          <form class="form-group">-->
-        <!--            <label for="accountFirstName" class="control-label">First Name</label>-->
-        <!--            <input type="text" class="form-control" id="accountFirstName">-->
-        <!--          </form>-->
-        <!--           <form class="form-group">-->
-        <!--            <label for="accountLastName" class="control-label">Last Name</label>-->
-        <!--            <input type="text" class="form-control" id="accountLastName">-->
-        <!--          </form>-->
-        <!--          <form class="form-group">-->
-        <!--            <label for="accountEmail" class="control-label">Email</label>-->
-        <!--            <input type="email" class="form-control" id="accountEmail">-->
-        <!--          </form>-->
-        <!--          <form class="form-group">-->
-        <!--            <label for="accountPassword" class="control-label">Password</label>-->
-        <!--            <input type="password" class="form-control" id="accountPassword">-->
-        <!--          </form>-->
-        <!--      </div>-->
-        <!--      <div class="modal-footer" id="createAccountFooter">-->
-        <!--        <button type="submit" id="create-account-button" class="btn btn-primary">SIGN UP</button>-->
-        <!--        <div class="login-redirect">-->
-        <!--          <p>Already have an account?</p> -->
-        <!--          <a aria-hidden="true" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Login</a>-->
-        <!--        </div>-->
-        <!--      </div>-->
-        <!--    </div>-->
-        <!--  </div>-->
-        <!--</div>-->
-        
+        <!-- Account Modal-->
         <div class="modal create-account-modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -235,7 +202,6 @@
                         <h4 class="card-field">city: {{ city }}</h4>
                         <h4 class="card-field">profession: {{ profession }}</h4>
                         <h4 class="card-field">income: {{ income }}</h4>
-                        <h4 class="card-field">{{ account.username }}</h4>
                     </div>
                 </div>
     

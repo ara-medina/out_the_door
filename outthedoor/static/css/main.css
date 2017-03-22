@@ -45,24 +45,43 @@ div.header .title {
     float: right;
 }
 
-div.header .fa-user {
-    float: right;
-}
-
-div.header .fa-pencil {
-    float: right;
-}
-
-div.header .fa-cog {
-    float: right;
-}
-
 div.header a:hover {
     text-decoration: none;
 }
 
+div.header .fa-user {
+    float: right;
+    cursor: pointer;
+}
+
+div.header .fa-pencil {
+    float: right;
+    cursor: pointer;
+}
+
+div.header .fa-cog {
+    float: right;
+    font-size: 42px;
+    padding: 0;
+    color: black;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+button#logoutPopover:focus {
+    outline: none;
+}
+
+div.popover-content {
+    color: black;
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
+    cursor: pointer;
+}
+
 div.posts {
-    background-color: #FFFAF7;
+    background-color: #F5F5F5;
     border-radius: 5px;
 }
 
@@ -106,7 +125,7 @@ div.posts {
     padding: 1.25rem;
     background-color: white;
     border-radius: 8px;
-    font-family: 'Raleway', sans-serif
+    font-family: 'Open Sans', sans-serif;
 }
 
 h4.card-field {
@@ -185,8 +204,4 @@ div.account-redirect p {
 div.account-redirect a {
     display: inline-block;
     padding-top: 6px;
-}
-
-h4.post-modal-title {
-    font-family: 'Fjalla One', sans-serif;
 }

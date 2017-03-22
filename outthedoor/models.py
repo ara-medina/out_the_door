@@ -44,7 +44,7 @@ class Post(Base):
     ethnicity = Column(String(1024))
     city = Column(String(1024))
     profession = Column(String(1024))
-    income = Column(Integer, primary_key=False)
+    income = Column(String(1024))
     datetime = Column(DateTime, default=datetime.datetime.now)
     
     account_id = Column(Integer, ForeignKey('accounts.id'))
