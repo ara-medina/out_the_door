@@ -80,30 +80,36 @@ def account_post():
     print("account committed")
     print(account.as_dictionary())
     data = json.dumps(account.as_dictionary())
-    headers = {"Location": url_for("account_get", id=account.id)}
+    headers = {"Location": url_for("posts_get")}
     return Response(data, 201, headers=headers,
                     mimetype="application/json")
 
 @app.route("/api/login", methods=["POST"])
 def login_post():
     data = request.json
-    print(data)
     
     username = data["username"]
     password = data["password"]
     
+    # check that username exists
     account = session.query(Account).filter_by(username=username).first()
-    print(account.as_dictionary())
+    
+    # find the post that is associated with the account
+    if account.posts:
+        post = account.posts
+        post = post.as_dictionary()
+    
+        # add that post to the data dictionary
+        data["post"] = post
     
     if not account or not check_password_hash(account.password, password):
         flash("Incorrect username or password", "danger")
         return redirect(url_for("posts_get")) #change this location
 
     login_user(account)
-    print("woop")
     
-    data = json.dumps(account.as_dictionary())
-    headers = {"Location": url_for("account_get", id=account.id)}
+    data = json.dumps(data)
+    headers = {"Location": url_for("posts_get")}
     return Response(data, 201, headers=headers,
                     mimetype="application/json")
 
@@ -134,6 +140,7 @@ def post_get(id):
     """ Single post endpoint """
     
     post = session.query(Post).get(id)
+    print(post.account.as_dictionary())
 
     if not post:
         message = "Could not find post with id {}".format(id)

@@ -5,11 +5,12 @@ var outTheDoor = function() {
         trigger: 'hover'
     });
     
-    this.postList = $("#post-list");
+    // When the get post button is clicked call the onGetPost function
+    $("#getPostButton").on("click", this.onGetPost.bind(this));
     
-    // When the save post button is clicked call the onPostSaveButtonClicked function
+    // When the save post button is clicked call the onPostCreateButtonClicked function
     $("#postModal").on("click", "#post-button",
-                  this.onPostSaveButtonClicked.bind(this));
+                  this.onPostCreateButtonClicked.bind(this));
     
     // When the save account button is clicked call the onAccountCreateButtonClicked function
     $("#createAccountModal").on("click", "#create-account-button",
@@ -25,11 +26,15 @@ var outTheDoor = function() {
     this.postForm = $("#post-modal");
     this.accountForm = $("#create-account-modal");
     this.loginForm = $("#login-modal");
+    this.postList = $("#post-list");
                    
     // Compile the post list template from the HTML file
     this.postListTemplate = Handlebars.compile($("#post-list-template").html());
+
     this.posts = [];
+    this.post = [];
     this.accounts = [];
+    
     // Get the current list of uploaded posts
     this.getPosts();
 };
@@ -37,7 +42,6 @@ var outTheDoor = function() {
 // POST FUNCTIONS
 
 outTheDoor.prototype.getPosts = function() {
-    console.log("called getPosts");
     // Make a get request to list all of the posts
     var ajax = $.ajax('/api/posts', {
         type: 'GET',
@@ -54,14 +58,26 @@ outTheDoor.prototype.onGetPostsDone = function(data) {
     this.updatePostView();
 };
 
+outTheDoor.prototype.onGetPost = function(id) {
+    // Make a get request to get a single post
+    // This gets called when a user logs in and it finds their post
+    var ajax = $.ajax('/api/posts/' + id, {
+        type: 'GET',
+        dataType: 'json'
+    });
+    
+    ajax.done(this.onGetPostDone.bind(this));
+    ajax.fail(this.onFail.bind(this, "Getting post information"));
+};
 
-outTheDoor.prototype.onPostSaveButtonClicked = function(event) {
-    console.log('called onPostSaveButtonClicked');
-    
+outTheDoor.prototype.onGetPostDone = function(data) {
+    this.post = data;
+    console.log(data);
+};
+
+outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
+
     var age = $('#age').val();
-    
-    // var income = document.getElementById("incomeSelect").value;
-    // console.log(income);
     
     // Create a FormData object from the upload form
     var data = {
@@ -73,9 +89,7 @@ outTheDoor.prototype.onPostSaveButtonClicked = function(event) {
         profession: $('#profession').val(),
         income: $("#incomeSelect").val()
     };
-    
-    console.log(data)
-    
+
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/posts', {
         type: 'POST',
@@ -110,9 +124,8 @@ outTheDoor.prototype.updatePostView = function() {
 // ACCOUNT FUNCTIONS
 
 outTheDoor.prototype.onAccountCreateButtonClicked = function(event) {
-    console.log('called onAccountCreateButtonClicked');
-    
     // Create a FormData object from the upload form
+    
     var data = {
         username: $('#accountUsername').val(),
         firstname: $('#accountFirstName').val(),
@@ -120,8 +133,6 @@ outTheDoor.prototype.onAccountCreateButtonClicked = function(event) {
         email: $('#accountEmail').val(),
         password: $('#accountPassword').val()
     };
-    
-    console.log(data)
     
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/accounts', {
@@ -137,7 +148,6 @@ outTheDoor.prototype.onAccountCreateButtonClicked = function(event) {
 
 outTheDoor.prototype.onCreateAccountDone = function(data) {
     // Add the account to the accounts array, and display success message
-    console.log("success!");
     this.accounts.push(data);
     $(".alert").show();
     $(".alert").on("click", "#login-alert", function() {
@@ -149,15 +159,11 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 // LOGIN FUNCTIONS
 
 outTheDoor.prototype.onLoginButtonClicked = function(event) {
-    console.log('called onLoginButtonClicked');
-    
     // Create a FormData object from the upload form
     var data = {
         username: $('#loginUsername').val(),
         password: $('#loginPassword').val()
     };
-    
-    console.log(data)
     
     // Make a POST request to the login endpoint
     var ajax = $.ajax('/api/login', {
@@ -172,31 +178,33 @@ outTheDoor.prototype.onLoginButtonClicked = function(event) {
 };
 
 outTheDoor.prototype.onLoginDone = function(data) {
-    console.log("success!");
     this.getPosts();
     
-    $("#logoutPopover").css("display","block")
+    if (data["post"]) {
+        var postId = data["post"]["id"];
+        console.log(postId);
+        this.onGetPost(postId);
+    };
+        
+    $("#logoutPopover").css("display","block");
+    $(".fa-pencil").css("display","block");
     
 };
 
 // LOGOUT FUNCTIONS
 outTheDoor.prototype.onLogoutButtonClicked = function(event) {
-    console.log('called onLogoutButtonClicked');
-
-     
     // Make a POST request to the logout endpoint
     var ajax = $.ajax('/api/logout');
-
 
     ajax.done(this.onLogoutDone.bind(this));
     ajax.fail(this.onFail.bind(this, "File upload"));
 };
 
 outTheDoor.prototype.onLogoutDone = function(data) {
-    console.log("logged out");
     this.getPosts();
     
-    $("#logoutPopover").css("display","none")
+    $("#logoutPopover").css("display","none");
+    $(".fa-pencil").css("display","none");
     
 };
 
