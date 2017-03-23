@@ -94,7 +94,7 @@ def login_post():
     # check that username exists
     account = session.query(Account).filter_by(username=username).first()
     
-    # find the post that is associated with the account
+    # if the user has previously posted, find the post that is associated with the account
     if account.posts:
         post = account.posts
         post = post.as_dictionary()

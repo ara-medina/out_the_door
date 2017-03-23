@@ -66,27 +66,27 @@
               <form id="postForm" class="modal-body" data-toggle="validator" role="form">
                   <div class="form-group">
                     <label for="caption" class="control-label">Caption</label>
-                    <input type="text" class="form-control" id="caption" required>
+                    <input type="text" class="form-control" id="caption" value="" required>
                   </div>
                   <div class="form-group">
                     <label for="age" class="control-label">Age</label>
-                    <input type="number" class="form-control" id="age">
+                    <input type="number" class="form-control" id="age" value="">
                   </div>
                   <div class="form-group">
                     <label for="gender" class="control-label">Gender</label>
-                    <input type="text" class="form-control" id="gender">
+                    <input type="text" class="form-control" id="gender" value="">
                   </div>
                   <div class="form-group">
                     <label for="ethnicity" class="control-label">Ethnicity</label>
-                    <input type="text" class="form-control" id="ethnicity">
+                    <input type="text" class="form-control" id="ethnicity" value="">
                   </div>
                   <div class="form-group">
                     <label for="city" class="control-label">City</label>
-                    <input type="text" class="form-control" id="city">
+                    <input type="text" class="form-control" id="city" value="">
                   </div>
                   <div class="form-group">
                     <label for="profession" class="control-label">Profession</label>
-                    <input type="text" class="form-control" id="profession">
+                    <input type="text" class="form-control" id="profession" value="">
                   </div>
                   <div class="form-group">
                     <label for="income">Income</label>
@@ -101,6 +101,7 @@
               </form>
               <div id="postFooter" class="modal-footer">
                 <button type="submit" id="post-button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
+                <button style="display: none" type="submit" id="edit-post-button" class="btn btn-primary" data-dismiss="modal">UPDATE</button>
               </div>
             </div>
           </div>

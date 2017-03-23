@@ -147,6 +147,13 @@ h4.card-field {
     border-color: black;
 }
 
+#edit-post-button.btn-primary {
+    font-family: 'Raleway', sans-serif;
+    color: black;
+    background-color: white;
+    border-color: black;
+}
+
 #postFooter {
     text-align: left;
 }
