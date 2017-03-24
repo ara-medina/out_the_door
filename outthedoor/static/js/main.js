@@ -15,6 +15,10 @@ var outTheDoor = function() {
     // When the edit post button is clicked call the onPostEditButtonClicked function
     $("#postModal").on("click", "#edit-post-button",
                   this.onPostEditButtonClicked.bind(this));
+                  
+    // When the edit post button is clicked call the onPostEditButtonClicked function
+    $("#postModal").on("click", "#delete-post-button",
+                  this.onPostDeleteButtonClicked.bind(this));
     
     // When the save account button is clicked call the onAccountCreateButtonClicked function
     $("#createAccountModal").on("click", "#create-account-button",
@@ -61,7 +65,7 @@ outTheDoor.prototype.onLoginButtonClicked = function(event) {
     });
 
     ajax.done(this.onLoginDone.bind(this));
-    ajax.fail(this.onFail.bind(this, "File upload"));
+    ajax.fail(this.onFail.bind(this, "Login clicked"));
 };
 
 outTheDoor.prototype.onLoginDone = function(data) {
@@ -74,6 +78,7 @@ outTheDoor.prototype.onLoginDone = function(data) {
         
     $("#logoutPopover").css("display","block");
     $(".fa-pencil").css("display","block");
+    $(".fa-user").css("display","none");
     
 };
 
@@ -83,7 +88,7 @@ outTheDoor.prototype.onLogoutButtonClicked = function(event) {
     var ajax = $.ajax('/api/logout');
 
     ajax.done(this.onLogoutDone.bind(this));
-    ajax.fail(this.onFail.bind(this, "File upload"));
+    ajax.fail(this.onFail.bind(this, "Logout clicked"));
 };
 
 outTheDoor.prototype.onLogoutDone = function(data) {
@@ -93,6 +98,8 @@ outTheDoor.prototype.onLogoutDone = function(data) {
     $(".fa-pencil").css("display","none");
     $("#post-button").css("display","none");
     $("#edit-post-button").css("display","none");
+    $("#delete-post-button").css("display","none");
+    $(".fa-user").css("display","block");
     
 };
 
@@ -118,7 +125,7 @@ outTheDoor.prototype.onAccountCreateButtonClicked = function(event) {
     });
 
     ajax.done(this.onCreateAccountDone.bind(this));
-    ajax.fail(this.onFail.bind(this, "File upload"));
+    ajax.fail(this.onFail.bind(this, "Create account"));
 };
 
 outTheDoor.prototype.onCreateAccountDone = function(data) {
@@ -143,7 +150,7 @@ outTheDoor.prototype.getPosts = function() {
     });
     
     ajax.done(this.onGetPostsDone.bind(this));
-    ajax.fail(this.onFail.bind(this, "Getting post information"));
+    ajax.fail(this.onFail.bind(this, "Getting posts information"));
 };
 
 outTheDoor.prototype.onGetPostsDone = function(data) {
@@ -161,13 +168,14 @@ outTheDoor.prototype.onGetPost = function(id) {
     });
     
     ajax.done(this.onGetPostDone.bind(this));
-    ajax.fail(this.onFail.bind(this, "Getting post information"));
+    ajax.fail(this.onFail.bind(this, "Getting single post information"));
 };
 
 outTheDoor.prototype.onGetPostDone = function(data) {
     this.post = data;
     
     $("#edit-post-button").css("display","block");
+    $("#delete-post-button").css("display","block");
     $("#post-button").css("display","none");
     
     document.getElementById("caption").value = data["caption"];
@@ -203,13 +211,12 @@ outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
     });
 
     ajax.done(this.onAddPostDone.bind(this));
-    ajax.fail(this.onFail.bind(this, "File upload"));
+    ajax.fail(this.onFail.bind(this, "Create post"));
 };
 
 outTheDoor.prototype.onAddPostDone = function(data) {
     // Add the post to the posts array, and update the user interface
     this.posts.push(data);
-    console.log("onAddPostDone");
     this.updatePostView();
     
     var postId = data["id"];
@@ -242,11 +249,41 @@ outTheDoor.prototype.onPostEditButtonClicked = function(id) {
     });
 
     ajax.done(this.onEditPostDone.bind(this));
-    ajax.fail(this.onFail.bind(this, "File upload"));
+    ajax.fail(this.onFail.bind(this, "Edit post"));
 };
 
 outTheDoor.prototype.onEditPostDone = function(data) {
     //Once edit request has been made, get the new set of posts with updated content
+    this.getPosts();
+};
+
+outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
+    // Delete a post
+    var id = this.post['id'];
+    
+    var ajax = $.ajax('/api/posts/' + id, {
+        type: 'DELETE',
+        dataType: 'json'
+    });
+    
+    document.getElementById("caption").value = "";
+    document.getElementById("age").value = "";
+    document.getElementById("gender").value = "";
+    document.getElementById("ethnicity").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("profession").value = "";
+    document.getElementById("incomeSelect").value = "";
+    
+    $("#edit-post-button").css("display","none");
+    $("#delete-post-button").css("display","none");
+    $("#post-button").css("display","block");
+    
+    
+    ajax.done(this.onDeletePostDone.bind(this));
+    ajax.fail(this.onFail.bind(this, "Delete post"));
+};
+
+outTheDoor.prototype.onDeletePostDone = function(data) {
     this.getPosts();
 };
 
@@ -256,8 +293,6 @@ outTheDoor.prototype.updatePostView = function() {
     var context = {
         posts: this.posts
     };
-    
-    console.log("updatePostView")
 
     var postList = $(this.postListTemplate(context));
     this.postList.replaceWith(postList);
