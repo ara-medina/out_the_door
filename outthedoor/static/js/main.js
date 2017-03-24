@@ -9,32 +9,32 @@ var outTheDoor = function() {
     $("#getPostButton").on("click", this.onGetPost.bind(this));
     
     // When the save post button is clicked call the onPostCreateButtonClicked function
-    $("#postModal").on("click", "#post-button",
+    $("#postModal").on("click", "#postButton",
                   this.onPostCreateButtonClicked.bind(this));
     
     // When the edit post button is clicked call the onPostEditButtonClicked function
-    $("#postModal").on("click", "#edit-post-button",
+    $("#postModal").on("click", "#editPostButton",
                   this.onPostEditButtonClicked.bind(this));
                   
     // When the edit post button is clicked call the onPostEditButtonClicked function
-    $("#postModal").on("click", "#delete-post-button",
+    $("#postModal").on("click", "#deletePostButton",
                   this.onPostDeleteButtonClicked.bind(this));
     
     // When the save account button is clicked call the onAccountCreateButtonClicked function
-    $("#createAccountModal").on("click", "#create-account-button",
+    $("#createAccountModal").on("click", "#createAccountButton",
                   this.onAccountCreateButtonClicked.bind(this));
                   
     // When the login button is clicked call the onLoginButtonClicked function
-    $("#loginModal").on("click", "#login-button",
+    $("#loginModal").on("click", "#loginButton",
                   this.onLoginButtonClicked.bind(this));
                   
     // When the logout button is clicked call the onLogoutButtonClicked function
     $("#logoutPopover").on("click", this.onLogoutButtonClicked.bind(this));
                    
-    this.postForm = $("#post-modal");
-    this.accountForm = $("#create-account-modal");
-    this.loginForm = $("#login-modal");
-    this.postList = $("#post-list");
+    this.postForm = $("#postModal");
+    this.accountForm = $("#createAccountModal");
+    this.loginForm = $("#loginModal");
+    this.postList = $("#postList");
                    
     // Compile the post list template from the HTML file
     this.postListTemplate = Handlebars.compile($("#post-list-template").html());
@@ -96,9 +96,9 @@ outTheDoor.prototype.onLogoutDone = function(data) {
     
     $("#logoutPopover").css("display","none");
     $(".fa-pencil").css("display","none");
-    $("#post-button").css("display","none");
-    $("#edit-post-button").css("display","none");
-    $("#delete-post-button").css("display","none");
+    $("#postButton").css("display","none");
+    $("#editPostButton").css("display","none");
+    $("#deletePostButton").css("display","none");
     $(".fa-user").css("display","block");
     
 };
@@ -132,12 +132,12 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
     // Add the account to the accounts array, and display success message
     this.accounts.push(data);
     $(".alert").show();
-    $(".alert").on("click", "#login-alert", function() {
+    $(".alert").on("click", "#loginAlert", function() {
         $(".alert").hide();
         $('#loginModal').modal('show');
     });
     
-    $("#post-button").css("display","block");
+    $("#postButton").css("display","block");
 };
 
 // POST FUNCTIONS
@@ -174,9 +174,9 @@ outTheDoor.prototype.onGetPost = function(id) {
 outTheDoor.prototype.onGetPostDone = function(data) {
     this.post = data;
     
-    $("#edit-post-button").css("display","block");
-    $("#delete-post-button").css("display","block");
-    $("#post-button").css("display","none");
+    $("#editPostButton").css("display","block");
+    $("#deletePostButton").css("display","block");
+    $("#postButton").css("display","none");
     
     document.getElementById("caption").value = data["caption"];
     document.getElementById("age").value = data["age"];
@@ -274,9 +274,9 @@ outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
     document.getElementById("profession").value = "";
     document.getElementById("incomeSelect").value = "";
     
-    $("#edit-post-button").css("display","none");
-    $("#delete-post-button").css("display","none");
-    $("#post-button").css("display","block");
+    $("#editPostButton").css("display","none");
+    $("#deletePostButton").css("display","none");
+    $("#postButton").css("display","block");
     
     
     ajax.done(this.onDeletePostDone.bind(this));

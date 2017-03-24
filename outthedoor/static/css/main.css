@@ -140,21 +140,21 @@ h4.card-field {
     font-family: 'Raleway', sans-serif;
 }
 
-#post-button.btn-primary {
+#postButton.btn-primary {
     font-family: 'Raleway', sans-serif;
     color: black;
     background-color: white;
     border-color: black;
 }
 
-#edit-post-button.btn-primary {
+#editPostButton.btn-primary {
     font-family: 'Raleway', sans-serif;
     color: black;
     background-color: white;
     border-color: black;
 }
 
-#delete-post-button.btn-primary {
+#deletePostButton.btn-primary {
     float: right;
     font-family: 'Raleway', sans-serif;
     color: black;
@@ -166,7 +166,7 @@ h4.card-field {
     text-align: left;
 }
 
-#create-account-button.btn-primary {
+#createAccountButton.btn-primary {
     font-family: 'Raleway', sans-serif;
     color: black;
     background-color: white;
@@ -178,7 +178,7 @@ h4.card-field {
     text-align: left;
 }
 
-#login-button.btn-primary {
+#loginButton.btn-primary {
     font-family: 'Raleway', sans-serif;
     color: black;
     background-color: white;

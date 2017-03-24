@@ -38,7 +38,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
               <p>Account Successfully Created!<br></p>
-              <a id="login-alert" aria-hidden="true">LOGIN</a>
+              <a id="loginAlert" aria-hidden="true">LOGIN</a>
             </div>
             <div class="header col-sm-12">
                 <div class="title-wrapper col-sm-8">
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="posts col-sm-12 card-columns" id="posts">
-                <div id="post-list"></div>
+                <div id="postList"></div>
             </div>
         </div>
 
@@ -100,9 +100,9 @@
                   </div>
               </form>
               <div id="postFooter" class="modal-footer">
-                <button type="submit" id="post-button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
-                <button style="display: none" type="submit" id="delete-post-button" class="btn btn-primary" data-dismiss="modal">DELETE</button>
-                <button style="display: none" type="submit" id="edit-post-button" class="btn btn-primary" data-dismiss="modal">UPDATE</button>
+                <button type="submit" id="postButton" class="btn btn-primary" data-dismiss="modal">SAVE</button>
+                <button style="display: none" type="submit" id="deletePostButton" class="btn btn-primary" data-dismiss="modal">DELETE</button>
+                <button style="display: none" type="submit" id="editPostButton" class="btn btn-primary" data-dismiss="modal">UPDATE</button>
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@
                 </form>
               </div>
               <div id="loginFooter" class="modal-footer">
-                <button type="submit" id="login-button" class="btn btn-primary" data-dismiss="modal">LOGIN</button>
+                <button type="submit" id="loginButton" class="btn btn-primary" data-dismiss="modal">LOGIN</button>
                 <div class="account-redirect">
                   <p>Need an account?</p> 
                   <a id="needAccount" aria-hidden="true" data-dismiss="modal" data-toggle="modal" data-target="#createAccountModal">Sign Up</a>
@@ -178,7 +178,7 @@
                   </div>
               </form>
               <div class="modal-footer" id="createAccountFooter">
-                <button type="submit" id="create-account-button" class="btn btn-primary" data-dismiss="modal">SIGN UP</button>
+                <button type="submit" id="createAccountButton" class="btn btn-primary" data-dismiss="modal">SIGN UP</button>
                 <div class="login-redirect">
                   <p>Already have an account?</p> 
                   <a aria-hidden="true" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Login</a>
@@ -192,58 +192,6 @@
         
         <!--<h4 class="card-field">{{ caption }}</h4> put this under the image on slide 1-->
         <!--<h4 class="card-field">{{ account.username }}</h4>-->
-        
-        <!--<script id="post-modal-template">
-        //   <div class="modal post-modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        //     <div class="modal-dialog" role="document">
-        //       <div class="modal-content">
-        //         <div class="modal-header">
-        //           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        //           <h4 class="post-modal-title" id="myModalLabel">YOUR POST</h4>
-        //         </div>
-        //         <form id="postForm" class="modal-body" data-toggle="validator" role="form">
-        //             <div class="form-group">
-        //               <label for="caption" class="control-label">Caption</label>
-        //               <input type="text" class="form-control" id="caption" required>
-        //             </div>
-        //             <div class="form-group">
-        //               <label for="age" class="control-label">Age</label>
-        //               <input type="number" class="form-control" id="age">
-        //             </div>
-        //             <div class="form-group">
-        //               <label for="gender" class="control-label">Gender</label>
-        //               <input type="text" class="form-control" id="gender">
-        //             </div>
-        //             <div class="form-group">
-        //               <label for="ethnicity" class="control-label">Ethnicity</label>
-        //               <input type="text" class="form-control" id="ethnicity">
-        //             </div>
-        //             <div class="form-group">
-        //               <label for="city" class="control-label">City</label>
-        //               <input type="text" class="form-control" id="city">
-        //             </div>
-        //             <div class="form-group">
-        //               <label for="profession" class="control-label">Profession</label>
-        //               <input type="text" class="form-control" id="profession">
-        //             </div>
-        //             <div class="form-group">
-        //               <label for="income">Income</label>
-        //               <select class="form-control" id="incomeSelect">
-        //                 <option selected="selected" value="Less than $25,000">Less than $25,000</option>
-        //                 <option value="$25,000-$50,000">$25,000-$50,000</option>
-        //                 <option value="$50,000-$75,000">$50,000-$75,000</option>
-        //                 <option value="$75,000-$100,000">$75,000-$100,000</option>
-        //                 <option value="More than $100,000">More than $100,000</option>
-        //               </select>
-        //             </div>
-        //         </form>
-        //         <div id="postFooter" class="modal-footer">
-        //           <button type="submit" id="post-button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
-        //         </div>
-        //       </div>
-        //     </div>
-        //   </div>
-        // </script> -->
         
         <script id="post-list-template" type="text/x-handlebars-template">
           <div>
