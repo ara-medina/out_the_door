@@ -69,20 +69,30 @@ def account_post():
         data = {"message": error.message}
         return Response(json.dumps(data), 422, mimetype="application/json")
         
-    account = Account(username=data["username"],
-        firstname=data["firstname"],
-        lastname=data["lastname"],
-        email=data["email"],
-        password=generate_password_hash(data["password"]))
-    session.add(account)
-    session.commit()
+    username_exists = session.query(Account).filter_by(username=data['username']).first()
+    email_exists = session.query(Account).filter_by(email=data['email']).first()
     
-    print("account committed")
-    print(account.as_dictionary())
-    data = json.dumps(account.as_dictionary())
-    headers = {"Location": url_for("posts_get")}
-    return Response(data, 201, headers=headers,
-                    mimetype="application/json")
+    if username_exists:
+        data = "This username is already taken. Please pick a new username."
+        return Response(data, 400, mimetype="application/json")
+    elif email_exists:
+        data = "This email address is already in use. Please provide a different email address."
+        return Response(data, 400, mimetype="application/json")
+    else:
+        account = Account(username=data["username"],
+            firstname=data["firstname"],
+            lastname=data["lastname"],
+            email=data["email"],
+            password=generate_password_hash(data["password"]))
+        session.add(account)
+        session.commit()
+        
+        print("account committed")
+        print(account.as_dictionary())
+        data = json.dumps(account.as_dictionary())
+        headers = {"Location": url_for("posts_get")}
+        return Response(data, 201, headers=headers,
+                        mimetype="application/json")
 
 @app.route("/api/login", methods=["POST"])
 def login_post():

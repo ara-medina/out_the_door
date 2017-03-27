@@ -121,11 +121,17 @@ outTheDoor.prototype.onAccountCreateButtonClicked = function(event) {
         type: 'POST',
         data: JSON.stringify(data),
         dataType: 'json',
-        contentType: 'application/json'
+        contentType: 'application/json',
+        error: function (xhr, ajaxOptions, thrownError) {
+            var error_message = xhr.responseText;
+            console.log(error_message);
+            alert(xhr.responseText);
+        }
     });
-
+    
     ajax.done(this.onCreateAccountDone.bind(this));
     ajax.fail(this.onFail.bind(this, "Create account"));
+    
 };
 
 outTheDoor.prototype.onCreateAccountDone = function(data) {
