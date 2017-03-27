@@ -69,13 +69,13 @@ def account_post():
         data = {"message": error.message}
         return Response(json.dumps(data), 422, mimetype="application/json")
         
-    username_exists = session.query(Account).filter_by(username=data['username']).first()
-    email_exists = session.query(Account).filter_by(email=data['email']).first()
+    username_taken = session.query(Account).filter_by(username=data['username']).first()
+    email_taken  = session.query(Account).filter_by(email=data['email']).first()
     
-    if username_exists:
+    if username_taken:
         data = "This username is already taken. Please pick a new username."
         return Response(data, 400, mimetype="application/json")
-    elif email_exists:
+    elif email_taken:
         data = "This email address is already in use. Please provide a different email address."
         return Response(data, 400, mimetype="application/json")
     else:
@@ -113,8 +113,8 @@ def login_post():
         data["post"] = post
     
     if not account or not check_password_hash(account.password, password):
-        flash("Incorrect username or password", "danger")
-        return redirect(url_for("posts_get")) #change this location
+        data = "Incorrect username or password"
+        return Response(data, 400, mimetype="application/json")
 
     login_user(account)
     
