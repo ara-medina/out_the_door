@@ -53,7 +53,7 @@
             <div class="posts col-sm-12 card-columns" id="posts">
                 <div id="postList"></div>
             </div>
-        </div>
+        </div>  
 
         <!-- Post Modal -->
         <div class="modal post-modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -80,9 +80,9 @@
                     <label for="ethnicity" class="control-label">Ethnicity</label>
                     <input type="text" class="form-control" id="ethnicity" value="">
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" id="locationField">
                     <label for="city" class="control-label">City</label>
-                    <input type="text" class="form-control" id="city" value="">
+                    <input type="text" class="form-control" id="city" value="" placeholder="Enter your city">
                   </div>
                   <div class="form-group">
                     <label for="profession" class="control-label">Profession</label>
@@ -210,6 +210,31 @@
               {{/each}}
           </div>
         </script>
+        <script>
+          // a script from Google included to help autocomplete the city field in the post object
+          var placeSearch, autocomplete;
+          var componentForm = {
+            street_number: 'short_name',
+            route: 'long_name',
+            locality: 'long_name',
+            administrative_area_level_1: 'short_name',
+            country: 'long_name',
+            postal_code: 'short_name'
+          };
 
+          function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('city')),
+                {types: ['geocode']});
+    
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            autocomplete.addListener('place_changed', fillInAddress);
+          }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwhkjjo_OO6O2V9MyBIrJzW153gcN3EAg&libraries=places&callback=initAutocomplete"
+            async defer></script>
     </body>
 </html>

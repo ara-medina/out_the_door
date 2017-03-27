@@ -220,3 +220,19 @@ div.account-redirect a {
     display: inline-block;
     padding-top: 6px;
 }
+
+/*styles to fix google location autocomplete not showing in modal */
+
+.pac-container {
+    background-color: #FFF;
+    z-index: 20;
+    position: fixed;
+    display: inline-block;
+    float: left;
+}
+.modal{
+    z-index: 20;   
+}
+.modal-backdrop{
+    z-index: 10;        
+}
