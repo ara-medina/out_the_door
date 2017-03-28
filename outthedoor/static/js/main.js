@@ -195,8 +195,8 @@ outTheDoor.prototype.onGetPostDone = function(data) {
     
     document.getElementById("caption").value = data["caption"];
     document.getElementById("age").value = data["age"];
-    document.getElementById("gender").value = data["gender"];
-    document.getElementById("ethnicity").value = data["ethnicity"];
+    document.getElementById("genderSelect").value = data["gender"];
+    document.getElementById("ethnicitySelect").value = data["ethnicity"];
     document.getElementById("city").value = data["city"];
     document.getElementById("profession").value = data["profession"];
     document.getElementById("incomeSelect").value = data["income"];
@@ -210,8 +210,8 @@ outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
     var data = {
         caption: $('#caption').val(),
         age: parseInt(age),
-        gender: $('#gender').val(),
-        ethnicity: $('#ethnicity').val(),
+        gender: $("#genderSelect").val(),
+        ethnicity: $('#ethnicitySelect').val(),
         city: $('#city').val(),
         profession: $('#profession').val(),
         income: $("#incomeSelect").val()
@@ -248,8 +248,8 @@ outTheDoor.prototype.onPostEditButtonClicked = function(id) {
     var data = {
         caption: $('#caption').val(),
         age: parseInt(age),
-        gender: $('#gender').val(),
-        ethnicity: $('#ethnicity').val(),
+        gender: $('#genderSelect').val(),
+        ethnicity: $('#ethnicitySelect').val(),
         city: $('#city').val(),
         profession: $('#profession').val(),
         income: $("#incomeSelect").val()
@@ -283,8 +283,8 @@ outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
     
     document.getElementById("caption").value = "";
     document.getElementById("age").value = "";
-    document.getElementById("gender").value = "";
-    document.getElementById("ethnicity").value = "";
+    document.getElementById("genderSelect").value = "";
+    document.getElementById("ethnicitySelect").value = "";
     document.getElementById("city").value = "";
     document.getElementById("profession").value = "";
     document.getElementById("incomeSelect").value = "";

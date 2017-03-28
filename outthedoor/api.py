@@ -184,7 +184,7 @@ def delete_post(id):
 def posts_post():
     """ Add a new post """
     data = request.json
-    print(current_user)
+    print(data)
     
     try: 
         validate(data, post_schema)

@@ -48,12 +48,63 @@
                     <button style="display: none" type="submit" class="btn popovers fa fa-cog col-sm-2" id="logoutPopover" data-toggle="popover" data-placement="bottom" data-content="Logout"></button>
                     <i style="display: none" class="fa fa-pencil col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#postModal"></i>
                     <i class="fa fa-user col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#createAccountModal"></i>
+                    <i class="fa fa-lightbulb-o col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#aboutModal"></i>
                 </div>
             </div>
             <div class="posts col-sm-12 card-columns" id="posts">
                 <div id="postList"></div>
             </div>
         </div>  
+        
+        <!--About Modal -->
+        <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">ABOUT</h4>
+              </div>
+              <div class="modal-body">
+                <p>Essentially, this project was born out of the assumption that 
+                other people are as nosy as I am and that they like getting a 
+                glimpse of what others are carrying around with them everyday. 
+                If my friend pulls out her makeup bag, I’ll always lean over and 
+                ask if I can snoop through it. Knowing what sorts of things people 
+                surround themselves with makes me feel like I know them a little 
+                better and have some insight into their daily rituals and routines.
+                </p>
+                <br>
+                <p>Out The Door is a way to share what the best products are and 
+                why we won’t leave the house without them. It’s also a way to give 
+                others more context about ourselves - each post gives you the 
+                option of (but doesn’t require) including information about 
+                yourself, such as age and profession.</p>
+                <br>
+                <p>This project is also an opportunity for people to show the things 
+                they bring with them everyday that are less glamorous. If you feel 
+                like you need to carry around pepper spray because you don’t feel 
+                safe in your neighborhood, or if you have an invisible disability 
+                that means you can’t leave the house without something, then 
+                you’re invited to share those things too. Eventually, data 
+                from Out The Door can be used to get a better understanding of 
+                what makes people feel comfortable walking out into the world 
+                and whether this changes based on socioeconomic factors.</p>
+                <br>
+                <hr>
+                <br>
+                <p>Out The Door is a Single Page App and API demo project built 
+                by Sandra Medina. The version that you are viewing is an MVP and 
+                is not meant for production.Languages used include HTML, CSS, 
+                JavaScript, and Python. Other tools used include Bootstrap, Google Places API, 
+                jQuery, AJAX, Flask, Flask-Login, PostgreSQL, and SQLAlchemy.</p>
+                <br>
+                <p>
+                  <a href="https://github.com/sandramedina/out_the_door">GitHub</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Post Modal -->
         <div class="modal post-modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -73,16 +124,32 @@
                     <input type="number" class="form-control" id="age" value="">
                   </div>
                   <div class="form-group">
-                    <label for="gender" class="control-label">Gender</label>
-                    <input type="text" class="form-control" id="gender" value="">
+                    <label for="gender">Gender</label>
+                    <select class="form-control" id="genderSelect">
+                      <option selected value="">Select from list</option>
+                      <option value="Female">Female</option>
+                      <option value="Male">Male</option>
+                      <option value="Trans*">Trans*</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
                   <div class="form-group">
-                    <label for="ethnicity" class="control-label">Ethnicity</label>
-                    <input type="text" class="form-control" id="ethnicity" value="">
+                    <label for="ethnicity">Ethnicity</label>
+                    <select class="form-control" id="ethnicitySelect">
+                      <option selected value="">Select from list</option>
+                      <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+                      <option value="Asian">Asian</option>
+                      <option value="Black or African American">Black or African American</option>
+                      <option value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
+                      <option value="White">White</option>
+                      <option value="Hispanic or Latino or Spanish Origin">Hispanic or Latino or Spanish Origin</option>
+                      <option value="Middle Eastern or North African">Middle Eastern or North African</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
                   <div class="form-group" id="locationField">
                     <label for="city" class="control-label">City</label>
-                    <input type="text" class="form-control" id="city" value="" placeholder="Enter your city">
+                    <input type="text" class="form-control" id="city" value="" placeholder="Start typing your city">
                   </div>
                   <div class="form-group">
                     <label for="profession" class="control-label">Profession</label>
@@ -91,7 +158,8 @@
                   <div class="form-group">
                     <label for="income">Income</label>
                     <select class="form-control" id="incomeSelect">
-                      <option selected="selected" value="Less than $25,000">Less than $25,000</option>
+                      <option selected value="">Select from list</option>
+                      <option value="Less than $25,000">Less than $25,000</option>
                       <option value="$25,000-$50,000">$25,000-$50,000</option>
                       <option value="$50,000-$75,000">$50,000-$75,000</option>
                       <option value="$75,000-$100,000">$75,000-$100,000</option>
@@ -147,7 +215,7 @@
               </div>
               <form id="signupForm" class="modal-body" data-toggle="validator" role="form">
                   <div class="form-group">
-                    <label for="accountUsername" class="form-control-label">Username</label>
+                    <label for="accountUsername" class="control-label">Username</label>
                     <input type="text" class="form-control" id="accountUsername" required>
                   </div>
                   <div class="form-group">
@@ -198,12 +266,12 @@
               {{#each posts}}
               <div class="card">
                   <div class="card-block">
-                      <h4 class="card-field">age: {{ age }}</h4>
-                      <h4 class="card-field">gender: {{ gender }}</h4>
-                      <h4 class="card-field">ethnicity: {{ ethnicity }}</h4>
-                      <h4 class="card-field">city: {{ city }}</h4>
-                      <h4 class="card-field">profession: {{ profession }}</h4>
-                      <h4 class="card-field">income: {{ income }}</h4>
+                      <h4 class="card-field">Age: {{ age }}</h4>
+                      <h4 class="card-field">Gender: {{ gender }}</h4>
+                      <h4 class="card-field">Ethnicity: {{ ethnicity }}</h4>
+                      <h4 class="card-field">City: {{ city }}</h4>
+                      <h4 class="card-field">Profession: {{ profession }}</h4>
+                      <h4 class="card-field">Income: {{ income }}</h4>
                   </div>
               </div>
   

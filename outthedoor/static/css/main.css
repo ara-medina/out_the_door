@@ -49,6 +49,11 @@ div.header a:hover {
     text-decoration: none;
 }
 
+div.header .fa-lightbulb-o {
+    float: right;
+    cursor: pointer;
+}
+
 div.header .fa-user {
     float: right;
     cursor: pointer;
@@ -133,7 +138,22 @@ h4.card-field {
 }
 
 .modal-body {
-    padding: 15px;
+    padding: 30px;
+}
+
+#aboutModal p {
+    font-family: 'Raleway', sans-serif;
+}
+
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+div.form-group label {
+    font-weight: normal;
 }
 
 .control-label {
