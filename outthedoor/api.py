@@ -14,8 +14,9 @@ from outthedoor import app
 from . import models
 from . import decorators
 from .database import session
-from .models import Post, Account
+from .models import Post, Account, Photo, File
 from .utils import upload_path
+from .config import TestingConfig
 
 # add ,"required": ["caption", "account"] ?? here 
 
@@ -36,6 +37,19 @@ post_schema = {
                 "lastname": {"type": "string"},
                 "email": {"type": "string"},
                 "password": {"type": "string"}
+            }
+        },
+        "photo": {
+            "type": "object",
+            "properties": {
+                "file" : {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"},
+                        "path": {"type": "string"}
+                        
+                    }
+                }
             }
         }
     }
@@ -87,8 +101,6 @@ def account_post():
         session.add(account)
         session.commit()
         
-        print("account committed")
-        print(account.as_dictionary())
         data = json.dumps(account.as_dictionary())
         headers = {"Location": url_for("posts_get")}
         return Response(data, 201, headers=headers,
@@ -150,7 +162,6 @@ def post_get(id):
     """ Single post endpoint """
     
     post = session.query(Post).get(id)
-    print(post.account.as_dictionary())
 
     if not post:
         message = "Could not find post with id {}".format(id)
@@ -184,7 +195,10 @@ def delete_post(id):
 def posts_post():
     """ Add a new post """
     data = request.json
-    print(data)
+
+    id = data["photo"]["id"]
+    photo = session.query(Photo).get(id)
+    print(photo)
     
     try: 
         validate(data, post_schema)
@@ -199,7 +213,9 @@ def posts_post():
         city=data["city"],
         profession=data["profession"],
         income=data["income"],
-        account=current_user)
+        account=current_user,
+        photo=photo)
+        
     session.add(post)
     session.commit()
 
@@ -214,7 +230,6 @@ def posts_post():
 def posts_edit(id):
     """Edit a post"""
     data = request.json
-    print(data)
     
     try: 
         validate(data, post_schema)
@@ -230,89 +245,133 @@ def posts_edit(id):
     post.city = data["city"]
     post.profession = data["profession"]
     post.income = data["income"]
+    # fix this
+    # post.photo = data["photo"]
     
     session.commit()
     
     data = json.dumps(post.as_dictionary())
-    headers = {"Location": url_for("post_get", id=post.id)}
+    headers = {"Location": url_for("posts_get")}
     return Response(data, 201, headers=headers, 
         mimetype="application/json")
+        
+# FILE ENDPOINTS
+def allowed_file(filename):
+    print("testing filename extension")
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in TestingConfig.ALLOWED_EXTENSIONS
+           
+@app.route("/api/files", methods=["POST"])
+@decorators.require("multipart/form-data")
+@decorators.accept("application/json")
+def file_post():
+    """Post an uploaded file to the database"""
     
-    
-# # PHOTO ENDPOINTS
-# @app.route("/api/photos", methods=["GET"])
-# @decorators.accept("application/json")
-# def photo_get():
-#     """Get a set of photos"""
-    
-#     photos = session.query(Photo)
-#     photos = photos.order_by(Photo.id)
-    
-#     data = json.dumps([photo.as_dictionary() for photo in photos])
-#     return Response(data, 200, mimetype="application/json")
-    
-# @app.route("/api/photos", methods=["POST"])
-# @decorators.accept("application/json")
-# @login_required
-# def photo_post():
-#     """Post a new photo"""
-    
-#     data = request.json
-    
-#     profile_id = data["profile"]["id"]
-#     file_id = data["file"]["id"]
-#     profile = session.query(Profile).get(id)
-#     file = session.query(File).get(id)
-    
-#     photo = Photo(profile=profile, file=file)
-#     session.add(photo)
-#     session.commit()
-    
-#     data = json.dumps(photo.as_dictionary())
-#     return Response(data, 201, mimetype="application/json")
-    
-# # FILE ENDPOINTS
-# @app.route("/api/files", methods=["GET"])
-# @decorators.accept("application/json")
-# def file_get():
-#     """Get files that have been uploaded"""
-    
-#     files = session.query(File)
-#     files = files.order_by(id)
-    
-#     data = json.dumps([file.as_dictionary() for file in files])
-#     return Response(data, 200, mimetype="application/json")
-    
-# @app.route("/api/files", methods=["POST"])
-# @decorators.require("multipart/form-data")
-# @decorators.accept("application/json")
-# @login_required
-# def file_post():
-#     """Post an uploaded file to the database"""
-#     # get the uploaded file; return an error if not found 
-#     file = request.files.get("file")
-#     if not file:
-#         data = {"message": "Could not find file data"}
-#         return Response(json.dumps(data), 422, mimetype="application/json")
+    # get the uploaded file; return an error if not found 
+    file = request.files.get("file")
+    print(file)
+    if not file:
+        data = {"message": "Could not find file data"}
+        return Response(json.dumps(data), 422, mimetype="application/json")
+        
+    allowed_file(file.filename)
 
-#     # give the file a safe name
-#     name = secure_filename(file.filename)
-#     # create a File object and add it to the db
-#     new_file = File(name=name)
-#     session.add(new_file)
-#     session.commit()
-#     # save the file to an uploads folder
-#     file.save(upload_path(name))
+    # give the file a safe name
+    name = secure_filename(file.filename)
+    
+    # create a File object and add it to the db
+    new_file = File(name=name)
+    session.add(new_file)
+    session.commit()
+    
+    # save the file to an uploads folder
+    file.save(upload_path(name))
 
-#     data = new_file.as_dictionary()
-#     return Response(json.dumps(data), 201, mimetype="application/json")
+    data = new_file.as_dictionary()
+    return Response(json.dumps(data), 201, mimetype="application/json")
+           
+# PHOTO ENDPOINTS
+@app.route("/api/photos", methods=["GET"])
+@decorators.accept("application/json")
+def photos_get():
+    """Get a list of photos"""
+    
+    photos = session.query(Photo)
+    photos = photos.order_by(Photo.id)
+    
+    data = json.dumps([photo.as_dictionary() for photo in photos])
+    return Response(data, 200, mimetype="application/json")
+    
+@app.route("/api/photos", methods=["POST"])
+@decorators.accept("application/json")
+def photo_post():
+    """Add a new photo"""
+    data = request.json
+    
+    try: 
+        validate(data, post_schema)
+    except ValidationError as error:
+        data = {"message": error.message}
+        return Response(json.dumps(data), 422, mimetype="application/json")
+        
+    id = data["file"]["id"]
+    file = session.query(File).get(id)
+    
+    photo = Photo(file=file)
+    session.add(photo)
+    session.commit()
+    
+    data = json.dumps(photo.as_dictionary())
+    return Response(data, 201, mimetype="application/json")
+    
+@app.route("/api/photos/<id>/edit", methods=["POST"])
+@decorators.accept("application/json")
+def photo_edit(id):
+    """Edit a photo"""
+    data = request.json
+    
+    try: 
+        validate(data, post_schema)
+    except ValidationError as error:
+        data = {"message": error.message}
+        return Response(json.dumps(data), 422, mimetype="application/json")
+    
+    # fix this
+    photo = session.query(Photo).get(id)
+    photo.file = data["file"]
+    photo.post = data["post"]
+    
+    session.commit()
+    
+    data = json.dumps(photo.as_dictionary())
+    headers = {"Location": url_for("posts_get")}
+    return Response(data, 201, headers=headers, 
+        mimetype="application/json")
+        
+@app.route("/api/photos/<int:id>", methods=["DELETE"])
+@decorators.accept("application/json")
+def delete_photo(id):
+    photo = session.query(Photo).get(id)
+    
+    if not photo:
+        message = "Could not find photo with id {}".format(id)
+        data = json.dumps({"message": message})
+        return Response(data, 404, mimetype="application/json")
+
+    session.delete(photo)
+    session.commit()
+
+    data = json.dumps([])
+    headers = {"Location": url_for("posts_get")}
+    return Response(data, 200, headers=headers,
+                    mimetype="application/json")
+    
     
 # # UPLOAD ENDPOINTS
-# # does this need a decorator?
-# @app.route("/uploads/<name>", methods=["GET"])
-# def uploaded_file(name):
-#     """Retrieve an uploaded file"""
-#     return send_from_directory(upload_path(), name)
+@app.route("/uploads/<name>", methods=["GET"])
+def uploaded_file(name):
+    """Retrieve an uploaded file"""
+    return send_from_directory(upload_path(), name)
     
 
     

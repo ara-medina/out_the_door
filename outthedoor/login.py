@@ -2,7 +2,7 @@ from flask_login import LoginManager
 
 from . import app
 from .database import session
-from .models import Account, Post
+from .models import Account, Post, Photo, File
 
 login_manager = LoginManager()
 login_manager.init_app(app)

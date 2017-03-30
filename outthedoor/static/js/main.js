@@ -30,11 +30,17 @@ var outTheDoor = function() {
                   
     // When the logout button is clicked call the onLogoutButtonClicked function
     $("#logoutPopover").on("click", this.onLogoutButtonClicked.bind(this));
+    
+    // When the user selects a file call the onFileAdded function
+    this.fileInput = $("#file-input");
+    this.fileInput.change(this.onFileAdded.bind(this));
                    
     this.postForm = $("#postModal");
     this.accountForm = $("#createAccountModal");
     this.loginForm = $("#loginModal");
     this.postList = $("#postList");
+    // update this
+    this.uploadForm = $("#postForm");
                    
     // Compile the post list template from the HTML file
     this.postListTemplate = Handlebars.compile($("#post-list-template").html());
@@ -42,6 +48,7 @@ var outTheDoor = function() {
     this.posts = [];
     this.post = [];
     this.accounts = [];
+    this.photos = [];
     
     // Get the current list of uploaded posts
     this.getPosts();
@@ -51,7 +58,7 @@ var outTheDoor = function() {
 
 outTheDoor.prototype.onLoginButtonClicked = function(event) {
     
-    // Create a FormData object from the upload form
+    // Create a data object from the upload form
     var data = {
         username: $('#loginUsername').val(),
         password: $('#loginPassword').val()
@@ -117,8 +124,8 @@ outTheDoor.prototype.onLogoutDone = function(data) {
 // ACCOUNT FUNCTIONS
 
 outTheDoor.prototype.onAccountCreateButtonClicked = function(event) {
-    // Create a FormData object from the upload form
     
+    // Create a data object from the upload form
     var data = {
         username: $('#accountUsername').val(),
         firstname: $('#accountFirstName').val(),
@@ -153,6 +160,81 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
     });
     
     $("#postButton").css("display","block");
+};
+
+// FILE FUNCTIONS
+
+outTheDoor.prototype.onFileAdded = function(event) {
+    var file = this.fileInput[0].files[0];
+    var name = file.name;
+    var size = file.size;
+    var type = file.type;
+    
+    console.log(file);
+
+    // Create a FormData object from the upload form
+    var data = new FormData(this.uploadForm[0]);
+    console.log(data);
+    
+    // Make a POST request to the file upload endpoint
+    var ajax = $.ajax('/api/files', {
+        type: 'POST',
+        xhr: this.createUploadXhr.bind(this),
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: 'json'
+    });
+    ajax.done(this.onFileUploadDone.bind(this));
+    ajax.fail(this.onFail.bind(this, "File upload"));
+};
+
+
+outTheDoor.prototype.createUploadXhr = function() {
+    // XHR file upload 
+    console.log("trying to create upload xhr");
+    var xhr = new XMLHttpRequest();
+    console.log(xhr)
+    if(xhr.upload) { // if upload property exists
+        xhr.upload.addEventListener('progress',
+                                    this.onUploadProgress.bind(this), false);
+    }
+    return xhr;
+};
+
+outTheDoor.prototype.onUploadProgress = function(event) {
+};
+
+outTheDoor.prototype.onFileUploadDone = function(data) {
+    // Called if the file upload succeeds
+    console.log("Uploading file succeeded");
+    
+    data = {
+        file: {
+            id: data.id,
+            name: data.name,
+            path: data.path
+        }
+    }
+    
+    // Make a POST request to add the photo
+    var ajax = $.ajax('/api/photos', {
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json'
+    });
+    ajax.done(this.onAddPhotoDone.bind(this));
+    ajax.fail(this.onFail.bind(this, "Adding photo"));
+};
+
+outTheDoor.prototype.onAddPhotoDone = function(data) {
+    // Add the photo to the photos array, and update the user interface
+    console.log("photo added, now trying to do more stuff");
+    this.photos.push(data);
+    console.log(this.photos);
+    // this.updateSongView();
 };
 
 // POST FUNCTIONS
@@ -193,6 +275,7 @@ outTheDoor.prototype.onGetPostDone = function(data) {
     $("#deletePostButton").css("display","block");
     $("#postButton").css("display","none");
     
+    // add photo here
     document.getElementById("caption").value = data["caption"];
     document.getElementById("age").value = data["age"];
     document.getElementById("genderSelect").value = data["gender"];
@@ -203,10 +286,11 @@ outTheDoor.prototype.onGetPostDone = function(data) {
 };
 
 outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
-
+    console.log("post create button clicked");
     var age = $('#age').val();
     
-    // Create a FormData object from the upload form
+    // Create a data object from the upload form
+    // add photo here
     var data = {
         caption: $('#caption').val(),
         age: parseInt(age),
@@ -214,7 +298,15 @@ outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
         ethnicity: $('#ethnicitySelect').val(),
         city: $('#city').val(),
         profession: $('#profession').val(),
-        income: $("#incomeSelect").val()
+        income: $("#incomeSelect").val(),
+        photo: {
+            id: this.photos[0].id,
+            file: {
+                id: this.photos[0].file.id,
+                name: this.photos[0].file.name,
+                path: this.photos[0].file.path
+            }
+        }
     };
 
     // Make a POST request to the file upload endpoint
@@ -244,7 +336,8 @@ outTheDoor.prototype.onPostEditButtonClicked = function(id) {
     
     var age = $('#age').val();
     
-    // Create a FormData object from the upload form
+    // Create a data object from the upload form
+    // add photo here
     var data = {
         caption: $('#caption').val(),
         age: parseInt(age),
@@ -281,6 +374,7 @@ outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
         dataType: 'json'
     });
     
+    // add photo here
     document.getElementById("caption").value = "";
     document.getElementById("age").value = "";
     document.getElementById("genderSelect").value = "";

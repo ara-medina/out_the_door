@@ -33,7 +33,7 @@ class Account(Base, UserMixin):
         }
         return account
 
-# Post model has a 1-to-1 relationship with Account, and a 1-to-many relationship with Photo
+# Post model has a 1-to-1 relationship with Account, and a 1-to-1 relationship with Photo
 class Post(Base):
     __tablename__ = "posts"
     
@@ -48,8 +48,7 @@ class Post(Base):
     datetime = Column(DateTime, default=datetime.datetime.now)
     
     account_id = Column(Integer, ForeignKey('accounts.id'))
-    
-    # photos = relationship("Photo", backref="profile")
+    photo_id = Column(Integer, ForeignKey('photos.id'))
     
     def as_dictionary(self):
         post = {
@@ -61,41 +60,42 @@ class Post(Base):
             "city": self.city,
             "profession": self.profession,
             "income": self.income,
-            "account": self.account.as_dictionary()
+            "account": self.account.as_dictionary(),
+            "photo": self.photo.as_dictionary()
         }
         return post
         
-# # File model has a 1-to-1 relationship with Photo
-# class File(Base):
-#     __tablename__ = "files"
+class File(Base):
+    __tablename__ = "files"
     
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, nullable=False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
     
-#     photo = relationship("Photo", uselist=False, backref="file")
+    photos = relationship("Photo", uselist=False, backref="file")
     
-#     def as_dictionary(self):
-#         return {
-#             "id": self.id,
-#             "name": self.name
-#             # "photo": self.photo.as_dictionary()
-#         }
+    def as_dictionary(self):
+        file = {
+            "id": self.id,
+            "name": self.name,
+            "path": url_for("uploaded_file", name=self.name)
+        }
+        return file
         
-# # Photo model has a many-to-1 relationship with Profile, and a 1-to-1 relationship with File
-# class Photo(Base):
-#     __tablename__ = "photos"
+class Photo(Base):
+    __tablename__ = "photos"
     
-#     id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
     
-#     profile_id = Column(Integer, ForeignKey("profiles.id"), nullable=False)
-#     file_id = Column(Integer, ForeignKey("files.id"), nullable=False)
+    file_id = Column(Integer, ForeignKey('files.id'), nullable=False)
     
-#     def as_dictionary(self):
-#         return {
-#             "id": self.id,
-#             "profile": self.profile.as_dictionary(),
-#             "file": self.file.as_dictionary()
-#         }
+    posts = relationship("Post", uselist=False, backref="photo")
+    
+    def as_dictionary(self):
+        photo = {
+            "id": self.id,
+            "file": self.file.as_dictionary()
+        }
+        return photo
 
 
 Base.metadata.create_all(engine)
