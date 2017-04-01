@@ -198,7 +198,6 @@ def posts_post():
 
     id = data["photo"]["id"]
     photo = session.query(Photo).get(id)
-    print(photo)
     
     try: 
         validate(data, post_schema)
@@ -230,12 +229,16 @@ def posts_post():
 def posts_edit(id):
     """Edit a post"""
     data = request.json
+    print(data)
     
     try: 
         validate(data, post_schema)
     except ValidationError as error:
         data = {"message": error.message}
         return Response(json.dumps(data), 422, mimetype="application/json")
+        
+    photoId = data["photo"]["id"]
+    photo = session.query(Photo).get(photoId)
         
     post = session.query(Post).get(id)
     post.caption = data["caption"]
@@ -245,8 +248,7 @@ def posts_edit(id):
     post.city = data["city"]
     post.profession = data["profession"]
     post.income = data["income"]
-    # fix this
-    # post.photo = data["photo"]
+    post.photo = photo
     
     session.commit()
     
@@ -269,7 +271,6 @@ def file_post():
     
     # get the uploaded file; return an error if not found 
     file = request.files.get("file")
-    print(file)
     if not file:
         data = {"message": "Could not find file data"}
         return Response(json.dumps(data), 422, mimetype="application/json")
@@ -301,6 +302,22 @@ def photos_get():
     
     data = json.dumps([photo.as_dictionary() for photo in photos])
     return Response(data, 200, mimetype="application/json")
+    
+@app.route("/api/photos/<int:id>", methods=["GET"])
+@decorators.accept("application/json")
+def photo_get(id):
+    """Get a single photo"""
+    
+    photo = session.query(Photo).get(id)
+    
+    if not photo:
+        message = "Could not find photo with id {}".format(id)
+        data = json.dumps({"message": message})
+        return Response(data, 404, mimetype="application/json")
+    
+    data = json.dumps([photo.as_dictionary()])
+    return Response(data, 200, mimetype="application/json")
+
     
 @app.route("/api/photos", methods=["POST"])
 @decorators.accept("application/json")

@@ -145,6 +145,38 @@ h4.card-field {
     padding: 30px;
 }
 
+#fileHelp {
+    display: block;
+}
+
+#caption-form-group {
+    margin-top: 60px;
+}
+
+#newPhotoButton {
+    border: 1px solid black;
+    font-family: 'Raleway', sans-serif;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+}
+
+#photoLabel {
+    display: block;
+}
+
+#newPhoto {
+    width: 100%;
+}
+
+#photoSuccess {
+    width: 100%;
+    margin-bottom: 20px;
+    float: left;
+    color: green;
+}
+
 #aboutModal p {
     font-family: 'Raleway', sans-serif;
 }

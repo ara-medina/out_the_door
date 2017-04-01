@@ -116,11 +116,19 @@
               </div>
               <form id="postForm" class="modal-body" data-toggle="validator" role="form">
                   <div class="form-group">
-                    <label for="photo">Photo Upload*</label>
+                    <label for="photo" id="photoLabel" >Photo*</label>
                     <input type="file" class="form-control-file" id="file-input" name="file" aria-describedby="fileHelp">
                     <small id="fileHelp" class="form-text text-muted">Photo upload required. Please select a .png, .jpg, or .jpeg.</small>
+                    <div id="newPhoto">
+                      <p style="display: none" class="col-sm-3" id="newPhotoButton">Change Photo</p>
+                    </div>
+                    <div id="photoSuccess" style="width: 100%">
+                      <p id="photoSuccessMsg" style="display: none">
+                        <span>Photo Upload Successful!</span>
+                      </p>
+                    </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" id="caption-form-group">
                     <label for="caption" class="control-label">Caption*</label>
                     <input type="text" class="form-control" id="caption" value="" required>
                   </div>

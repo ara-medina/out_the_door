@@ -5,6 +5,12 @@ var outTheDoor = function() {
         trigger: 'hover'
     });
     
+    $("#newPhotoButton").on("click", function() {
+        $("#photoSuccessMsg").css("display", "none");
+        $("#file-input").trigger("click");
+    });
+
+    
     // When the get post button is clicked call the onGetPost function
     $("#getPostButton").on("click", this.onGetPost.bind(this));
     
@@ -49,6 +55,7 @@ var outTheDoor = function() {
     this.post = [];
     this.accounts = [];
     this.photos = [];
+    this.photo = [];
     
     // Get the current list of uploaded posts
     this.getPosts();
@@ -169,12 +176,10 @@ outTheDoor.prototype.onFileAdded = function(event) {
     var name = file.name;
     var size = file.size;
     var type = file.type;
-    
-    console.log(file);
+
 
     // Create a FormData object from the upload form
     var data = new FormData(this.uploadForm[0]);
-    console.log(data);
     
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/files', {
@@ -193,9 +198,7 @@ outTheDoor.prototype.onFileAdded = function(event) {
 
 outTheDoor.prototype.createUploadXhr = function() {
     // XHR file upload 
-    console.log("trying to create upload xhr");
     var xhr = new XMLHttpRequest();
-    console.log(xhr)
     if(xhr.upload) { // if upload property exists
         xhr.upload.addEventListener('progress',
                                     this.onUploadProgress.bind(this), false);
@@ -206,9 +209,11 @@ outTheDoor.prototype.createUploadXhr = function() {
 outTheDoor.prototype.onUploadProgress = function(event) {
 };
 
+// PHOTO FUNCTIONS 
+
 outTheDoor.prototype.onFileUploadDone = function(data) {
     // Called if the file upload succeeds
-    console.log("Uploading file succeeded");
+    console.log("file upload successful");
     
     data = {
         file: {
@@ -230,11 +235,29 @@ outTheDoor.prototype.onFileUploadDone = function(data) {
 };
 
 outTheDoor.prototype.onAddPhotoDone = function(data) {
-    // Add the photo to the photos array, and update the user interface
-    console.log("photo added, now trying to do more stuff");
+    // Add the photo to the photos array, and then set this.photo variable to 
+    // data to use in creating a post
+    console.log("called on add photod done");
+    $('#photoSuccessMsg').css('display', 'block');
+    
     this.photos.push(data);
-    console.log(this.photos);
-    // this.updateSongView();
+    this.photo = data
+};
+
+outTheDoor.prototype.onGetPhoto = function(id) {
+    // Make a get request to get a single photo
+    
+    var ajax = $.ajax('/api/photos/' + id, {
+        type: 'GET',
+        dataType: 'json'
+    });
+    
+    ajax.done(this.onGetPhotoDone.bind(this));
+    ajax.fail(this.onFail.bind(this, "Getting single photo information"));
+};
+
+outTheDoor.prototype.onGetPhotoDone = function(data) {
+    this.photo = data;
 };
 
 // POST FUNCTIONS
@@ -275,7 +298,7 @@ outTheDoor.prototype.onGetPostDone = function(data) {
     $("#deletePostButton").css("display","block");
     $("#postButton").css("display","none");
     
-    // add photo here
+    
     document.getElementById("caption").value = data["caption"];
     document.getElementById("age").value = data["age"];
     document.getElementById("genderSelect").value = data["gender"];
@@ -283,30 +306,34 @@ outTheDoor.prototype.onGetPostDone = function(data) {
     document.getElementById("city").value = data["city"];
     document.getElementById("profession").value = data["profession"];
     document.getElementById("incomeSelect").value = data["income"];
+    
+    $("#file-input").css("display","none");
+    $("#fileHelp").css("display","none");
+    $("#newPhotoButton").css("display","block");
+   
 };
 
 outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
-    console.log("post create button clicked");
     var age = $('#age').val();
+    console.log(this.photo);
     
     // Create a data object from the upload form
-    // add photo here
     var data = {
+        photo: {
+            id: this.photo.id,
+            file: {
+                id: this.photo.file.id,
+                name: this.photo.file.name,
+                path: this.photo.file.path
+            }
+        },
         caption: $('#caption').val(),
         age: parseInt(age),
         gender: $("#genderSelect").val(),
         ethnicity: $('#ethnicitySelect').val(),
         city: $('#city').val(),
         profession: $('#profession').val(),
-        income: $("#incomeSelect").val(),
-        photo: {
-            id: this.photos[0].id,
-            file: {
-                id: this.photos[0].file.id,
-                name: this.photos[0].file.name,
-                path: this.photos[0].file.path
-            }
-        }
+        income: $("#incomeSelect").val()
     };
 
     // Make a POST request to the file upload endpoint
@@ -328,6 +355,7 @@ outTheDoor.prototype.onAddPostDone = function(data) {
     
     var postId = data["id"];
     this.onGetPost(postId);
+    
 };
 
 outTheDoor.prototype.onPostEditButtonClicked = function(id) {
@@ -339,6 +367,14 @@ outTheDoor.prototype.onPostEditButtonClicked = function(id) {
     // Create a data object from the upload form
     // add photo here
     var data = {
+       photo: {
+            id: this.photo.id,
+            file: {
+                id: this.photo.file.id,
+                name: this.photo.file.name,
+                path: this.photo.file.path
+            }
+        },
         caption: $('#caption').val(),
         age: parseInt(age),
         gender: $('#genderSelect').val(),
@@ -347,6 +383,8 @@ outTheDoor.prototype.onPostEditButtonClicked = function(id) {
         profession: $('#profession').val(),
         income: $("#incomeSelect").val()
     };
+    
+    console.log(data)
 
     // Make a POST request to the post edit endpoint
     var ajax = $.ajax('/api/post/' + id + '/edit', {
@@ -374,7 +412,6 @@ outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
         dataType: 'json'
     });
     
-    // add photo here
     document.getElementById("caption").value = "";
     document.getElementById("age").value = "";
     document.getElementById("genderSelect").value = "";
@@ -382,6 +419,7 @@ outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
     document.getElementById("city").value = "";
     document.getElementById("profession").value = "";
     document.getElementById("incomeSelect").value = "";
+    document.getElementById("file-input").value = "";
     
     $("#editPostButton").css("display","none");
     $("#deletePostButton").css("display","none");
