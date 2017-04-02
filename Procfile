@@ -1,1 +1,1 @@
-web: gunicorn outthedoor:app --log-file=-
+web: gunicorn outthedoor-test:app --log-file=-
