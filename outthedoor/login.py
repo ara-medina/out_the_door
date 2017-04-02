@@ -7,7 +7,6 @@ from .models import Account, Post, Photo, File
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-login_manager.login_view = "/api/accounts" #not totally sure this will work so come back to it
 login_manager.login_message_category = "danger"
 
 

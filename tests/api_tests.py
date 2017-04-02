@@ -243,7 +243,6 @@ class TestAPI(unittest.TestCase):
             "ethnicity": "Hispanic",
             "city": "Boston",
             "profession": "Doctor",
-            "income": 3000000,
             "account": self.account.as_dictionary()
         }
         
@@ -279,7 +278,6 @@ class TestAPI(unittest.TestCase):
             ethnicity="White",
             city="Seattle",
             profession="Developer",
-            income=10000000,
             account=self.account)
  
         session.add(post)
@@ -292,7 +290,6 @@ class TestAPI(unittest.TestCase):
             "ethnicity": "White",
             "city": "Seattle",
             "profession": "Developer",
-            "income": 10000000,
             "account": self.account.as_dictionary()
         }
         

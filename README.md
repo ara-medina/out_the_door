@@ -1,4 +1,4 @@
-# out_the_door
+# Out The Door
 in progress: an API built with Python, Flask, SQLAlchemy and PostgreSQL that collects info from users about the objects they carry around with them everyday.
 
 _________________________

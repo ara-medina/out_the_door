@@ -2,40 +2,44 @@ var outTheDoor = function() {
     
     $('#logoutPopover').popover({
         html:true,
-        trigger: 'hover'
+        trigger: 'hover click'
     });
     
-    $("#newPhotoButton").on("click", function() {
+    $("#newPhotoButton").on("click touchstart", function() {
         $("#photoSuccessMsg").css("display", "none");
         $("#file-input").trigger("click");
+    });
+    
+    $("#file-input").on("click touchstart", function() {
+        $("#photoSuccessMsg").css("display", "none");
     });
 
     
     // When the get post button is clicked call the onGetPost function
-    $("#getPostButton").on("click", this.onGetPost.bind(this));
+    $("#getPostButton").on("click touchstart", this.onGetPost.bind(this));
     
     // When the save post button is clicked call the onPostCreateButtonClicked function
-    $("#postModal").on("click", "#postButton",
+    $("#postModal").on("click touchstart", "#postButton",
                   this.onPostCreateButtonClicked.bind(this));
     
     // When the edit post button is clicked call the onPostEditButtonClicked function
-    $("#postModal").on("click", "#editPostButton",
+    $("#postModal").on("click touchstart", "#editPostButton",
                   this.onPostEditButtonClicked.bind(this));
                   
     // When the edit post button is clicked call the onPostEditButtonClicked function
-    $("#postModal").on("click", "#deletePostButton",
+    $("#postModal").on("click touchstart", "#deletePostButton",
                   this.onPostDeleteButtonClicked.bind(this));
     
     // When the save account button is clicked call the onAccountCreateButtonClicked function
-    $("#createAccountModal").on("click", "#createAccountButton",
+    $("#createAccountModal").on("click touchstart", "#createAccountButton",
                   this.onAccountCreateButtonClicked.bind(this));
                   
     // When the login button is clicked call the onLoginButtonClicked function
-    $("#loginModal").on("click", "#loginButton",
+    $("#loginModal").on("click touchstart", "#loginButton",
                   this.onLoginButtonClicked.bind(this));
                   
     // When the logout button is clicked call the onLogoutButtonClicked function
-    $("#logoutPopover").on("click", this.onLogoutButtonClicked.bind(this));
+    $("#logoutPopover").on("click touchstart", this.onLogoutButtonClicked.bind(this));
     
     // When the user selects a file call the onFileAdded function
     this.fileInput = $("#file-input");
@@ -101,8 +105,8 @@ outTheDoor.prototype.onLoginDone = function(data) {
         this.onGetPost(postId);
     };
         
-    $("#logoutPopover").css("display","block");
-    $(".fa-pencil").css("display","block");
+    $("#logoutPopover").css("display","inline-block");
+    $(".fa-pencil").css("display","inline-block");
     $(".fa-user").css("display","none");
     
 };
@@ -124,7 +128,7 @@ outTheDoor.prototype.onLogoutDone = function(data) {
     $("#postButton").css("display","none");
     $("#editPostButton").css("display","none");
     $("#deletePostButton").css("display","none");
-    $(".fa-user").css("display","block");
+    $(".fa-user").css("display","inline-block");
     
 };
 
@@ -161,7 +165,7 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
     // Add the account to the accounts array, and display success message
     this.accounts.push(data);
     $(".alert").show();
-    $(".alert").on("click", "#loginAlert", function() {
+    $(".alert").on("click touchstart", "#loginAlert", function() {
         $(".alert").hide();
         $('#loginModal').modal('show');
     });
@@ -305,7 +309,6 @@ outTheDoor.prototype.onGetPostDone = function(data) {
     document.getElementById("ethnicitySelect").value = data["ethnicity"];
     document.getElementById("city").value = data["city"];
     document.getElementById("profession").value = data["profession"];
-    document.getElementById("incomeSelect").value = data["income"];
     
     $("#file-input").css("display","none");
     $("#fileHelp").css("display","none");
@@ -314,9 +317,10 @@ outTheDoor.prototype.onGetPostDone = function(data) {
 };
 
 outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
-    var age = $('#age').val();
-    console.log(this.photo);
     
+    // handling age data; parsing into integer if provided
+    var age = parseInt($('#age').val())
+
     // Create a data object from the upload form
     var data = {
         photo: {
@@ -328,13 +332,14 @@ outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
             }
         },
         caption: $('#caption').val(),
-        age: parseInt(age),
+        age: age,
         gender: $("#genderSelect").val(),
         ethnicity: $('#ethnicitySelect').val(),
         city: $('#city').val(),
-        profession: $('#profession').val(),
-        income: $("#incomeSelect").val()
+        profession: $('#profession').val()
     };
+    
+    console.log(data);
 
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/posts', {
@@ -355,6 +360,8 @@ outTheDoor.prototype.onAddPostDone = function(data) {
     
     var postId = data["id"];
     this.onGetPost(postId);
+    
+    $("#photoSuccessMsg").css("display", "none");
     
 };
 
@@ -380,8 +387,7 @@ outTheDoor.prototype.onPostEditButtonClicked = function(id) {
         gender: $('#genderSelect').val(),
         ethnicity: $('#ethnicitySelect').val(),
         city: $('#city').val(),
-        profession: $('#profession').val(),
-        income: $("#incomeSelect").val()
+        profession: $('#profession').val()
     };
     
     console.log(data)
@@ -418,7 +424,6 @@ outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
     document.getElementById("ethnicitySelect").value = "";
     document.getElementById("city").value = "";
     document.getElementById("profession").value = "";
-    document.getElementById("incomeSelect").value = "";
     document.getElementById("file-input").value = "";
     
     $("#editPostButton").css("display","none");

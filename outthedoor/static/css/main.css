@@ -1,3 +1,7 @@
+body {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
 .wrapper {
     margin-top: 60px;
     margin-bottom: 40px;
@@ -24,10 +28,11 @@ div.header {
     font-size: 42px;
     font-family: 'Poiret One', sans-serif;
     margin-bottom: 60px;
-    display: flex;
     align-items: center;
     justify-content: center;
+    display: block;
 }
+
 
 div.title-wrapper {
     padding: 0;
@@ -36,13 +41,14 @@ div.title-wrapper {
 
 div.nav {
     padding: 0;
+    text-align: center;
 }
 
 div.header .title {
     color: black;
     padding: 15px;
     border: 3px solid black;
-    float: right;
+    display: block;
 }
 
 div.header a:hover {
@@ -50,28 +56,38 @@ div.header a:hover {
 }
 
 div.header .fa-lightbulb-o {
-    float: right;
+    font-size: 75%;
+    padding-right: 5px;
+    padding-left: 5px;
     cursor: pointer;
+    display: inline-block;
 }
 
 div.header .fa-user {
-    float: right;
+    font-size: 75%;
+    padding-right: 5px;
+    padding-left: 5px;
     cursor: pointer;
+    display: inline-block;
 }
 
 div.header .fa-pencil {
-    float: right;
+    font-size: 75%;
+    padding-right: 5px;
+    padding-left: 5px;
     cursor: pointer;
+    display: inline-block;
 }
 
 div.header .fa-cog {
-    float: right;
-    font-size: 42px;
-    padding: 0;
     color: black;
     border: none;
     background-color: white;
+    font-size: 75%;
+    padding-right: 5px;
+    padding-left: 5px;
     cursor: pointer;
+    display: inline-block;
 }
 
 button#logoutPopover:focus {
@@ -95,8 +111,7 @@ div.posts {
 }
 
 .card-columns {
-    column-count: 5;
-    column-gap: 1.25rem;
+    column-count: 1;
 }
 
 .card {
@@ -247,7 +262,6 @@ div.form-group label {
 
 div.login-redirect {
     display: inline-block;
-    float: right;
     font-family: 'Raleway', sans-serif;
 }
 
@@ -291,4 +305,65 @@ div.account-redirect a {
 }
 .modal-backdrop{
     z-index: 10;        
+}
+
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    div.header {
+        display: flex;
+    }
+    
+    div.header .title {
+        float: right;
+        display: inline;
+    }
+    
+    div.header .fa-lightbulb-o {
+        float: right;
+        font-size: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    div.header .fa-user {
+        float: right;
+        font-size: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    div.header .fa-pencil {
+        float: right;
+        font-size: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    div.header .fa-cog {
+        float: right;
+        font-size: 42px;
+        font-size: 100%;
+    }
+    
+    .card-columns {
+        column-count: 5;
+        column-gap: 1.25rem;
+    }
+    
+    div.login-redirect {
+        float: right;
+    }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+    
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+
+    
 }

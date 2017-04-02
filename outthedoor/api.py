@@ -18,7 +18,6 @@ from .models import Post, Account, Photo, File
 from .utils import upload_path
 from .config import TestingConfig
 
-# add ,"required": ["caption", "account"] ?? here 
 
 post_schema = {
     "properties": {
@@ -28,7 +27,6 @@ post_schema = {
         "ethnicity": {"type": "string"},
         "city": {"type": "string"},
         "profession": {"type": "string"},
-        "income": {"type": "string"},
         "account": {
             "type": "object",
             "properties": {
@@ -116,6 +114,10 @@ def login_post():
     # check that username exists
     account = session.query(Account).filter_by(username=username).first()
     
+    if not account or not check_password_hash(account.password, password):
+        data = "Incorrect username or password"
+        return Response(data, 400, mimetype="application/json")
+    
     # if the user has previously posted, find the post that is associated with the account
     if account.posts:
         post = account.posts
@@ -123,10 +125,6 @@ def login_post():
     
         # add that post to the data dictionary
         data["post"] = post
-    
-    if not account or not check_password_hash(account.password, password):
-        data = "Incorrect username or password"
-        return Response(data, 400, mimetype="application/json")
 
     login_user(account)
     
@@ -195,14 +193,17 @@ def delete_post(id):
 def posts_post():
     """ Add a new post """
     data = request.json
+    print(data)
 
     id = data["photo"]["id"]
     photo = session.query(Photo).get(id)
     
     try: 
         validate(data, post_schema)
+        print("validated")
     except ValidationError as error:
         data = {"message": error.message}
+        print("not validated")
         return Response(json.dumps(data), 422, mimetype="application/json")
         
     post = Post(caption=data["caption"], 
@@ -211,9 +212,10 @@ def posts_post():
         ethnicity=data["ethnicity"],
         city=data["city"],
         profession=data["profession"],
-        income=data["income"],
         account=current_user,
         photo=photo)
+        
+    print(post)
         
     session.add(post)
     session.commit()
@@ -247,7 +249,6 @@ def posts_edit(id):
     post.ethnicity = data["ethnicity"]
     post.city = data["city"]
     post.profession = data["profession"]
-    post.income = data["income"]
     post.photo = photo
     
     session.commit()

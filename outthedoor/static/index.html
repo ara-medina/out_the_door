@@ -40,18 +40,18 @@
               <p>Account Successfully Created!<br></p>
               <a id="loginAlert" aria-hidden="true">LOGIN</a>
             </div>
-            <div class="header col-sm-12">
-                <div class="title-wrapper col-sm-8">
-                    <a class="title col-sm-6">Out The Door</a>
+            <div class="header col-xs-24 col-sm-12">
+                <div class="title-wrapper col-xs-24 col-sm-8">
+                    <a class="title col-xs-24 col-sm-6">Out The Door</a>
                 </div>
-                <div class="nav col-sm-4">
+                <div class="nav col-xs-24 col-sm-4">
                     <button style="display: none" type="submit" class="btn popovers fa fa-cog col-sm-2" id="logoutPopover" data-toggle="popover" data-placement="bottom" data-content="Logout"></button>
                     <i style="display: none" class="fa fa-pencil col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#postModal"></i>
                     <i class="fa fa-user col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#createAccountModal"></i>
                     <i class="fa fa-lightbulb-o col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#aboutModal"></i>
                 </div>
             </div>
-            <div class="posts col-sm-12 card-columns" id="posts">
+            <div class="posts col-xs-24 col-sm-12 card-columns" id="posts">
                 <div id="postList"></div>
             </div>
         </div>  
@@ -76,9 +76,8 @@
                 <br>
                 <p>Out The Door is a way to share what the best products are and 
                 why we won’t leave the house without them. It’s also a way to give 
-                others more context about ourselves - each post gives you the 
-                option of (but doesn’t require) including information about 
-                yourself, such as age and profession.</p>
+                others more context about ourselves - each post asks you to include 
+                information about yourself, such as age and profession.</p>
                 <br>
                 <p>This project is also an opportunity for people to show the things 
                 they bring with them everyday that are less glamorous. If you feel 
@@ -94,7 +93,7 @@
                 <br>
                 <p>Out The Door is a Single Page App and API demo project built 
                 by Sandra Medina. The version that you are viewing is an MVP and 
-                is not meant for production.Languages used include HTML, CSS, 
+                is not meant for production. Languages used include HTML, CSS, 
                 JavaScript, and Python. Other tools used include Bootstrap, Google Places API, 
                 jQuery, AJAX, Flask, Flask-Login, PostgreSQL, and SQLAlchemy.</p>
                 <br>
@@ -167,17 +166,6 @@
                   <div class="form-group">
                     <label for="profession" class="control-label">Profession</label>
                     <input type="text" class="form-control" id="profession" value="">
-                  </div>
-                  <div class="form-group">
-                    <label for="income">Income</label>
-                    <select class="form-control" id="incomeSelect">
-                      <option selected value="">Select from list</option>
-                      <option value="Less than $25,000">Less than $25,000</option>
-                      <option value="$25,000-$50,000">$25,000-$50,000</option>
-                      <option value="$50,000-$75,000">$50,000-$75,000</option>
-                      <option value="$75,000-$100,000">$75,000-$100,000</option>
-                      <option value="More than $100,000">More than $100,000</option>
-                    </select>
                   </div>
               </form>
               <div id="postFooter" class="modal-footer">
@@ -271,21 +259,18 @@
 
         <!-- Handlebars templates -->
         
-        <!--<h4 class="card-field">{{ caption }}</h4> put this under the image on slide 1-->
-        <!--<h4 class="card-field">{{ account.username }}</h4>-->
-        
         <script id="post-list-template" type="text/x-handlebars-template">
-          <div>
+          <div style="width: 100%" class="col-xs-24">
               {{#each posts}}
               <div class="card">
                   <img class="card-img-top" src="{{ photo.file.path }}" alt="post photo">
                   <div class="card-block">
+                      <h4 class="card-field">{{ caption }}</h4>
                       <h4 class="card-field">Age: {{ age }}</h4>
                       <h4 class="card-field">Gender: {{ gender }}</h4>
                       <h4 class="card-field">Ethnicity: {{ ethnicity }}</h4>
                       <h4 class="card-field">City: {{ city }}</h4>
                       <h4 class="card-field">Profession: {{ profession }}</h4>
-                      <h4 class="card-field">Income: {{ income }}</h4>
                   </div>
               </div>
   
