@@ -1,7 +1,7 @@
 import os
     
 class DevelopmentConfig(object):
-    DATABASE_URI = "postgresql://ubuntu:thinkful@localhost:5432/outthedoor"
+    DATABASE_URI = os.environ.get('DATABASE_URL')
     DEBUG = True
     UPLOAD_FOLDER = "uploads"
     ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
