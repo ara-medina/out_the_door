@@ -6,7 +6,7 @@ app = Flask(__name__)
 config_path = os.environ.get("CONFIG_PATH", "outthedoor.config.DevelopmentConfig")
 app.config.from_object(config_path)
 
-# from . import api
+from . import api
 from . import views
 from . import login
 
