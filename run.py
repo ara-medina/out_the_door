@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash
 
 from outthedoor import app
 from outthedoor.database import session
-from outthedoor.models import Post
+from outthedoor.models import Post, Account, Photo, File
 
 def run():
     port = int(os.environ.get('PORT', 8080))
