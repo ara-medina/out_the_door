@@ -275,8 +275,26 @@
         </div>
 
         <!-- Handlebars templates -->
-
+        
         <script id="post-list-template" type="text/x-handlebars-template">
+          <div>
+              {{#each posts}}
+              <div class="card">
+                  <div class="card-block">
+                      <h4 class="card-field">Age: {{ age }}</h4>
+                      <h4 class="card-field">Gender: {{ gender }}</h4>
+                      <h4 class="card-field">Ethnicity: {{ ethnicity }}</h4>
+                      <h4 class="card-field">City: {{ city }}</h4>
+                      <h4 class="card-field">Profession: {{ profession }}</h4>
+                      <h4 class="card-field">Income: {{ income }}</h4>
+                  </div>
+              </div>
+  
+              {{/each}}
+          </div>
+        </script>
+
+        <!-- <script id="post-list-template" type="text/x-handlebars-template">
           {{#each posts}}
           <div class="w3-content w3-display-container col-xs-24" id="test" style="width: 100%">
             <div class="card mySlides card1" onclick="currentDiv(2)">
@@ -332,7 +350,7 @@
             x[slideIndex-1].style.display = "inline-block";  
             dots[slideIndex-1].className += " w3-white";
           }
-        </script>
+        </script> -->
         <script>
           // a script from Google included to help autocomplete the city field in the post object
           var placeSearch, autocomplete;
