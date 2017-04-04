@@ -107,6 +107,7 @@ div.header .fa-cog {
 div.posts {
     background-color: #F5F5F5;
     border-radius: 5px;
+    height: auto;
 }
 
 .card img {
@@ -155,6 +156,18 @@ div.posts {
     background-color: white;
     font-family: 'Open Sans', sans-serif;
     width: 100%;
+}
+
+.w3-content {
+    height: auto;
+}
+
+.card1 {
+    height: auto;
+}
+
+.card-img-top {
+    height: auto;
 }
 
 .w3-center {

@@ -278,15 +278,15 @@
 
         <script id="post-list-template" type="text/x-handlebars-template">
           {{#each posts}}
-          <div class="w3-content w3-display-container col-xs-24" id="" style="width: 100%">
-            <div class="card mySlides" onclick="currentDiv(2)">
-                <img class="card-img-top" src="{{ photo.file.path }}" alt="post photo">
-                <div class="card-block">
+          <div class="w3-content w3-display-container col-xs-24" id="test" style="width: 100%">
+            <div class="card mySlides card1" onclick="currentDiv(2)">
+                <img class="card-img-top" id="postImg" src="{{ photo.file.path }}" alt="post photo">
+                <div class="card-block card1-block">
                     <h4 class="card-field">{{ caption }}</h4>
                 </div>
             </div>
-            <div class="card mySlides" style="display: none" onclick="currentDiv(1)">
-                <div class="card-block">
+            <div class="card mySlides card2" style="display: none" onclick="currentDiv(1)">
+                <div class="card-block card2-block">
                     <h4 class="card-field">Age: {{ age }}</h4>
                     <h4 class="card-field">Gender: {{ gender }}</h4>
                     <h4 class="card-field">Ethnicity: {{ ethnicity }}</h4>

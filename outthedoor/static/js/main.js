@@ -262,6 +262,8 @@ outTheDoor.prototype.onGetPhotoDone = function(data) {
 
 outTheDoor.prototype.getPosts = function() {
     // Make a get request to list all of the posts
+    console.log("called getPosts");
+    
     var ajax = $.ajax('/api/posts', {
         type: 'GET',
         dataType: 'json'
@@ -272,9 +274,66 @@ outTheDoor.prototype.getPosts = function() {
 };
 
 outTheDoor.prototype.onGetPostsDone = function(data) {
+    console.log("called onGetPostsDone");
     // Update the posts array, and update the user interface
     this.posts = data;
     this.updatePostView();
+    
+    // for (i=0; i < cards.length; i++) {
+    //     var card_height = $(".w3-content").outerHeight();
+    //     console.log(card_height);
+    //     $(".card2").outerHeight(card_height);
+    // }
+    
+    
+    // $('.card1-block').each(function() {
+    //     var textHeight = $(this).height();
+    //     $('.card-img-top').on('load', function(){
+    //         var imgHeight = $(this).height();
+    //         var cardHeight = textHeight + imgHeight;
+    //         console.log(cardHeight);
+    //         $('.card2-block').each(function() {
+    //             $(this).height(cardHeight);
+    //             console.log($(this).height());
+    //         });
+    //     });
+        
+    // });
+    
+    // $('.w3-content').each(function() {
+    //     var textHeight = $(".card1-block").outerHeight();
+    //     console.log(textHeight);
+    //     $('.card-img-top').on('load', function(){
+    //         var imgHeight = $(this).height();
+    //         console.log(imgHeight);
+    //         var cardHeight = textHeight + imgHeight - 5;
+    //         console.log(cardHeight);
+    //         $('.card2-block').each(function() {
+    //             $(this).height(cardHeight);
+    //         });
+    //     });
+    // });
+    
+    
+    
+    
+
+    
+    // $('#card1-block').on('load', function(){
+    //     var blockHeight = $(this).height();
+    //     console.log(blockHeight);
+    // });
+    
+    // var height = $('.card-block').outerHeight();
+    // console.log(height);
+    
+    // var elem1 = document.getElementById("test");
+    // var style = window.getComputedStyle(elem1, null).getPropertyValue("height");
+    // console.log(style);
+    
+    // var height = $('.card-img-top').outerHeight();
+    // console.log(height);
+
 
 };
 
