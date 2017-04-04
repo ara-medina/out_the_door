@@ -1,10 +1,5 @@
 var outTheDoor = function() {
-    
-    $('#logoutPopover').popover({
-        html:true,
-        trigger: 'hover click'
-    });
-    
+
     $("#newPhotoButton").on("click touchstart", function() {
         $("#photoSuccessMsg").css("display", "none");
         $("#file-input").trigger("click");
@@ -14,7 +9,6 @@ var outTheDoor = function() {
         $("#photoSuccessMsg").css("display", "none");
     });
 
-    
     // When the get post button is clicked call the onGetPost function
     $("#getPostButton").on("click touchstart", this.onGetPost.bind(this));
     
@@ -39,7 +33,7 @@ var outTheDoor = function() {
                   this.onLoginButtonClicked.bind(this));
                   
     // When the logout button is clicked call the onLogoutButtonClicked function
-    $("#logoutPopover").on("click touchstart", this.onLogoutButtonClicked.bind(this));
+    $("#logoutAgree").on("click touchstart", this.onLogoutButtonClicked.bind(this));
     
     // When the user selects a file call the onFileAdded function
     this.fileInput = $("#file-input");
@@ -105,7 +99,7 @@ outTheDoor.prototype.onLoginDone = function(data) {
         this.onGetPost(postId);
     };
         
-    $("#logoutPopover").css("display","inline-block");
+    $("#logoutButton").css("display","inline-block");
     $(".fa-pencil").css("display","inline-block");
     $(".fa-user").css("display","none");
     
@@ -123,7 +117,7 @@ outTheDoor.prototype.onLogoutButtonClicked = function(event) {
 outTheDoor.prototype.onLogoutDone = function(data) {
     this.getPosts();
     
-    $("#logoutPopover").css("display","none");
+    $("#logoutButton").css("display","none");
     $(".fa-pencil").css("display","none");
     $("#postButton").css("display","none");
     $("#editPostButton").css("display","none");
@@ -281,6 +275,7 @@ outTheDoor.prototype.onGetPostsDone = function(data) {
     // Update the posts array, and update the user interface
     this.posts = data;
     this.updatePostView();
+
 };
 
 outTheDoor.prototype.onGetPost = function(id) {

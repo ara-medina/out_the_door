@@ -83,22 +83,25 @@ div.header .fa-cog {
     color: black;
     border: none;
     background-color: white;
+    outline: none;
     font-size: 75%;
     padding-right: 5px;
     padding-left: 5px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     cursor: pointer;
     display: inline-block;
 }
 
-button#logoutPopover:focus {
-    outline: none;
+#logoutForm {
+    text-align: center;
 }
 
-div.popover-content {
-    color: black;
-    font-size: 14px;
+#logoutForm button {
+    background: none;
     font-family: 'Raleway', sans-serif;
-    cursor: pointer;
+    font-size: 16px;
+    border: none;
 }
 
 div.posts {
@@ -133,23 +136,56 @@ div.posts {
     height:100%;
     top:0; 
     left:0;
-    background:rgba(0,0,0,0.6);
+    background: transparent;
     opacity:0;
     transition: all 0.5s;
     -webkit-transition: all 0.5s;
     border-radius: 8px;
+    cursor: pointer;
 }
 .card:hover:after {
     opacity: 0.1;
 }
 
 .card-block {
+    display: inline-block;
     -webkit-box-flex: 1;
     flex: 1 1 auto;
     padding: 1.25rem;
     background-color: white;
-    border-radius: 8px;
     font-family: 'Open Sans', sans-serif;
+    width: 100%;
+}
+
+.w3-center {
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    background-color: white;
+}
+
+.w3-badge {
+    height: 13px;
+    width: 13px;
+    padding: 0;
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    color: #ccc;
+    display: inline-block;
+    text-align: center;
+}
+
+.w3-white {
+    background-color: #ccc !important;
+}
+
+.w3-hover-white:hover {
+    background-color: #ccc !important;
 }
 
 h4.card-field {

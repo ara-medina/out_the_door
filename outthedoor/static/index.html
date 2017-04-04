@@ -45,7 +45,7 @@
                     <a class="title col-xs-24 col-sm-6">Out The Door</a>
                 </div>
                 <div class="nav col-xs-24 col-sm-4">
-                    <button style="display: none" type="submit" class="btn popovers fa fa-cog col-sm-2" id="logoutPopover" data-toggle="popover" data-placement="bottom" data-content="Logout"></button>
+                    <button style="display: none" class="btn fa fa-cog col-sm-2" id="logoutButton" data-toggle="modal" data-target="#logoutModal"></button>
                     <i style="display: none" class="fa fa-pencil col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#postModal"></i>
                     <i class="fa fa-user col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#createAccountModal"></i>
                     <i class="fa fa-lightbulb-o col-sm-2" aria-hidden="true" data-toggle="modal" data-target="#aboutModal"></i>
@@ -256,26 +256,82 @@
             </div>
           </div>
         </div>
+        
+        <!-- Logout Modal -->
+        <div class="modal logout-modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div id="logoutForm" class="modal-body">
+                <form class="form-group">
+                  <button type="submit" id="logoutAgree" data-dismiss="modal">LOGOUT</button>
+                </form>
+                <hr>
+                <form class="form-group">
+                  <button type="button" id="logoutClose" data-dismiss="modal" aria-label="Close">CANCEL</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Handlebars templates -->
-        
+
         <script id="post-list-template" type="text/x-handlebars-template">
-          <div style="width: 100%" class="col-xs-24">
-              {{#each posts}}
-              <div class="card">
-                  <img class="card-img-top" src="{{ photo.file.path }}" alt="post photo">
-                  <div class="card-block">
-                      <h4 class="card-field">{{ caption }}</h4>
-                      <h4 class="card-field">Age: {{ age }}</h4>
-                      <h4 class="card-field">Gender: {{ gender }}</h4>
-                      <h4 class="card-field">Ethnicity: {{ ethnicity }}</h4>
-                      <h4 class="card-field">City: {{ city }}</h4>
-                      <h4 class="card-field">Profession: {{ profession }}</h4>
-                  </div>
-              </div>
-  
-              {{/each}}
+          {{#each posts}}
+          <div class="w3-content w3-display-container col-xs-24" id="" style="width: 100%">
+            <div class="card mySlides" onclick="currentDiv(2)">
+                <img class="card-img-top" src="{{ photo.file.path }}" alt="post photo">
+                <div class="card-block">
+                    <h4 class="card-field">{{ caption }}</h4>
+                </div>
+            </div>
+            <div class="card mySlides" style="display: none" onclick="currentDiv(1)">
+                <div class="card-block">
+                    <h4 class="card-field">Age: {{ age }}</h4>
+                    <h4 class="card-field">Gender: {{ gender }}</h4>
+                    <h4 class="card-field">Ethnicity: {{ ethnicity }}</h4>
+                    <h4 class="card-field">City: {{ city }}</h4>
+                    <h4 class="card-field">Profession: {{ profession }}</h4>
+                </div>
+            </div>
+            <div class="w3-center w3-display-bottommiddle" style="width:100%">
+              <span class="w3-badge w3-hover-white" onclick="currentDiv(1)"></span>
+              <span class="w3-badge w3-hover-white" onclick="currentDiv(2)"></span>
+            </div>
           </div>
+          {{/each}}
+        </script>
+        <script>
+        
+          var slideIndex = 1;
+          showDivs(slideIndex);
+          
+          function currentDiv(n) {
+            var selector = '.w3-content';
+
+            $(selector).on('click', function(){
+                $(selector).removeAttr('id', 'currentPost');
+                $(this).attr('id', 'currentPost');
+                showDivs(slideIndex = n);
+            });
+            
+          }
+          
+          function showDivs(n) {
+            var i;
+            var x = document.getElementById("currentPost").getElementsByClassName("mySlides");
+            var dots = document.getElementById("currentPost").getElementsByClassName("w3-badge");
+            if (n > x.length) {slideIndex = 1}    
+            if (n < 1) {slideIndex = x.length}
+            for (i = 0; i < x.length; i++) {
+               x[i].style.display = "none";  
+            }
+            for (i = 0; i < dots.length; i++) {
+               dots[i].className = dots[i].className.replace(" w3-white", "");
+            }
+            x[slideIndex-1].style.display = "inline-block";  
+            dots[slideIndex-1].className += " w3-white";
+          }
         </script>
         <script>
           // a script from Google included to help autocomplete the city field in the post object

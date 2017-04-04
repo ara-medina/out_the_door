@@ -7,6 +7,7 @@ class DevelopmentConfig(object):
     UPLOAD_FOLDER = "uploads"
     ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
     SECRET_KEY = os.environ.get("OUTTHEDOOR_SECRET_KEY", os.urandom(12))
+    FLASKS3_BUCKET_NAME = 'mybucketname'
 
 class TestingConfig(object):
     DATABASE_URI = "postgresql://ubuntu:thinkful@localhost:5432/outthedoor-test"

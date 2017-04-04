@@ -3,8 +3,9 @@ import os
 from flask import Flask
 
 app = Flask(__name__)
-config_path = os.environ.get("CONFIG_PATH", "outthedoor.config.DevelopmentConfig")
+config_path = os.environ.get("CONFIG_PATH", "outthedoor.config.TestingConfig")
 app.config.from_object(config_path)
+
 
 from . import api
 from . import views
