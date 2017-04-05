@@ -34,3 +34,13 @@ The version that you are viewing is an MVP and is not meant for production.
 Languages used include HTML, CSS, JavaScript, and Python. Other tools used include 
 Bootstrap, Google Places API, jQuery, AJAX, Flask, Flask-Login, PostgreSQL, 
 and SQLAlchemy.
+
+_________________________
+
+![Alt text] (https://cloud.githubusercontent.com/assets/14882667/24730255/6468f0a0-1a17-11e7-9323-16c1658a1d7e.png)
+![Alt text] (https://cloud.githubusercontent.com/assets/14882667/24730218/338d2bd6-1a17-11e7-80e5-a0e081ca64e1.png)
+![Alt text] (https://cloud.githubusercontent.com/assets/14882667/24730220/37b0f832-1a17-11e7-87ad-e202146f6e91.png)
+![Alt text] (https://cloud.githubusercontent.com/assets/14882667/24730222/3a9e3bb8-1a17-11e7-94a3-5755f5bed35e.png)
+![Alt text] (https://cloud.githubusercontent.com/assets/14882667/24730225/443231ac-1a17-11e7-95ad-ac1a00f1be1b.png)
+![Alt text] (https://cloud.githubusercontent.com/assets/14882667/24730232/4e5f516e-1a17-11e7-840e-3fb18b02b08b.png)
+![Alt text] (https://cloud.githubusercontent.com/assets/14882667/24730247/593da900-1a17-11e7-8318-fea4a7ee23e5.png)

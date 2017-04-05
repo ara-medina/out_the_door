@@ -132,6 +132,10 @@ outTheDoor.prototype.onLogoutDone = function(data) {
     document.getElementById("profession").value = "";
     document.getElementById("file-input").value = "";
     
+    $("#file-input").css("display","block");
+    $("#fileHelp").css("display","block");
+    $("#newPhotoButton").css("display","none");
+    
 };
 
 // ACCOUNT FUNCTIONS
@@ -429,6 +433,10 @@ outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
     $("#editPostButton").css("display","none");
     $("#deletePostButton").css("display","none");
     $("#postButton").css("display","block");
+    
+    $("#file-input").css("display","block");
+    $("#fileHelp").css("display","block");
+    $("#newPhotoButton").css("display","none");
     
     ajax.done(this.onDeletePostDone.bind(this));
     ajax.fail(this.onFail.bind(this, "Delete post"));

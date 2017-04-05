@@ -55,6 +55,10 @@ div.header a:hover {
     text-decoration: none;
 }
 
+.fa {
+    padding-top: 0px;
+}
+
 div.header .fa-lightbulb-o {
     font-size: 75%;
     padding-right: 5px;
@@ -108,6 +112,7 @@ div.posts {
     background-color: #F5F5F5;
     border-radius: 5px;
     height: auto;
+    padding: 15px;
 }
 
 .card img {
@@ -160,6 +165,8 @@ div.posts {
 
 .w3-content {
     height: auto;
+    background-color: white;
+    border-top: 10px solid #F5F5F5;
 }
 
 .card1 {
@@ -168,10 +175,14 @@ div.posts {
 
 .card2-block {
     height: 100%;
+    max-height: 400px;
+    max-width: 400px;
 }
 
 .card-img-top {
     height: auto;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .w3-center {
@@ -179,7 +190,7 @@ div.posts {
     display: inline-block;
     width: 100%;
     padding-top: 10px;
-    margin-top: -10px;
+    margin-top: -18px;
     margin-bottom: 20px;
     padding-bottom: 10px;
     background-color: white;
