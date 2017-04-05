@@ -275,49 +275,33 @@
         </div>
 
         <!-- Handlebars templates -->
-        
+
         <script id="post-list-template" type="text/x-handlebars-template">
           <div>
-              {{#each posts}}
-              <div class="card">
-                  <div class="card-block">
+            {{#each posts}}
+            <div class="w3-content w3-display-container col-xs-24" id="test" style="width: 100%">
+              <div class="card mySlides card1" onclick="currentDiv(2)">
+                  <img class="card-img-top" id="postImg" src="{{ photo.file.path }}" alt="post photo">
+                  <div class="card-block card1-block">
+                      <h4 class="card-field">{{ caption }}</h4>
+                  </div>
+              </div>
+              <div class="card mySlides card2" style="display: none" onclick="currentDiv(1)">
+                  <div class="card-block card2-block">
                       <h4 class="card-field">Age: {{ age }}</h4>
                       <h4 class="card-field">Gender: {{ gender }}</h4>
                       <h4 class="card-field">Ethnicity: {{ ethnicity }}</h4>
                       <h4 class="card-field">City: {{ city }}</h4>
                       <h4 class="card-field">Profession: {{ profession }}</h4>
-                      <h4 class="card-field">Income: {{ income }}</h4>
                   </div>
               </div>
-  
-              {{/each}}
+              <div class="w3-center w3-display-bottommiddle" style="width:100%">
+                <span class="w3-badge w3-hover-white" onclick="currentDiv(1)"></span>
+                <span class="w3-badge w3-hover-white" onclick="currentDiv(2)"></span>
+              </div>
+            </div>
+            {{/each}}
           </div>
-        </script>
-
-        <!-- <script id="post-list-template" type="text/x-handlebars-template">
-          {{#each posts}}
-          <div class="w3-content w3-display-container col-xs-24" id="test" style="width: 100%">
-            <div class="card mySlides card1" onclick="currentDiv(2)">
-                <img class="card-img-top" id="postImg" src="{{ photo.file.path }}" alt="post photo">
-                <div class="card-block card1-block">
-                    <h4 class="card-field">{{ caption }}</h4>
-                </div>
-            </div>
-            <div class="card mySlides card2" style="display: none" onclick="currentDiv(1)">
-                <div class="card-block card2-block">
-                    <h4 class="card-field">Age: {{ age }}</h4>
-                    <h4 class="card-field">Gender: {{ gender }}</h4>
-                    <h4 class="card-field">Ethnicity: {{ ethnicity }}</h4>
-                    <h4 class="card-field">City: {{ city }}</h4>
-                    <h4 class="card-field">Profession: {{ profession }}</h4>
-                </div>
-            </div>
-            <div class="w3-center w3-display-bottommiddle" style="width:100%">
-              <span class="w3-badge w3-hover-white" onclick="currentDiv(1)"></span>
-              <span class="w3-badge w3-hover-white" onclick="currentDiv(2)"></span>
-            </div>
-          </div>
-          {{/each}}
         </script>
         <script>
         
@@ -350,7 +334,7 @@
             x[slideIndex-1].style.display = "inline-block";  
             dots[slideIndex-1].className += " w3-white";
           }
-        </script> -->
+        </script>
         <script>
           // a script from Google included to help autocomplete the city field in the post object
           var placeSearch, autocomplete;

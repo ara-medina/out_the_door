@@ -262,7 +262,6 @@ outTheDoor.prototype.onGetPhotoDone = function(data) {
 
 outTheDoor.prototype.getPosts = function() {
     // Make a get request to list all of the posts
-    console.log("called getPosts");
     
     var ajax = $.ajax('/api/posts', {
         type: 'GET',
@@ -274,7 +273,6 @@ outTheDoor.prototype.getPosts = function() {
 };
 
 outTheDoor.prototype.onGetPostsDone = function(data) {
-    console.log("called onGetPostsDone");
     // Update the posts array, and update the user interface
     this.posts = data;
     this.updatePostView();
@@ -285,20 +283,16 @@ outTheDoor.prototype.onGetPostsDone = function(data) {
     //     $(".card2").outerHeight(card_height);
     // }
     
-    
-    // $('.card1-block').each(function() {
-    //     var textHeight = $(this).height();
-    //     $('.card-img-top').on('load', function(){
-    //         var imgHeight = $(this).height();
-    //         var cardHeight = textHeight + imgHeight;
-    //         console.log(cardHeight);
-    //         $('.card2-block').each(function() {
-    //             $(this).height(cardHeight);
-    //             console.log($(this).height());
-    //         });
-    //     });
-        
-    // });
+    $('.w3-content').each(function() {
+        var textHeight = $('.card1-block').height();
+        console.log(textHeight);
+        // $('.card-img-top').unbind('load').on('load', function(){
+        //     var imgHeight = $(this).height();
+        //     console.log(this);
+        //     cardHeight = textHeight + imgHeight - 5;
+        //     console.log(cardHeight);
+        // });
+    });
     
     // $('.w3-content').each(function() {
     //     var textHeight = $(".card1-block").outerHeight();
@@ -392,8 +386,6 @@ outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
         city: $('#city').val(),
         profession: $('#profession').val()
     };
-    
-    console.log(data);
 
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/posts', {
@@ -443,8 +435,7 @@ outTheDoor.prototype.onPostEditButtonClicked = function(id) {
         city: $('#city').val(),
         profession: $('#profession').val()
     };
-    
-    console.log(data)
+
 
     // Make a POST request to the post edit endpoint
     var ajax = $.ajax('/api/post/' + id + '/edit', {
