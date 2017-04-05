@@ -119,10 +119,18 @@ outTheDoor.prototype.onLogoutDone = function(data) {
     
     $("#logoutButton").css("display","none");
     $(".fa-pencil").css("display","none");
-    $("#postButton").css("display","none");
+    $("#postButton").css("display","block");
     $("#editPostButton").css("display","none");
     $("#deletePostButton").css("display","none");
     $(".fa-user").css("display","inline-block");
+    
+    document.getElementById("caption").value = "";
+    document.getElementById("age").value = "";
+    document.getElementById("genderSelect").value = "";
+    document.getElementById("ethnicitySelect").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("profession").value = "";
+    document.getElementById("file-input").value = "";
     
 };
 
@@ -276,59 +284,6 @@ outTheDoor.prototype.onGetPostsDone = function(data) {
     // Update the posts array, and update the user interface
     this.posts = data;
     this.updatePostView();
-    
-    // for (i=0; i < cards.length; i++) {
-    //     var card_height = $(".w3-content").outerHeight();
-    //     console.log(card_height);
-    //     $(".card2").outerHeight(card_height);
-    // }
-    
-    $('.w3-content').each(function() {
-        var textHeight = $('.card1-block').height();
-        console.log(textHeight);
-        // $('.card-img-top').unbind('load').on('load', function(){
-        //     var imgHeight = $(this).height();
-        //     console.log(this);
-        //     cardHeight = textHeight + imgHeight - 5;
-        //     console.log(cardHeight);
-        // });
-    });
-    
-    // $('.w3-content').each(function() {
-    //     var textHeight = $(".card1-block").outerHeight();
-    //     console.log(textHeight);
-    //     $('.card-img-top').on('load', function(){
-    //         var imgHeight = $(this).height();
-    //         console.log(imgHeight);
-    //         var cardHeight = textHeight + imgHeight - 5;
-    //         console.log(cardHeight);
-    //         $('.card2-block').each(function() {
-    //             $(this).height(cardHeight);
-    //         });
-    //     });
-    // });
-    
-    
-    
-    
-
-    
-    // $('#card1-block').on('load', function(){
-    //     var blockHeight = $(this).height();
-    //     console.log(blockHeight);
-    // });
-    
-    // var height = $('.card-block').outerHeight();
-    // console.log(height);
-    
-    // var elem1 = document.getElementById("test");
-    // var style = window.getComputedStyle(elem1, null).getPropertyValue("height");
-    // console.log(style);
-    
-    // var height = $('.card-img-top').outerHeight();
-    // console.log(height);
-
-
 };
 
 outTheDoor.prototype.onGetPost = function(id) {
@@ -475,7 +430,6 @@ outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
     $("#deletePostButton").css("display","none");
     $("#postButton").css("display","block");
     
-    
     ajax.done(this.onDeletePostDone.bind(this));
     ajax.fail(this.onFail.bind(this, "Delete post"));
 };
@@ -494,7 +448,18 @@ outTheDoor.prototype.updatePostView = function() {
     var postList = $(this.postListTemplate(context));
     this.postList.replaceWith(postList);
     this.postList = postList;
+    
+    this.setCardHeight();
 };
+
+outTheDoor.prototype.setCardHeight = function() {
+    $( window ).load(function() {
+        $('.w3-content').each(function(){
+            var cardHeight = $(this).children('.card1').height();
+            $(this).children('.card2').height(cardHeight);
+        })
+    });
+}
 
 // COMMON FUNCTIONS
 
