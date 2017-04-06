@@ -196,7 +196,7 @@ outTheDoor.prototype.getSignedRequest = function(file, s3Data) {
         s3FileUpload(file, response.data, response.url);
       }
       else{
-        this.onFail.bind(this, "S3 get signed request");
+        this.onFail(this, "S3 get signed request");
       }
     }
     };
@@ -217,7 +217,7 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
     if(xhr.readyState === 4){
       if(xhr.status === 200 || xhr.status === 204){
         console.log("File upload successful");
-        this.fileUpload.bind(this);
+        this.fileUpload();
       }
       else{
         this.onFail.bind(this, "S3 File upload");
