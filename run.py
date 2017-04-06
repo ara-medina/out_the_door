@@ -1,4 +1,4 @@
-import os
+import os, json, boto3
 from getpass import getpass
 from werkzeug.security import generate_password_hash
 

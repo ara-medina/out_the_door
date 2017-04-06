@@ -8,3 +8,4 @@ itsdangerous
 jsonschema
 nose
 psycopg2
+boto3

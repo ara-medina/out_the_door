@@ -181,13 +181,53 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 
 // FILE FUNCTIONS
 
-outTheDoor.prototype.onFileAdded = function(event) {
+outTheDoor.prototype.onFileAdded = function(event, s3Data) {
     var file = this.fileInput[0].files[0];
-    var name = file.name;
-    var size = file.size;
-    var type = file.type;
+    this.getSignedRequest(file);
+}
 
+outTheDoor.prototype.getSignedRequest = function(file, s3Data) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/api/sign_s3?file_name="+file.name+"&file_type="+file.type);
+    xhr.onreadystatechange = function(){
+    if(xhr.readyState === 4){
+      if(xhr.status === 200){
+        var response = JSON.parse(xhr.responseText);
+        s3FileUpload(file, response.data, response.url);
+      }
+      else{
+        this.onFail.bind(this, "S3 get signed request");
+      }
+    }
+    };
+    xhr.send();
+}
 
+outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", s3Data.url);
+    
+    var data = new FormData();
+    for(key in s3Data.fields){
+        data.append(key, s3Data.fields[key]);
+    }
+    data.append('file', file);
+    
+    xhr.onreadystatechange = function() {
+    if(xhr.readyState === 4){
+      if(xhr.status === 200 || xhr.status === 204){
+        console.log("File upload successful");
+        this.fileUpload.bind(this);
+      }
+      else{
+        this.onFail.bind(this, "S3 File upload");
+      }
+    }
+    };
+    xhr.send(postData);
+};
+
+outTheDoor.prototype.fileUpload = function(event) {
     // Create a FormData object from the upload form
     var data = new FormData(this.uploadForm[0]);
     
@@ -203,10 +243,9 @@ outTheDoor.prototype.onFileAdded = function(event) {
     });
     ajax.done(this.onFileUploadDone.bind(this));
     ajax.fail(this.onFail.bind(this, "File upload"));
-};
+}
 
-
-outTheDoor.prototype.createUploadXhr = function() {
+outTheDoor.prototype.createUploadXhr = function(s3Data) {
     // XHR file upload 
     var xhr = new XMLHttpRequest();
     if(xhr.upload) { // if upload property exists
@@ -223,7 +262,7 @@ outTheDoor.prototype.onUploadProgress = function(event) {
 
 outTheDoor.prototype.onFileUploadDone = function(data) {
     // Called if the file upload succeeds
-    console.log("file upload successful");
+    console.log("file upload done called");
     
     data = {
         file: {

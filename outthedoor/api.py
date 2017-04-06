@@ -1,4 +1,4 @@
-import json
+import os, boto3, json
 
 from flask import Flask
 
@@ -264,6 +264,31 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in TestingConfig.ALLOWED_EXTENSIONS
            
+@app.route('/api/sign_s3/', methods=["GET"])
+def sign_s3():
+    S3_BUCKET = os.environ.get('S3_BUCKET')
+    
+    file_name = request.args.get('file_name')
+    file_type = request.args.get('file_type')
+    
+    s3 = boto3.client('s3')
+    
+    presigned_post = s3.generate_presigned_post(
+    Bucket = S3_BUCKET,
+    Key = file_name,
+    Fields = {"acl": "public-read", "Content-Type": file_type},
+    Conditions = [
+      {"acl": "public-read"},
+      {"Content-Type": file_type}
+    ],
+    ExpiresIn = 3600
+    )
+    
+    return json.dumps({
+        'data': presigned_post,
+        'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
+    })
+           
 @app.route("/api/files", methods=["POST"])
 @decorators.require("multipart/form-data")
 @decorators.accept("application/json")
@@ -287,7 +312,7 @@ def file_post():
     session.commit()
     
     # save the file to an uploads folder
-    file.save(upload_path(name))
+    # file.save(upload_path(name))
 
     data = new_file.as_dictionary()
     return Response(json.dumps(data), 201, mimetype="application/json")
