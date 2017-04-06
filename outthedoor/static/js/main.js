@@ -181,7 +181,7 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 
 // FILE FUNCTIONS
 
-outTheDoor.prototype.onFileAdded = function(event, s3Data) {
+outTheDoor.prototype.onFileAdded = function(event) {
     var file = this.fileInput[0].files[0];
     this.getSignedRequest(file);
 }
@@ -197,6 +197,7 @@ outTheDoor.prototype.getSignedRequest = function(file, s3Data) {
       }
       else{
         console.log("S3 get signed request failed");
+        console.log(xhr.status);
       }
     }
     };
