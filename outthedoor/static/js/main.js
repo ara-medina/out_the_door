@@ -196,7 +196,7 @@ outTheDoor.prototype.getSignedRequest = function(file, s3Data) {
         s3FileUpload(file, response.data, response.url);
       }
       else{
-        this.onFail(this, "S3 get signed request");
+        console.log("S3 get signed request failed");
       }
     }
     };
@@ -220,7 +220,7 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
         this.fileUpload();
       }
       else{
-        this.onFail.bind(this, "S3 File upload");
+        console.log("S3 File upload failed");
       }
     }
     };
