@@ -183,6 +183,7 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 
 
 outTheDoor.prototype.onFileAdded = function(event) {
+    console.log(this.photos);
     var file = this.fileInput[0].files[0];
     
     var data = new FormData(this.uploadForm[0]);
@@ -196,6 +197,7 @@ outTheDoor.prototype.onFileAdded = function(event) {
 
 
 outTheDoor.prototype.getSignedRequest = function(file, data) {
+    console.log(this.photos);
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
@@ -213,6 +215,7 @@ outTheDoor.prototype.getSignedRequest = function(file, data) {
 }
 
 outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
+    console.log(this.photos);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", s3Data.url);
     
@@ -238,6 +241,7 @@ outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
 
 outTheDoor.prototype.fileUpload = function(data, s3Data) {
     console.log("called file upload");
+    console.log(this.photos);
     // var name = file.name;
     // var size = file.size;
     // var type = file.type;
@@ -262,6 +266,7 @@ outTheDoor.prototype.fileUpload = function(data, s3Data) {
 }
 
 outTheDoor.prototype.createUploadXhr = function() {
+    console.log(this.photos);
     // XHR file upload 
     var xhr = new XMLHttpRequest();
     if(xhr.upload) { // if upload property exists
@@ -279,6 +284,7 @@ outTheDoor.prototype.onUploadProgress = function(event) {
 outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
     // Called if the file upload succeeds
     console.log("file upload done called");
+    console.log(this.photos);
     
     data = {
         file: {
@@ -335,7 +341,6 @@ outTheDoor.prototype.onGetPhotoDone = function(data) {
 outTheDoor.prototype.getPosts = function() {
     // Make a get request to list all of the posts
     
-    console.log(this.photos);
     
     var ajax = $.ajax('/api/posts', {
         type: 'GET',
