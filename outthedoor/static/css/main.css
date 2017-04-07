@@ -164,7 +164,7 @@ div.posts {
 }
 
 .w3-content {
-    height: 100%;
+    height: auto;
     background-color: white;
     border-top: 10px solid #F5F5F5;
 }
