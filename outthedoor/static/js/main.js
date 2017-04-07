@@ -288,6 +288,9 @@ outTheDoor.prototype.onFileUploadDone = function(data) {
         }
     }
     
+    console.log(data);
+    console.log(file);
+    
     // Make a POST request to add the photo
     var ajax = $.ajax('/api/photos', {
         type: 'POST',
@@ -302,11 +305,13 @@ outTheDoor.prototype.onFileUploadDone = function(data) {
 outTheDoor.prototype.onAddPhotoDone = function(data) {
     // Add the photo to the photos array, and then set this.photo variable to 
     // data to use in creating a post
-    console.log("called on add photod done");
+    console.log("called on add photo done");
+    console.log(data);
     $('#photoSuccessMsg').css('display', 'block');
     
+    console.log(this.photos);
     this.photos.push(data);
-    this.photo = data
+    this.photo = data;
 };
 
 outTheDoor.prototype.onGetPhoto = function(id) {

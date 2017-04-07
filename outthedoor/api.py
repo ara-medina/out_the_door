@@ -351,6 +351,7 @@ def photo_get(id):
 def photo_post():
     """Add a new photo"""
     data = request.json
+    print(data)
     
     try: 
         validate(data, post_schema)
