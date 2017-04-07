@@ -185,7 +185,9 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 outTheDoor.prototype.onFileAdded = function(event) {
     var file = this.fileInput[0].files[0];
     
-    this.getSignedRequest(file);
+    var data = new FormData(this.uploadForm[0]);
+    
+    this.getSignedRequest(file, data);
 }
 
 // goes in getSignedRequest if you need to remove the extension from file name
@@ -193,14 +195,14 @@ outTheDoor.prototype.onFileAdded = function(event) {
 // filename = filename.substr(0, filename.lastIndexOf('.'));
 
 
-outTheDoor.prototype.getSignedRequest = function(file) {
+outTheDoor.prototype.getSignedRequest = function(file, data) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
         if(xhr.readyState === 4){
             if(xhr.status === 200){
                 var response = JSON.parse(xhr.responseText);
-                outTheDoor.prototype.s3FileUpload(file, response.data, response.url);
+                outTheDoor.prototype.s3FileUpload(file, data, response.data, response.url);
             }
             else{
                 console.log("Could not get signed URL.");
@@ -210,7 +212,7 @@ outTheDoor.prototype.getSignedRequest = function(file) {
     xhr.send();
 }
 
-outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
+outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", s3Data.url);
     
@@ -224,7 +226,7 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
         if(xhr.readyState === 4){
           if(xhr.status === 200 || xhr.status === 204){
             console.log("File upload successful");
-            outTheDoor.prototype.fileUpload();
+            outTheDoor.prototype.fileUpload(data);
           }
           else{
             console.log("S3 File upload failed");
@@ -234,18 +236,16 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
     xhr.send(data);
 };
 
-outTheDoor.prototype.fileUpload = function(event) {
+outTheDoor.prototype.fileUpload = function(data) {
     console.log("called file upload");
-    var file = this.fileInput[0];
-    console.log(file);
-    var name = file.name;
-    var size = file.size;
-    var type = file.type;
+    // var name = file.name;
+    // var size = file.size;
+    // var type = file.type;
 
 
     // Create a FormData object from the upload form
-    var data = new FormData(this.uploadForm[0]);
-    console.log(data);
+    var newData = new FormData(data);
+    console.log(newData);
     
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/files', {
