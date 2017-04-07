@@ -326,6 +326,7 @@ def photos_get():
     
     photos = session.query(Photo)
     photos = photos.order_by(Photo.id)
+    print(photos)
     
     data = json.dumps([photo.as_dictionary() for photo in photos])
     return Response(data, 200, mimetype="application/json")
@@ -365,6 +366,7 @@ def photo_post():
     photo = Photo(file=file)
     session.add(photo)
     session.commit()
+    print("photo commit successful")
     
     data = json.dumps(photo.as_dictionary())
     return Response(data, 201, mimetype="application/json")

@@ -307,9 +307,9 @@ outTheDoor.prototype.onAddPhotoDone = function(data) {
     console.log("called on add photo done");
     console.log(data);
     
-    console.log(outTheDoor.photos);
-    outTheDoor.photos.push(data);
-    outTheDoor.photo = data;
+    console.log(this.photos);
+    this.photos.push(data);
+    this.photo = data;
     
     $('#photoSuccessMsg').css('display', 'block');
 };
