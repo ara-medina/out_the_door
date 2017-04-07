@@ -224,7 +224,7 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
         if(xhr.readyState === 4){
           if(xhr.status === 200 || xhr.status === 204){
             console.log("File upload successful");
-            this.fileUpload();
+            outTheDoor.prototype.fileUpload();
           }
           else{
             console.log("S3 File upload failed");
