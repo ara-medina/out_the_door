@@ -226,7 +226,7 @@ outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
         if(xhr.readyState === 4){
           if(xhr.status === 200 || xhr.status === 204){
             console.log("File upload successful");
-            outTheDoor.prototype.fileUpload(file, data, s3Data);
+            outTheDoor.prototype.fileUpload(data, s3Data);
           }
           else{
             console.log("S3 File upload failed");
@@ -236,7 +236,7 @@ outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
     xhr.send(data);
 };
 
-outTheDoor.prototype.fileUpload = function(file, data, s3Data) {
+outTheDoor.prototype.fileUpload = function(data, s3Data) {
     // var name = file.name;
     // var size = file.size;
     // var type = file.type;
@@ -275,9 +275,9 @@ outTheDoor.prototype.onUploadProgress = function(event) {
 
 // PHOTO FUNCTIONS 
 
-outTheDoor.prototype.onFileUploadDone = function(file, data, s3Data) {
+outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
     // Called if the file upload succeeds
-    console.log(data);
+    var file = window.app.fileInput[0].files[0];
     
     data = {
         file: {
