@@ -215,6 +215,10 @@ outTheDoor.prototype.getSignedRequest = function(file, data) {
 }
 
 outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
+    console.log(file);
+    console.log(data);
+    console.log(s3Data);
+    console.log(url);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", s3Data.url);
     
