@@ -188,7 +188,10 @@ outTheDoor.prototype.onFileAdded = function(event) {
 
 outTheDoor.prototype.getSignedRequest = function(file, s3Data) {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/api/sign_s3?file_name="+file.name+"&file_type="+file.type);
+    var filename = file.name;
+    filename = filename.substr(0, filename.lastIndexOf('.'));
+    console.log(filename);
+    xhr.open("GET", "/api/sign_s3?file_name="+filename+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
     if(xhr.readyState === 4){
       if(xhr.status === 200){
