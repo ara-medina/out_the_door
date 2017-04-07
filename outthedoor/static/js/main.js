@@ -199,7 +199,9 @@ outTheDoor.prototype.onFileAdded = function(event) {
 outTheDoor.prototype.getSignedRequest = function(file, data) {
     console.log(this.photos);
     var xhr = new XMLHttpRequest();
+    console.log(this.photos);
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
+    console.log(this.photos);
     xhr.onreadystatechange = function(){
         if(xhr.readyState === 4){
             if(xhr.status === 200){
@@ -211,6 +213,7 @@ outTheDoor.prototype.getSignedRequest = function(file, data) {
             }
         }
     };
+    console.log(this.photos);
     xhr.send();
 }
 
