@@ -192,6 +192,49 @@ outTheDoor.prototype.onFileAdded = function(event) {
 // var filename = file.name;
 // filename = filename.substr(0, filename.lastIndexOf('.'));
 
+
+outTheDoor.prototype.getSignedRequest = function(file) {
+    var xhr = new XMLHttpRequest();
+    this.s3FileUpload(file, response.data, response.url);
+    xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
+    xhr.onreadystatechange = function(){
+    if(xhr.readyState === 4){
+      if(xhr.status === 200){
+        var response = JSON.parse(xhr.responseText);
+        this.s3FileUpload(file, response.data, response.url);
+      }
+      else{
+        console.log("Could not get signed URL.");
+      }
+    }
+    };
+    xhr.send();
+}
+
+outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", s3Data.url);
+    
+    var data = new FormData();
+    for(key in s3Data.fields){
+        data.append(key, s3Data.fields[key]);
+    }
+    data.append('file', file);
+    
+    xhr.onreadystatechange = function() {
+    if(xhr.readyState === 4){
+      if(xhr.status === 200 || xhr.status === 204){
+        console.log("File upload successful");
+        this.fileUpload();
+      }
+      else{
+        console.log("S3 File upload failed");
+      }
+    }
+    };
+    xhr.send(postData);
+};
+
 outTheDoor.prototype.fileUpload = function(event) {
     // Create a FormData object from the upload form
     var data = new FormData(this.uploadForm[0]);
@@ -208,48 +251,6 @@ outTheDoor.prototype.fileUpload = function(event) {
     });
     ajax.done(this.onFileUploadDone.bind(this));
     ajax.fail(this.onFail.bind(this, "File upload"));
-};
-
-outTheDoor.prototype.sThreeFileUpload = function(file, s3Data, url) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", s3Data.url);
-    
-    var data = new FormData();
-    for(key in s3Data.fields){
-        data.append(key, s3Data.fields[key]);
-    }
-    data.append('file', file);
-    
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState === 4){
-          if(xhr.status === 200 || xhr.status === 204){
-            console.log("File upload successful");
-            this.fileUpload();
-          }
-          else{
-            console.log("S3 File upload failed");
-          }
-        }
-        };
-    xhr.send(postData);
-};
-
-
-outTheDoor.prototype.getSignedRequest = function(file) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
-    xhr.onreadystatechange = function(){
-        if(xhr.readyState === 4){
-          if(xhr.status === 200){
-            var response = JSON.parse(xhr.responseText);
-            this.sThreeFileUpload(file, response.data, response.url);
-          }
-          else{
-            console.log("Could not get signed URL.");
-          }
-        }
-    };
-    xhr.send();
 }
 
 outTheDoor.prototype.createUploadXhr = function(s3Data) {
