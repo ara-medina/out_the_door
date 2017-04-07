@@ -310,7 +310,7 @@ def file_post():
     
     # create a File object and add it to the db
     new_file = File(name=name)
-    session.add(new_file)
+    session.add(new_file.as_dictionary())
     print("printing new_file")
     print(new_file)
     session.commit()
@@ -366,6 +366,8 @@ def photo_post():
         
     id = data["file"]["id"]
     file = session.query(File).get(id)
+    print("printing file")
+    print(file)
     
     photo = Photo(file=file)
     session.add(photo)
