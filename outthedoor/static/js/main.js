@@ -215,6 +215,7 @@ outTheDoor.prototype.getSignedRequest = function(file, data) {
     };
     console.log(this.photos);
     xhr.send();
+    console.log(this.photos);
 }
 
 outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
