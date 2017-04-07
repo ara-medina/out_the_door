@@ -198,12 +198,12 @@ outTheDoor.prototype.onFileAdded = function(event) {
 outTheDoor.prototype.getSignedRequest = function(file, data) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
+    console.log("/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
         if(xhr.readyState === 4){
             if(xhr.status === 200){
                 var response = JSON.parse(xhr.responseText);
                 outTheDoor.prototype.s3FileUpload(file, data, response.data, response.url);
-                console.log(this.photos);
             }
             else{
                 console.log("Could not get signed URL.");
@@ -215,10 +215,6 @@ outTheDoor.prototype.getSignedRequest = function(file, data) {
 }
 
 outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
-    console.log(file);
-    console.log(data);
-    console.log(s3Data);
-    console.log(url);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", s3Data.url);
     
