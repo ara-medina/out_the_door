@@ -231,7 +231,7 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
           }
         }
         };
-    xhr.send(postData);
+    xhr.send(data);
 };
 
 outTheDoor.prototype.fileUpload = function(event) {
