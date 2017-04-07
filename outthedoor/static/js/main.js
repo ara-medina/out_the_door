@@ -236,7 +236,7 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
 
 outTheDoor.prototype.fileUpload = function(event) {
     console.log("called file upload");
-    var file = this.fileInput[0].files[0];
+    var file = this.fileInput[0];
     console.log(file);
     var name = file.name;
     var size = file.size;
