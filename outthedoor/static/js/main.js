@@ -200,7 +200,7 @@ outTheDoor.prototype.getSignedRequest = function(file) {
     if(xhr.readyState === 4){
       if(xhr.status === 200){
         var response = JSON.parse(xhr.responseText);
-        uploadFile(file, response.data, response.url);
+        s3FileUpload(file, response.data, response.url);
       }
       else{
         console.log("Could not get signed URL.");
