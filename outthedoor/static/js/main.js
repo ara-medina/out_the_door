@@ -286,7 +286,7 @@ outTheDoor.prototype.onFileUploadDone = function(file, data, s3Data) {
         file: {
             id: file.id,
             name: file.name,
-            path: file.url
+            path: "https://outthedoor.herokuapp.com/sign_s3?file_name="+file.name+"&file_type="+file.type
         }
     }
     
