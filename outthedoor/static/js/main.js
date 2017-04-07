@@ -195,18 +195,17 @@ outTheDoor.prototype.onFileAdded = function(event) {
 
 outTheDoor.prototype.getSignedRequest = function(file) {
     var xhr = new XMLHttpRequest();
-    this.s3FileUpload(file, response.data, response.url);
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
-    if(xhr.readyState === 4){
-      if(xhr.status === 200){
-        var response = JSON.parse(xhr.responseText);
-        this.s3FileUpload(file, response.data, response.url);
-      }
-      else{
-        console.log("Could not get signed URL.");
-      }
-    }
+        if(xhr.readyState === 4){
+            if(xhr.status === 200){
+                var response = JSON.parse(xhr.responseText);
+                outTheDoor.prototype.s3FileUpload(file, response.data, response.url);
+            }
+            else{
+                console.log("Could not get signed URL.");
+            }
+        }
     };
     xhr.send();
 }
@@ -222,16 +221,16 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
     data.append('file', file);
     
     xhr.onreadystatechange = function() {
-    if(xhr.readyState === 4){
-      if(xhr.status === 200 || xhr.status === 204){
-        console.log("File upload successful");
-        this.fileUpload();
-      }
-      else{
-        console.log("S3 File upload failed");
-      }
-    }
-    };
+        if(xhr.readyState === 4){
+          if(xhr.status === 200 || xhr.status === 204){
+            console.log("File upload successful");
+            this.fileUpload();
+          }
+          else{
+            console.log("S3 File upload failed");
+          }
+        }
+        };
     xhr.send(postData);
 };
 
