@@ -282,7 +282,7 @@ outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
         file: {
             id: data.id,
             name: data,
-            path: "outthedoor-east.s3.amazonaws.com/"+file.name
+            path: "outthedoor-east.s3.amazonaws.com/"+data.name
         }
     }
     
