@@ -277,13 +277,12 @@ outTheDoor.prototype.onUploadProgress = function(event) {
 
 outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
     // Called if the file upload succeeds
-    var file = window.app.fileInput[0].files[0];
     
     data = {
         file: {
             id: data.id,
-            name: file.name,
-            path: "https://outthedoor.herokuapp.com/sign_s3?file_name="+file.name+"&file_type="+file.type
+            name: data,
+            path: "outthedoor-east.s3.amazonaws.com/"+file.name
         }
     }
     
