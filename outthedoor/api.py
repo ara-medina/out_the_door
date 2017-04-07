@@ -264,7 +264,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in TestingConfig.ALLOWED_EXTENSIONS
            
-@app.route('/api/sign_s3/', methods=["GET"])
+@app.route('/sign_s3/', methods=["GET"])
 def sign_s3():
     S3_BUCKET = os.environ.get('S3_BUCKET')
     
