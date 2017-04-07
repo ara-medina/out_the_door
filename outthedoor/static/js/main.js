@@ -335,7 +335,7 @@ outTheDoor.prototype.onGetPhotoDone = function(data) {
 outTheDoor.prototype.getPosts = function() {
     // Make a get request to list all of the posts
     
-    this.posts;
+    console.log(this.photos);
     
     var ajax = $.ajax('/api/posts', {
         type: 'GET',
