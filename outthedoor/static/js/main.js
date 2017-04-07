@@ -181,26 +181,29 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 
 // FILE FUNCTIONS
 
+
 outTheDoor.prototype.onFileAdded = function(event) {
     var file = this.fileInput[0].files[0];
+    
     this.getSignedRequest(file);
 }
 
-outTheDoor.prototype.getSignedRequest = function(file, s3Data) {
+// goes in getSignedRequest if you need to remove the extension from file name
+// var filename = file.name;
+// filename = filename.substr(0, filename.lastIndexOf('.'));
+
+
+outTheDoor.prototype.getSignedRequest = function(file) {
     var xhr = new XMLHttpRequest();
-    var filename = file.name;
-    filename = filename.substr(0, filename.lastIndexOf('.'));
-    console.log(filename);
-    xhr.open("GET", "/api/sign_s3?file_name="+filename+"&file_type="+file.type);
+    xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
     if(xhr.readyState === 4){
       if(xhr.status === 200){
         var response = JSON.parse(xhr.responseText);
-        s3FileUpload(file, response.data, response.url);
+        uploadFile(file, response.data, response.url);
       }
       else{
-        console.log("S3 get signed request failed");
-        console.log(xhr.status);
+        console.log("Could not get signed URL.");
       }
     }
     };
