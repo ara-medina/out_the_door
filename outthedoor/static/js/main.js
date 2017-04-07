@@ -205,6 +205,7 @@ outTheDoor.prototype.getSignedRequest = function(file, data) {
             if(xhr.status === 200){
                 var response = JSON.parse(xhr.responseText);
                 outTheDoor.prototype.s3FileUpload(file, data, response.data, response.url);
+                console.log(file);
             }
             else{
                 console.log("Could not get signed URL.");
@@ -229,6 +230,7 @@ outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
           if(xhr.status === 200 || xhr.status === 204){
             console.log("File upload successful");
             outTheDoor.prototype.fileUpload(file, data, s3Data);
+            console.log(file);
           }
           else{
             console.log("S3 File upload failed");
@@ -240,6 +242,7 @@ outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
 
 outTheDoor.prototype.fileUpload = function(file, data, s3Data) {
     console.log("called file upload");
+    console.log(file);
     // var name = file.name;
     // var size = file.size;
     // var type = file.type;
