@@ -310,9 +310,9 @@ def file_post():
     
     # create a File object and add it to the db
     new_file = File(name=name)
-    session.add(new_file.as_dictionary())
+    session.add(new_file)
     print("printing new_file")
-    print(new_file)
+    print(new_file.as_dictionary())
     session.commit()
     
     # save the file to an uploads folder
