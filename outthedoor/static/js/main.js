@@ -237,6 +237,7 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
 outTheDoor.prototype.fileUpload = function(event) {
     // Create a FormData object from the upload form
     var data = new FormData(this.uploadForm[0]);
+    console.log("called fileUpload");
     
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/files', {
