@@ -75,7 +75,7 @@ class File(Base):
         file = {
             "id": self.id,
             "name": self.name,
-            "path": "outthedoor-east.s3.amazonaws.com/" + self.name
+            "path": "https://outthedoor-east.s3.amazonaws.com/" + self.name
         }
         return file
         
