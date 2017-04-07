@@ -371,7 +371,7 @@ def photo_post():
     session.add(photo)
     session.commit()
     print("printing photo")
-    print(photo)
+    print(photo.as_dictionary())
     print("photo commit successful")
     
     data = json.dumps(photo.as_dictionary())
