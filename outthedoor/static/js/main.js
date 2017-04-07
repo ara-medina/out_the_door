@@ -224,7 +224,7 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
         if(xhr.readyState === 4){
           if(xhr.status === 200 || xhr.status === 204){
             console.log("File upload successful");
-            outTheDoor.prototype.fileUpload();
+            outTheDoor.prototype.fileUpload(file);
           }
           else{
             console.log("S3 File upload failed");
@@ -234,9 +234,10 @@ outTheDoor.prototype.s3FileUpload = function(file, s3Data, url) {
     xhr.send(data);
 };
 
-outTheDoor.prototype.fileUpload = function(event) {
+outTheDoor.prototype.fileUpload = function(file) {
+
     // Create a FormData object from the upload form
-    var data = new FormData(this.uploadForm[0]);
+    var data = new FormData(file);
     console.log("called fileUpload");
     
     // Make a POST request to the file upload endpoint
