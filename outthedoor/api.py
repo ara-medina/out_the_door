@@ -267,7 +267,6 @@ def allowed_file(filename):
 @app.route('/sign_s3/', methods=["GET"])
 def sign_s3():
     S3_BUCKET = os.environ.get('S3_BUCKET')
-    print(S3_BUCKET)
     
     file_name = request.args.get('file_name')
     file_type = request.args.get('file_type')
@@ -298,6 +297,8 @@ def file_post():
     
     # get the uploaded file; return an error if not found 
     file = request.files.get("file")
+    print("printing file")
+    print(file)
     if not file:
         data = {"message": "Could not find file data"}
         return Response(json.dumps(data), 422, mimetype="application/json")
@@ -310,6 +311,8 @@ def file_post():
     # create a File object and add it to the db
     new_file = File(name=name)
     session.add(new_file)
+    print("printing new_file")
+    print(new_file)
     session.commit()
     
     # save the file to an uploads folder
@@ -352,6 +355,7 @@ def photo_get(id):
 def photo_post():
     """Add a new photo"""
     data = request.json
+    print("printing data")
     print(data)
     
     try: 
@@ -366,6 +370,8 @@ def photo_post():
     photo = Photo(file=file)
     session.add(photo)
     session.commit()
+    print("printing photo")
+    print(photo)
     print("photo commit successful")
     
     data = json.dumps(photo.as_dictionary())
