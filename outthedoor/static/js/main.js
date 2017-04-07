@@ -284,7 +284,7 @@ outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
         file: {
             id: data.id,
             name: data.name,
-            path: s3Data.url
+            path: data.url
         }
     }
     
@@ -306,11 +306,12 @@ outTheDoor.prototype.onAddPhotoDone = function(data) {
     // data to use in creating a post
     console.log("called on add photo done");
     console.log(data);
-    $('#photoSuccessMsg').css('display', 'block');
     
-    console.log(this.photos);
-    this.photos.push(data);
-    this.photo = data;
+    console.log(outTheDoor.photos);
+    outTheDoor.photos.push(data);
+    outTheDoor.photo = data;
+    
+    $('#photoSuccessMsg').css('display', 'block');
 };
 
 outTheDoor.prototype.onGetPhoto = function(id) {
@@ -333,6 +334,8 @@ outTheDoor.prototype.onGetPhotoDone = function(data) {
 
 outTheDoor.prototype.getPosts = function() {
     // Make a get request to list all of the posts
+    
+    this.posts;
     
     var ajax = $.ajax('/api/posts', {
         type: 'GET',
