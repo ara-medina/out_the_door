@@ -418,6 +418,7 @@ def delete_photo(id):
 @app.route("/uploads/<name>", methods=["GET"])
 def uploaded_file(name):
     """Retrieve an uploaded file"""
+    # fix this
     return send_from_directory(upload_path(), name)
     
 
