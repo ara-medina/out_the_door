@@ -183,7 +183,6 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 
 
 outTheDoor.prototype.onFileAdded = function(event) {
-    console.log(this.photos);
     var file = this.fileInput[0].files[0];
     
     var data = new FormData(this.uploadForm[0]);
@@ -197,29 +196,25 @@ outTheDoor.prototype.onFileAdded = function(event) {
 
 
 outTheDoor.prototype.getSignedRequest = function(file, data) {
-    console.log(this.photos);
     var xhr = new XMLHttpRequest();
-    console.log(this.photos);
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
-    console.log(this.photos);
     xhr.onreadystatechange = function(){
         if(xhr.readyState === 4){
             if(xhr.status === 200){
                 var response = JSON.parse(xhr.responseText);
                 outTheDoor.prototype.s3FileUpload(file, data, response.data, response.url);
+                console.log(this.photos);
             }
             else{
                 console.log("Could not get signed URL.");
             }
         }
     };
-    console.log(this.photos);
     xhr.send();
     console.log(this.photos);
 }
 
 outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
-    console.log(this.photos);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", s3Data.url);
     
@@ -245,7 +240,6 @@ outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
 
 outTheDoor.prototype.fileUpload = function(data, s3Data) {
     console.log("called file upload");
-    console.log(this.photos);
     // var name = file.name;
     // var size = file.size;
     // var type = file.type;
@@ -270,7 +264,6 @@ outTheDoor.prototype.fileUpload = function(data, s3Data) {
 }
 
 outTheDoor.prototype.createUploadXhr = function() {
-    console.log(this.photos);
     // XHR file upload 
     var xhr = new XMLHttpRequest();
     if(xhr.upload) { // if upload property exists
@@ -288,7 +281,6 @@ outTheDoor.prototype.onUploadProgress = function(event) {
 outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
     // Called if the file upload succeeds
     console.log("file upload done called");
-    console.log(this.photos);
     
     data = {
         file: {
@@ -317,9 +309,8 @@ outTheDoor.prototype.onAddPhotoDone = function(data) {
     console.log("called on add photo done");
     console.log(data);
     
-    console.log(this.photos);
-    this.photos.push(data);
-    this.photo = data;
+    window.app.photos.push(data);
+    window.app.photo = data;
     
     $('#photoSuccessMsg').css('display', 'block');
 };
