@@ -261,7 +261,7 @@ outTheDoor.prototype.fileUpload = function(data) {
     ajax.fail(this.onFail.bind(this, "File upload"));
 }
 
-outTheDoor.prototype.createUploadXhr = function(s3Data) {
+outTheDoor.prototype.createUploadXhr = function() {
     // XHR file upload 
     var xhr = new XMLHttpRequest();
     if(xhr.upload) { // if upload property exists
@@ -289,7 +289,6 @@ outTheDoor.prototype.onFileUploadDone = function(data) {
     }
     
     console.log(data);
-    console.log(file);
     
     // Make a POST request to add the photo
     var ajax = $.ajax('/api/photos', {
