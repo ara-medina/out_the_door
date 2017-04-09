@@ -39,12 +39,11 @@ var outTheDoor = function() {
     this.fileInput = $("#file-input");
     this.fileInput.change(this.onFileAdded.bind(this));
                    
-    this.postForm = $("#postModal");
+    this.postModal = $("#postModal");
     this.accountForm = $("#createAccountModal");
     this.loginForm = $("#loginModal");
     this.postList = $("#postList");
-    // update this
-    this.uploadForm = $("#postForm");
+    this.postForm = $("#postForm");
                    
     // Compile the post list template from the HTML file
     this.postListTemplate = Handlebars.compile($("#post-list-template").html());
@@ -183,17 +182,11 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 
 
 outTheDoor.prototype.onFileAdded = function(event) {
-    var file = this.fileInput[0].files[0];
-    
-    var data = new FormData(this.uploadForm[0]);
+    // var file = this.fileInput[0].files[0];
+    // var data = new FormData(this.uploadForm[0]);
     
     this.getSignedRequest(file, data);
 }
-
-// goes in getSignedRequest if you need to remove the extension from file name
-// var filename = file.name;
-// filename = filename.substr(0, filename.lastIndexOf('.'));
-
 
 outTheDoor.prototype.getSignedRequest = function(file, data) {
     var xhr = new XMLHttpRequest();
@@ -240,15 +233,6 @@ outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
 };
 
 outTheDoor.prototype.fileUpload = function(data, s3Data) {
-    console.log(data);
-    // var name = file.name;
-    // var size = file.size;
-    // var type = file.type;
-
-
-    // Create a FormData object from the upload form
-    // var newData = new FormData(data);
-    // console.log(newData);
     
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/files', {
@@ -280,10 +264,8 @@ outTheDoor.prototype.onUploadProgress = function(event) {
 // PHOTO FUNCTIONS 
 
 outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
+    
     // Called if the file upload succeeds
-    
-    console.log(data);
-    
     data = {
         file: {
             id: data.id,
@@ -291,8 +273,6 @@ outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
             path: "https://outthedoor-east.s3.amazonaws.com/" + data.name
         }
     }
-    
-    console.log(data);
     
     // Make a POST request to add the photo
     var ajax = $.ajax('/api/photos', {
@@ -306,11 +286,9 @@ outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
 };
 
 outTheDoor.prototype.onAddPhotoDone = function(data) {
+    
     // Add the photo to the photos array, and then set this.photo variable to 
     // data to use in creating a post
-    console.log("called on add photo done");
-    console.log(data);
-    
     window.app.photos.push(data);
     window.app.photo = data;
     
@@ -318,8 +296,8 @@ outTheDoor.prototype.onAddPhotoDone = function(data) {
 };
 
 outTheDoor.prototype.onGetPhoto = function(id) {
-    // Make a get request to get a single photo
     
+    // Make a get request to get a single photo
     var ajax = $.ajax('/api/photos/' + id, {
         type: 'GET',
         dataType: 'json'
@@ -336,9 +314,8 @@ outTheDoor.prototype.onGetPhotoDone = function(data) {
 // POST FUNCTIONS
 
 outTheDoor.prototype.getPosts = function() {
+    
     // Make a get request to list all of the posts
-    
-    
     var ajax = $.ajax('/api/posts', {
         type: 'GET',
         dataType: 'json'
@@ -349,12 +326,14 @@ outTheDoor.prototype.getPosts = function() {
 };
 
 outTheDoor.prototype.onGetPostsDone = function(data) {
+    
     // Update the posts array, and update the user interface
     this.posts = data;
     this.updatePostView();
 };
 
 outTheDoor.prototype.onGetPost = function(id) {
+    
     // Make a get request to get a single post
     // This gets called when a user logs in and it finds their post
     var ajax = $.ajax('/api/posts/' + id, {
@@ -473,11 +452,13 @@ outTheDoor.prototype.onPostEditButtonClicked = function(id) {
 };
 
 outTheDoor.prototype.onEditPostDone = function(data) {
+    
     //Once edit request has been made, get the new set of posts with updated content
     this.getPosts();
 };
 
 outTheDoor.prototype.onPostDeleteButtonClicked = function(id) {
+    
     // Delete a post
     var id = this.post['id'];
     
@@ -511,6 +492,7 @@ outTheDoor.prototype.onDeletePostDone = function(data) {
 };
 
 outTheDoor.prototype.updatePostView = function() {
+    
     // Render the handlebars template for the post list, and insert it into
     // the DOM
     var context = {

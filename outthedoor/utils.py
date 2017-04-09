@@ -1,6 +1,8 @@
-import os.path
+# not necessary after S3 implementation 
 
-from outthedoor import app
+# import os.path
 
-def upload_path(filename=""):
-    return os.path.join(app.root_path, app.config["UPLOAD_FOLDER"], filename)
+# from outthedoor import app
+
+# def upload_path(filename=""):
+#     return os.path.join(app.root_path, app.config["UPLOAD_FOLDER"], filename)

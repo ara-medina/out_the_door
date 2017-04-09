@@ -6,8 +6,7 @@ from flask import request, Response
 def accept(mimetype):
     def decorator(func):
         """
-        Decorator which returns a 406 Not Acceptable if the client won't accept 
-        a certain mimetype
+        Decorator which returns a 406 Not Acceptable if the client won't accept json
         """
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -23,7 +22,7 @@ def require(mimetype):
     def decorator(func):
         """
         Decorator which returns a 415 Unsupported Media Type if the client sends
-        something other than a certain mimetype
+        something other than json
         """
         @wraps(func)
         def wrapper(*args, **kwargs):

@@ -15,7 +15,7 @@ from . import models
 from . import decorators
 from .database import session
 from .models import Post, Account, Photo, File
-from .utils import upload_path
+# from .utils import upload_path
 from .config import TestingConfig
 
 
@@ -423,11 +423,10 @@ def delete_photo(id):
     
     
 # # UPLOAD ENDPOINTS
-@app.route("/uploads/<name>", methods=["GET"])
-def uploaded_file(name):
-    """Retrieve an uploaded file"""
-    # fix this
-    return send_from_directory(upload_path(), name)
+# @app.route("/uploads/<name>", methods=["GET"])
+# def uploaded_file(name):
+#     """Retrieve an uploaded file"""
+#     return send_from_directory(upload_path(), name)
     
 
     
