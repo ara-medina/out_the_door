@@ -197,6 +197,7 @@ def posts_post():
 
     id = data["photo"]["id"]
     photo = session.query(Photo).get(id)
+    print(photo)
     
     try: 
         validate(data, post_schema)
