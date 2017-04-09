@@ -393,6 +393,8 @@ outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
         city: $('#city').val(),
         profession: $('#profession').val()
     };
+    
+    console.log(data);
 
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/posts', {
