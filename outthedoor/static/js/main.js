@@ -183,6 +183,7 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 
 outTheDoor.prototype.onFileAdded = function(event) {
     var file = this.fileInput[0].files[0];
+    var data = new FormData(this.uploadForm[0]);
     
     this.getSignedRequest(file, data);
 }
