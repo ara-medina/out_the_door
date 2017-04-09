@@ -79,6 +79,8 @@ outTheDoor.prototype.onLoginButtonClicked = function(event) {
             $('#loginModal').modal('toggle');
             // fix for backdrop not closing on submit or exit
             $("#loginButton, #loginClose").click(function(){
+                $(".modal-backdrop").css("zIndex", 0);
+                $(".modal-backdrop").css({ zIndex: 0 });
                 $(".modal-backdrop").remove();
             });
         }
