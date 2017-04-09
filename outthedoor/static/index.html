@@ -94,8 +94,9 @@
                 <p>Out The Door is a Single Page App and API demo project built 
                 by Sandra Medina. The version that you are viewing is an MVP and 
                 is not meant for production. Languages used include HTML, CSS, 
-                JavaScript, and Python. Other tools used include Bootstrap, Google Places API, 
-                jQuery, AJAX, Flask, Flask-Login, PostgreSQL, and SQLAlchemy.</p>
+                JavaScript, and Python. Other tools used include Bootstrap, 
+                Google Places API, jQuery, AJAX, Flask, Flask-Login, PostgreSQL, 
+                SQLAlchemy, Amazon S3 and Heroku.</p>
                 <br>
                 <p>
                   <a href="https://github.com/sandramedina/out_the_door">GitHub</a>
@@ -277,7 +278,7 @@
         <!-- Handlebars templates -->
 
         <script id="post-list-template" type="text/x-handlebars-template">
-          <div style="display: inline-block">
+          <div>
             {{#each posts}}
             <div class="w3-content w3-display-container col-xs-24" id="test" style="width: 100%">
               <div class="card mySlides card1" onclick="currentDiv(2)">
