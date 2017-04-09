@@ -184,7 +184,6 @@ outTheDoor.prototype.onCreateAccountDone = function(data) {
 
 
 outTheDoor.prototype.onFileAdded = function(event) {
-    console.log("onFileAdded");
     var file = this.fileInput[0].files[0];
     var data = new FormData(this.postForm[0]);
     
@@ -192,7 +191,6 @@ outTheDoor.prototype.onFileAdded = function(event) {
 }
 
 outTheDoor.prototype.getSignedRequest = function(file, data) {
-    console.log("getSignedRequest");
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
@@ -200,7 +198,6 @@ outTheDoor.prototype.getSignedRequest = function(file, data) {
             if(xhr.status === 200){
                 var response = JSON.parse(xhr.responseText);
                 outTheDoor.prototype.s3FileUpload(file, data, response.data, response.url);
-                console.log(data);
             }
             else{
                 console.log("Could not get signed URL.");
@@ -211,7 +208,6 @@ outTheDoor.prototype.getSignedRequest = function(file, data) {
 }
 
 outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
-    console.log("s3FileUpload");
     var xhr = new XMLHttpRequest();
     xhr.open("POST", s3Data.url);
     
@@ -236,7 +232,6 @@ outTheDoor.prototype.s3FileUpload = function(file, data, s3Data, url) {
 };
 
 outTheDoor.prototype.fileUpload = function(data, s3Data) {
-    console.log("fileUpload");
     
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/files', {
@@ -253,7 +248,6 @@ outTheDoor.prototype.fileUpload = function(data, s3Data) {
 }
 
 outTheDoor.prototype.createUploadXhr = function() {
-    console.log("createUploadXhr");
     // XHR file upload 
     var xhr = new XMLHttpRequest();
     if(xhr.upload) { // if upload property exists
@@ -264,13 +258,11 @@ outTheDoor.prototype.createUploadXhr = function() {
 };
 
 outTheDoor.prototype.onUploadProgress = function(event) {
-    console.log("onUploadProgress");
 };
 
 // PHOTO FUNCTIONS 
 
 outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
-    console.log("onFileUploadDone");
     // Called if the file upload succeeds
     data = {
         file: {
@@ -292,19 +284,15 @@ outTheDoor.prototype.onFileUploadDone = function(data, s3Data) {
 };
 
 outTheDoor.prototype.onAddPhotoDone = function(data) {
-    console.log("onAddPhotoDone");
     // Add the photo to the photos array, and then set this.photo variable to 
     // data to use in creating a post
     window.app.photos.push(data);
     window.app.photo = data;
     
-    console.log(window.app.photo);
-    
     $('#photoSuccessMsg').css('display', 'block');
 };
 
 outTheDoor.prototype.onGetPhoto = function(id) {
-    console.log("onGetPhoto");
     // Make a get request to get a single photo
     var ajax = $.ajax('/api/photos/' + id, {
         type: 'GET',
@@ -316,7 +304,6 @@ outTheDoor.prototype.onGetPhoto = function(id) {
 };
 
 outTheDoor.prototype.onGetPhotoDone = function(data) {
-    console.log("onGetPhotoDone");
     this.photo = data;
 };
 
@@ -379,8 +366,6 @@ outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
     
     // handling age data; parsing into integer if provided
     var age = parseInt($('#age').val())
-
-    console.log(this.photo);
     
     // Create a data object from the upload form
     var data = {
@@ -399,8 +384,6 @@ outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
         city: $('#city').val(),
         profession: $('#profession').val()
     };
-    
-    console.log(data);
 
     // Make a POST request to the file upload endpoint
     var ajax = $.ajax('/api/posts', {

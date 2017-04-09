@@ -193,11 +193,9 @@ def delete_post(id):
 def posts_post():
     """ Add a new post """
     data = request.json
-    print(data)
 
     id = data["photo"]["id"]
     photo = session.query(Photo).get(id)
-    print(photo.as_dictionary())
     
     try: 
         validate(data, post_schema)
@@ -216,8 +214,6 @@ def posts_post():
         account=current_user,
         photo=photo)
         
-    print(post)
-        
     session.add(post)
     session.commit()
 
@@ -232,7 +228,6 @@ def posts_post():
 def posts_edit(id):
     """Edit a post"""
     data = request.json
-    print(data)
     
     try: 
         validate(data, post_schema)
@@ -298,8 +293,7 @@ def file_post():
     
     # get the uploaded file; return an error if not found 
     file = request.files.get("file")
-    print("printing file")
-    print(file)
+
     if not file:
         data = {"message": "Could not find file data"}
         return Response(json.dumps(data), 422, mimetype="application/json")
@@ -312,8 +306,7 @@ def file_post():
     # create a File object and add it to the db
     new_file = File(name=name)
     session.add(new_file)
-    print("printing new_file")
-    print(new_file.as_dictionary())
+
     session.commit()
     
     # save the file to an uploads folder
@@ -330,7 +323,6 @@ def photos_get():
     
     photos = session.query(Photo)
     photos = photos.order_by(Photo.id)
-    print(photos)
     
     data = json.dumps([photo.as_dictionary() for photo in photos])
     return Response(data, 200, mimetype="application/json")
@@ -356,8 +348,6 @@ def photo_get(id):
 def photo_post():
     """Add a new photo"""
     data = request.json
-    print("printing data")
-    print(data)
     
     try: 
         validate(data, post_schema)
@@ -367,15 +357,10 @@ def photo_post():
         
     id = data["file"]["id"]
     file = session.query(File).get(id)
-    print("printing file")
-    print(file)
     
     photo = Photo(file=file)
     session.add(photo)
     session.commit()
-    print("printing photo")
-    print(photo.as_dictionary())
-    print("photo commit successful")
     
     data = json.dumps(photo.as_dictionary())
     return Response(data, 201, mimetype="application/json")
