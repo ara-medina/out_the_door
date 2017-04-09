@@ -296,6 +296,8 @@ outTheDoor.prototype.onAddPhotoDone = function(data) {
     window.app.photos.push(data);
     window.app.photo = data;
     
+    console.log(window.app.photo);
+    
     $('#photoSuccessMsg').css('display', 'block');
 };
 
@@ -376,6 +378,8 @@ outTheDoor.prototype.onPostCreateButtonClicked = function(event) {
     // handling age data; parsing into integer if provided
     var age = parseInt($('#age').val())
 
+    console.log(this.photo);
+    
     // Create a data object from the upload form
     var data = {
         photo: {
