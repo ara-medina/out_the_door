@@ -167,6 +167,7 @@ div.posts {
     height: auto;
     background-color: white;
     border-top: 10px solid #F5F5F5;
+    display: inline-block;
 }
 
 .card1 {
