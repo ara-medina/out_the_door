@@ -1,5 +1,6 @@
 # Out The Door
 demo: https://outthedoor.herokuapp.com/
+<br>
 in progress: an API built with Python, Flask, SQLAlchemy and PostgreSQL that collects info from users about the objects they carry around with them everyday.
 
 _________________________
