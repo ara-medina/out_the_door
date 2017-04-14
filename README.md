@@ -1,4 +1,5 @@
 # Out The Door
+demo: https://outthedoor.herokuapp.com/
 in progress: an API built with Python, Flask, SQLAlchemy and PostgreSQL that collects info from users about the objects they carry around with them everyday.
 
 _________________________
@@ -32,8 +33,8 @@ _________________________
 Out The Door is a Single Page App and API demo project built by Sandra Medina. 
 The version that you are viewing is an MVP and is not meant for production.
 Languages used include HTML, CSS, JavaScript, and Python. Other tools used include 
-Bootstrap, Google Places API, jQuery, AJAX, Flask, Flask-Login, PostgreSQL, 
-and SQLAlchemy.
+Bootstrap, Google Places API, jQuery, AJAX, Flask, Flask-Login, PostgreSQL, SQLAlchemy,
+Amazon S3 and Heroku.
 
 _________________________
 
