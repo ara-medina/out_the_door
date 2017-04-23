@@ -489,6 +489,8 @@ outTheDoor.prototype.onDeletePostDone = function(data) {
 
 outTheDoor.prototype.updatePostView = function() {
     
+    console.log("updated Post View called")
+    
     // Render the handlebars template for the post list, and insert it into
     // the DOM
     var context = {
@@ -499,17 +501,21 @@ outTheDoor.prototype.updatePostView = function() {
     this.postList.replaceWith(postList);
     this.postList = postList;
     
-    this.setCardHeight();
+    // this.setCardHeight();
 };
 
-outTheDoor.prototype.setCardHeight = function() {
-    $( window ).load(function() {
-        $('.w3-content').each(function(){
-            var cardHeight = $(this).children('.card1').height();
-            $(this).children('.card2').height(cardHeight);
-        })
-    });
-}
+// outTheDoor.prototype.setCardHeight = function() {
+    
+//     console.log("set card height called")
+    
+//     $( window ).load(function() {
+//         console.log("window loaded")
+//         $('.w3-content').each(function(){
+//             var cardHeight = $(this).children('.card1').height();
+//             $(this).children('.card2').height(cardHeight);
+//         })
+//     });
+// }
 
 // COMMON FUNCTIONS
 
@@ -521,3 +527,11 @@ outTheDoor.prototype.onFail = function(what, event) {
 $(document).ready(function() {
     window.app = new outTheDoor();
 });
+
+setTimeout(function() { 
+    console.log("window loaded")
+    $('.w3-content').each(function(){
+        var cardHeight = $(this).children('.card1').height();
+        $(this).children('.card2').height(cardHeight);
+    })
+}, 5000);
